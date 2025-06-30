@@ -37,7 +37,3 @@ Preview the build:
 ```
 npm run preview
 ```
-
-## License
-
-MIT
