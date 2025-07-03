@@ -45,7 +45,7 @@ const projects = [
     description: "Clustering and segmentation of car customers using unsupervised learning techniques like KMeans. Built for BMW to explore marketing insights from customer data.",
     image: "/projects/Project - Cars.jpg",
     tags: ["Python", "Machine Learning", "Clustering", "Pandas", "Plotly"],
-    githubUrl: "https://github.com/pierreprudh/BMW-Study-case"
+    //githubUrl: "https://github.com/pierreprudh/BMW-Study-case"
   }
 ]
 
@@ -115,10 +115,16 @@ export const ProjectsSection = () => {
 
                       <CiLink />
                     </a> */}
-                    <a href={project.githubUrl} className="text-foreground/80 hover:text-primary transition-colors duration-300"
-                        target="_blank" >
-                      <SiIcons.SiGithub size={25} />
-                    </a>
+                    {project.githubUrl && (
+                      <a
+                        href={project.githubUrl}
+                        className="text-foreground/80 hover:text-primary transition-colors duration-300"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <SiIcons.SiGithub size={25} />
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
@@ -134,7 +140,7 @@ export const ProjectsSection = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            Chekc my github <SiIcons.SiGithub size={20} />
+            Check my github <SiIcons.SiGithub size={20} />
           </a>
         </div>
     </div>
