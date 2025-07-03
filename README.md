@@ -8,7 +8,7 @@ Welcome to my personal portfolio built with React and Tailwind CSS. This project
 
 | Light Mode | Dark Mode |
 |------------|-----------|
-| ![Light Mode](./assets/light-mode.png) | ![Dark Mode](./assets/dark-mode.png) |
+| ![Light Mode](./src/assets/light-mode.png) | ![Dark Mode](./src/assets/dark-mode.png) |
 
 ---
 
