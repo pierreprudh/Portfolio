@@ -9,10 +9,12 @@ const skills = [
   {name : "R", level:70, category: "Data Science", icon: "SiR"},
   {name : "Machine Learning", level:80, category: "Data Science", icon: "SiTensorflow"},
   {name : "Deep Learning", level:75, category: "Data Science", icon: "SiPytorch"},
-  {name : "Statistical Analysis", level:70, category: "Data Science", icon: "SiMathworks"},
+  {name : "Statistical Analysis", level:70, category: "Data Science", icon: "SiChartdotjs"},
   {name : "Data Manipulation", level:80, category: "Data Science", icon: "SiPandas"},
   {name : "Computer Vision", level:75, category: "Data Science", icon: "SiOpencv"},
   {name : "SQL", level:75, category: "Data Science", icon: "SiMysql"},
+  { name: "Clustering", level: 70, category: "Data Science", icon: "SiKeras" },
+
 
   // Data Visualization
   {name : "Plotly", level:75, category: "Visualization", icon: "SiPlotly"},
@@ -22,12 +24,16 @@ const skills = [
   {name : "Hadoop", level:65, category: "Big Data", icon: "SiApachehadoop"},
   {name : "Kafka", level:60, category: "Big Data", icon: "SiApachekafka"},
   {name : "Spark", level:65, category: "Big Data", icon: "SiApachespark"},
+  { name: "Dataiku", level: 50, category: "Data Science", icon: "SiDataiku" },
+  { name: "OpenSearch", level: 60, category: "Data Science", icon: "SiOpensearch" },
 
   // Tools
   {name : "Git/Github", level:85, category: "Tools", icon: "SiGithub"},
   {name : "LaTeX", level:80, category: "Tools", icon: "SiLatex"},
   {name : "Docker", level:60, category: "Tools", icon: "SiDocker"},
+  {name: "Hugging Face", level: 65, category: "Tools", icon: "SiHuggingface" },
   {name : "Vs Code", level:75, category: "Tools", icon: "VscVscode"},
+  { name: "OpenSearch", level: 60, category: "Data Science", icon: "SiOpensearch" },
 
   // Others
   {name : "React", level:60, category: "Others", icon: "SiReact"}
