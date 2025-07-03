@@ -1,134 +1,3 @@
-# Portfolio React App
-
-This project is a personal portfolio built with React and Vite.
-
-## Features
-
-- Responsive design
-- Dark and light mode support
-- Hero section with background image and gradient
-- CV download button
-- Smooth scroll navigation
-
-## Development
-
-Install dependencies:
-
-```
-npm install
-```
-
-Start the development server:
-
-```
-npm run dev
-```
-
-## Build
-
-Build for production:
-
-```
-npm run build
-```
-
-Preview the build:
-
-```
-npm run preview
-```
-# 📁 Portfolio — Pierre Prudhomme
-
-Bienvenue sur mon portfolio personnel, développé en React et Tailwind CSS. Il présente mon profil, mes projets, et les moyens de me contacter à travers une interface moderne, responsive et compatible avec les thèmes clair 🌞 et sombre 🌙.
-
----
-
-## 🚀 Aperçu
-
-| Mode clair | Mode sombre |
-|-----------|-------------|
-| ![Light Mode](./assets/screens/light-mode.png) | ![Dark Mode](./assets/screens/dark-mode.png) |
-
----
-
-## ✨ Fonctionnalités
-
-- Interface responsive
-- Design moderne avec animations douces
-- Thème clair/sombre automatique ou manuel
-- Section projets dynamique
-- Section contact avec liens interactifs
-
----
-
-## 🛠️ Stack technique
-
-- ⚛️ **React**
-- 💨 **Tailwind CSS**
-- 🌙 **Dark Mode** via Tailwind
-- 📦 **Vite** pour le bundling
-
----
-
-## 📁 Structure
-
-```
-src/
-├── assets/            # Images, icônes, screenshots
-├── components/        # Composants React (Navbar, Hero, Projects, ContactSection, etc.)
-├── pages/             # Sections de la page principale
-├── App.jsx            # Composant racine
-└── main.jsx           # Point d’entrée de l’application
-```
-
----
-
-## ▶️ Développement
-
-Installation des dépendances :
-
-```bash
-npm install
-```
-
-Démarrer le serveur de développement :
-
-```bash
-npm run dev
-```
-
----
-
-## 🏗️ Build
-
-Construire l’app pour la production :
-
-```bash
-npm run build
-```
-
-Prévisualiser la version production :
-
-```bash
-npm run preview
-```
-
----
-
-## 🖼️ Captures d’écran
-
-Place les fichiers suivants dans `./assets/screens/` :
-
-- `light-mode.png` : capture du site en mode clair
-- `dark-mode.png` : capture du site en mode sombre
-
----
-
-## 🔗 Me contacter
-
-📧 [prudh.pierre@gmail.com](mailto:prudh.pierre@gmail.com)
-🌍 Paris, France
-💼 [LinkedIn](https://www.linkedin.com/in/pierre-prudhomme-14b145222/)
 # 📁 Portfolio — Pierre Prudhomme
 
 Welcome to my personal portfolio built with React and Tailwind CSS. This project showcases my profile, projects, and contact information through a modern, responsive interface that supports both light 🌞 and dark 🌙 themes.
@@ -146,10 +15,10 @@ Welcome to my personal portfolio built with React and Tailwind CSS. This project
 ## ✨ Features
 
 - Responsive design
-- Modern UI with smooth animations
-- Light/Dark mode toggle (auto or manual)
+- Smooth animations
+- Light and dark mode support (auto or manual)
 - Dynamic project section
-- Interactive contact section
+- Interactive contact section with icons
 
 ---
 
@@ -158,19 +27,19 @@ Welcome to my personal portfolio built with React and Tailwind CSS. This project
 - ⚛️ **React**
 - 💨 **Tailwind CSS**
 - 🌙 **Dark Mode** via Tailwind
-- 📦 **Vite** as build tool
+- 📦 **Vite** for bundling and dev server
 
 ---
 
-## 📁 Project Structure
+## 📁 Folder Structure
 
 ```
 src/
-├── assets/            # Images, icons, screenshots
-├── components/        # React components (Navbar, Hero, Projects, ContactSection, etc.)
-├── pages/             # Main page sections
-├── App.jsx            # Root component
-└── main.jsx           # Application entry point
+├── assets/            # Images, icons, and screenshots
+├── components/        # Reusable React components
+├── pages/             # Page sections like Hero, Projects, Contact
+├── App.jsx            # Root app component
+└── main.jsx           # Entry point
 ```
 
 ---
@@ -191,15 +60,15 @@ npm run dev
 
 ---
 
-## 🏗️ Build
+## 🏗️ Production Build
 
-Build for production:
+Build the app for production:
 
 ```bash
 npm run build
 ```
 
-Preview the production build:
+Preview the production build locally:
 
 ```bash
 npm run preview
@@ -209,10 +78,14 @@ npm run preview
 
 ## 🖼️ Screenshots
 
-Place the following files inside `./assets/`:
+Make sure to add the screenshots in the following path:
 
-- `light-mode.png`: screenshot of the light mode
-- `dark-mode.png`: screenshot of the dark mode
+```
+./assets/screens/light-mode.png
+./assets/screens/dark-mode.png
+```
+
+These will be displayed in the Preview section above.
 
 ---
 
@@ -220,4 +93,4 @@ Place the following files inside `./assets/`:
 
 📧 [prudh.pierre@gmail.com](mailto:prudh.pierre@gmail.com)
 🌍 Paris, France
-💼 [LinkedIn](https://www.linkedin.com/in/pierre-prudhomme-14b145222/)
+💼 [LinkedIn — pierre-prudhomme](https://www.linkedin.com/in/pierre-prudhomme-14b145222/)
