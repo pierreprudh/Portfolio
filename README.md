@@ -209,7 +209,7 @@ npm run preview
 
 ## 🖼️ Screenshots
 
-Place the following files inside `./assets/screens/`:
+Place the following files inside `./assets/`:
 
 - `light-mode.png`: screenshot of the light mode
 - `dark-mode.png`: screenshot of the dark mode
