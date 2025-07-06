@@ -33,7 +33,6 @@ const skills = [
   {name : "Docker", level:60, category: "Tools", icon: "SiDocker"},
   {name: "Hugging Face", level: 65, category: "Tools", icon: "SiHuggingface" },
   {name : "Vs Code", level:75, category: "Tools", icon: "VscVscode"},
-  { name: "OpenSearch", level: 60, category: "Data Science", icon: "SiOpensearch" },
 
   // Others
   {name : "React", level:60, category: "Others", icon: "SiReact"}

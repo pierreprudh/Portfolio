@@ -1,4 +1,4 @@
-import { Briefcase, Code, User  } from "lucide-react"
+import { Briefcase, Code, User, Sparkles  } from "lucide-react"
 
 export const AboutSection = () => {
   return <section id="about" className="py-24 px-4 relative">
@@ -10,13 +10,12 @@ export const AboutSection = () => {
 
       <div className="grid gr-cols-1 md:grid-cols-2 gap-12 items-center">
         <div className="space-y-6 ">
-          <h3 className="text-2xl font-semibold "> Data Scientist and analyst
-          </h3>
-          <p className="text-muted-foreground"> {/** Career, parcours, study, etc **/}
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Labore quibusdam iusto repellat culpa laboriosam ipsum pariatur, excepturi aut ut magni voluptatum minima repellendus! Asperiores fugiat molestiae quod fugit facilis reiciendis!
+          <h3 className="text-2xl font-semibold">Engineering Student & Data Science Enthusiast</h3>
+          <p className="text-muted-foreground">
+            Currently studying at ENSIIE, I’m passionate about data science, AI, and large-scale data analytics. I’ve gained hands-on experience through internships and personal projects involving predictive modeling, data visualization, and infrastructure tools.
           </p>
           <p className="text-muted-foreground">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus fuga quos dicta facilis dolores perspiciatis doloribus ex commodi mollitia, non in iusto dolore impedit. Ipsa excepturi ducimus esse quasi animi!
+            I enjoy turning complex problems into actionable insights, and love building tools that blend machine learning with clean, user-friendly interfaces.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center">
@@ -55,14 +54,14 @@ export const AboutSection = () => {
           <div className="gradient-border p-6 card-hover">
             <div className="flex items-start gap-4">
               <div className="p-3 rounded-full bg-primary/10">
-                <User  className="h-6 w-6 text-primary"/>
+                <Sparkles  className="h-6 w-6 text-primary"/>
               </div>
               <div className="text-left">
                 <h4 className="font-semibold text-lg">
-                  User friendly
+                  Curious & Motivated
                 </h4>
                 <p className="text-muted-foreground">
-                  Personnal Insights
+                  Always looking to learn and take on new challenges.
                 </p>
               </div>
             </div>
@@ -78,7 +77,7 @@ export const AboutSection = () => {
                   Work
                 </h4>
                 <p className="text-muted-foreground">
-                  Internship at Limpide Energy
+                  International Internship at <span className="text-blue-800">Limpide Energy</span>
                 </p>
               </div>
             </div>
