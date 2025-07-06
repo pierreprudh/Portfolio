@@ -42,7 +42,7 @@ const projects = [
   {
     id: 5,
     title: "Cars customer clustering",
-    description: "Clustering and segmentation of car customers using unsupervised learning techniques like KMeans. Built for BMW to explore marketing insights from customer data.",
+    description: "Clustering and segmentation of car customers using unsupervised learning techniques like KMeans. Built for a car brand to explore marketing insights from customer data.",
     image: "/projects/Project - Cars.jpg",
     tags: ["Python", "Machine Learning", "Clustering", "Pandas", "Plotly"],
     //githubUrl: "https://github.com/pierreprudh/BMW-Study-case"
