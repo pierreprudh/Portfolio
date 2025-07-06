@@ -10,6 +10,8 @@ Welcome to my personal portfolio, built using React and Tailwind CSS. This proje
 |------------|-----------|
 | ![Light Mode](./src/assets/light-mode.png) | ![Dark Mode](./src/assets/dark-mode.png) |
 
+Watch the [base tutorial](https://www.youtube.com/watch?v=ifOJ0R5UQOc&t=4615s) on YouTube.
+
 
 ---
 
