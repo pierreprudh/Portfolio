@@ -1,6 +1,6 @@
 # 📁 Portfolio — Pierre Prudhomme
 
-Welcome to my personal portfolio built with React and Tailwind CSS. This project showcases my profile, projects, and contact information through a modern, responsive interface that supports both light 🌞 and dark 🌙 themes.
+Welcome to my personal portfolio, built using React and Tailwind CSS. This project highlights my background, featured projects, and contact information through a sleek, responsive design with full light 🌞 and dark 🌙 mode support.
 
 ---
 
@@ -10,15 +10,16 @@ Welcome to my personal portfolio built with React and Tailwind CSS. This project
 |------------|-----------|
 | ![Light Mode](./src/assets/light-mode.png) | ![Dark Mode](./src/assets/dark-mode.png) |
 
+
 ---
 
 ## ✨ Features
 
-- Responsive design
-- Smooth animations
-- Light and dark mode support (auto or manual)
-- Dynamic project section
-- Interactive contact section with icons
+- ⚡ Fully responsive layout for all screen sizes
+- 🎨 Smooth theme transitions (light/dark mode)
+- 🧩 Modular and reusable components
+- 📂 Dynamic project section sourced from a JSON config
+- ✉️ Contact section with icon-enhanced links
 
 ---
 
@@ -35,11 +36,12 @@ Welcome to my personal portfolio built with React and Tailwind CSS. This project
 
 ```
 src/
-├── assets/            # Images, icons, and screenshots
-├── components/        # Reusable React components
-├── pages/             # Page sections like Hero, Projects, Contact
-├── App.jsx            # Root app component
-└── main.jsx           # Entry point
+├── assets/            # Static images and icons
+├── components/        # UI components (Navbar, Footer, Cards)
+├── data/              # Project or contact data in JSON
+├── pages/             # Section containers (Home, Projects, Contact)
+├── App.jsx            # Main layout and routing
+└── main.jsx           # App entry and root render
 ```
 
 ---
@@ -78,19 +80,19 @@ npm run preview
 
 ## 🖼️ Screenshots
 
-Make sure to add the screenshots in the following path:
+Place your screenshots here:
 
 ```
-./assets/screens/light-mode.png
-./assets/screens/dark-mode.png
+./src/assets/screens/light-mode.png
+./src/assets/screens/dark-mode.png
 ```
 
-These will be displayed in the Preview section above.
+These images are used in the Preview section.
 
 ---
 
 ## 🔗 Contact
 
-📧 [prudh.pierre@gmail.com](mailto:prudh.pierre@gmail.com)
-🌍 Paris, France
-💼 [LinkedIn — pierre-prudhomme](https://www.linkedin.com/in/pierre-prudhomme-14b145222/)
+- 📧 Email: [prudh.pierre@gmail.com](mailto:prudh.pierre@gmail.com)
+- 🌍 Location: Paris, France
+- 💼 LinkedIn: [pierre-prudhomme](https://www.linkedin.com/in/pierre-prudhomme-14b145222/)
