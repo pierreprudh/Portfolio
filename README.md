@@ -14,6 +14,13 @@ Welcome to my personal portfolio, built using React and Tailwind CSS. This proje
 
 ---
 
+## 🌐 Live Demo
+
+Experience the portfolio live, hosted on **Vercel**:  
+🔗 [portfolio-pierreprudh.vercel.app](https://portfolio-pierreprudh.vercel.app)
+
+---
+
 ## 🚀 Preview
 
 | Light Mode | Dark Mode |
@@ -91,9 +98,3 @@ npm run preview
 ```
 
 ---
-
-## 🔗 Contact
-
-- 📧 Email: [prudh.pierre@gmail.com](mailto:prudh.pierre@gmail.com)
-- 🌍 Location: Paris, France
-- 💼 LinkedIn: [pierre-prudhomme](https://www.linkedin.com/in/pierre-prudhomme-14b145222/)
