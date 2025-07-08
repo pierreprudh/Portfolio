@@ -10,7 +10,7 @@
 
 # 📁 Portfolio — Pierre Prudhomme
 
-Welcome to my personal portfolio, built using React and Tailwind CSS. This project highlights my background, featured projects, and contact information through a sleek, responsive design with full light 🌞 and dark 🌙 mode support.
+Welcome to my personal portfolio, built using React and Tailwind CSS. This project highlights my background, featured projects, and contact information through a sleek, responsive design with full light 🌞 and dark 🌙 mode support, including an animated Aurora background and starfield effects.
 
 ---
 
@@ -32,6 +32,7 @@ Watch the [base tutorial](https://www.youtube.com/watch?v=ifOJ0R5UQOc&t=4615s) o
 - 🧩 Modular and reusable components
 - 📂 Dynamic project section sourced from a JSON config
 - ✉️ Contact section with icon-enhanced links
+- 🌌 Dynamic animated Aurora background in light mode, and starfield background in dark mode
 
 ---
 
@@ -41,6 +42,7 @@ Watch the [base tutorial](https://www.youtube.com/watch?v=ifOJ0R5UQOc&t=4615s) o
 - 💨 **Tailwind CSS**
 - 🌙 **Dark Mode** via Tailwind
 - 📦 **Vite** for bundling and dev server
+- 🌈 Custom CSS animations with Tailwind and keyframes
 
 ---
 
@@ -49,7 +51,7 @@ Watch the [base tutorial](https://www.youtube.com/watch?v=ifOJ0R5UQOc&t=4615s) o
 ```
 src/
 ├── assets/            # Static images and icons
-├── components/        # UI components (Navbar, Footer, Cards)
+├── components/        # UI components (Navbar, Footer, Cards, Backgrounds)
 ├── data/              # Project or contact data in JSON
 ├── pages/             # Section containers (Home, Projects, Contact)
 ├── App.jsx            # Main layout and routing
