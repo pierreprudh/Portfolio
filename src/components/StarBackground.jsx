@@ -1,6 +1,7 @@
 import Particles from "react-tsparticles";
 import { loadFull } from "tsparticles";
 import { useCallback, useState, useEffect } from "react";
+import { AuroraBackground } from "./AuroraBackground";
 
 export const StarBackground = () => {
   const [isDark, setIsDark] = useState(false);
@@ -45,16 +46,7 @@ export const StarBackground = () => {
   console.log("StarBackground render – isDark:", isDark);
   return (
     <>
-      {!isDark && (
-        <div
-          style={{
-            position: 'fixed',
-            inset: 0,
-            backgroundColor: '#ffffff',
-            zIndex: 0,
-          }}
-        />
-      )}
+
       {isDark && (
         <Particles
           id="tsparticles"

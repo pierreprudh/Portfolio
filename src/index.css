@@ -19,6 +19,10 @@
   --animate-fade-in-delay-4: fade-in 0.7s ease-out 0.8s forwards;
   --animate-meteor: meteor 5s linear infinite;
 
+  --animate-aurora1: aurora1 12s ease-in-out infinite;
+  --animate-aurora2: aurora2 10s ease-in-out infinite;
+  --animate-aurora3: aurora3 14s ease-in-out infinite;
+
   @keyframes float {
     0%,
     100% {
@@ -47,19 +51,7 @@
       transform: translateY(0);
     }
   }
-  @keyframes meteor {
-    0% {
-      transform: rotate(215deg) translateX(0);
-      opacity: 1;
-    }
-    70% {
-      opacity: 1;
-    }
-    100% {
-      transform: rotate(215deg) translateX(-500px);
-      opacity: 0;
-    }
-  }
+
 }
 
 @layer base {
@@ -99,6 +91,11 @@
     @apply bg-background text-foreground transition-colors duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+}
+
+
+@layer utilities {
 }
 
 @utility container {
@@ -159,4 +156,30 @@
   margin: 0 auto;
   padding: 0;
   text-align: center;
+}
+
+@keyframes auroraFloat1 {
+  0%, 100% {
+    transform: translateY(0) rotate(-20deg);
+  }
+  50% {
+    transform: translateY(-40px) rotate(-25deg);
+  }
+}
+@keyframes auroraFloat2 {
+  0%, 100% {
+    transform: translateY(0) rotate(10deg);
+  }
+  50% {
+    transform: translateY(30px) rotate(15deg);
+  }
+}
+
+@keyframes auroraFloat3 {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(-40px, -30px) rotate(10deg);
+  }
 }
