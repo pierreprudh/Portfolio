@@ -21,10 +21,12 @@ export const ThemeToggle = () => {
       document.documentElement.classList.remove("dark")
       localStorage.setItem("theme", "light")
       setIsDarkMode(false)
+      document.dispatchEvent(new Event("themeChanged"));
     } else {
       document.documentElement.classList.add("dark")
       localStorage.setItem("theme", "dark")
       setIsDarkMode(true)
+      document.dispatchEvent(new Event("themeChanged"));
     }
   }
 

@@ -11,25 +11,23 @@ import { Footer } from "../components/Footer";
 export const Home = () => {
 
     return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
+    {/* Background (canvas absolu) */}
+    <StarBackground />
 
-    {/* Theme Toggle */ }
+    {/* Foreground (z-10 pour être au-dessus du fond) */}
+    <div className="relative z-10">
         <ThemeToggle />
-    {/* Background Effects */ }
-        <StarBackground />
-    {/* Nav Bar */ }
         <Navbar />
-    {/* Main Content */ }
         <main>
-            <HeroSection />
-            <AboutSection />
-            <SkillsSection />
-            <ProjectsSection />
-            <ContactSection />
+        <HeroSection />
+        <AboutSection />
+        <SkillsSection />
+        <ProjectsSection />
+        <ContactSection />
         </main>
-    {/* Footer */ }
-
-    <Footer />
+        <Footer />
+    </div>
     </div>
     );
 };

@@ -1,95 +1,141 @@
-import { useEffect, useState } from "react";
-
-// id, size, x, y, opacity, animationDuration
-// id, size, x, y, delay, animationDuration
+import Particles from "react-tsparticles";
+import { loadFull } from "tsparticles";
+import { useCallback, useState, useEffect } from "react";
 
 export const StarBackground = () => {
-  const [stars, setStars] = useState([]);
-  const [meteors, setMeteors] = useState([]);
+  const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
-    generateStars();
-    generateMeteors();
-
-    const handleResize = () => {
-      generateStars();
+    const updateTheme = () => {
+      const htmlClassList = document.documentElement.classList;
+      const darkMode = htmlClassList.contains("dark");
+      setIsDark(darkMode);
     };
 
-    window.addEventListener("resize", handleResize);
+    // Initial check
+    updateTheme();
 
-    return () => window.removeEventListener("resize", handleResize);
+    const observer = new MutationObserver(() => {
+      updateTheme();
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ["class"],
+    });
+
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
-  const generateStars = () => {
-    const numberOfStars = Math.floor(
-      (window.innerWidth * window.innerHeight) / 10000
-    );
-
-    const newStars = [];
-
-    for (let i = 0; i < numberOfStars; i++) {
-      newStars.push({
-        id: i,
-        size: Math.random() * 3 + 1,
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        opacity: Math.random() * 0.5 + 0.5,
-        animationDuration: Math.random() * 4 + 2,
-      });
+  useEffect(() => {
+    const htmlClassList = document.documentElement.classList;
+    const darkMode = htmlClassList.contains("dark");
+    if (darkMode !== isDark) {
+      setIsDark(darkMode);
     }
+  });
 
-    setStars(newStars);
-  };
+  const particlesInit = useCallback(async (engine) => {
+    await loadFull(engine);
+    console.log("tsparticles loaded");
+  }, []);
 
-  const generateMeteors = () => {
-    const numberOfMeteors = 2;
-    const newMeteors = [];
-
-    for (let i = 0; i < numberOfMeteors; i++) {
-      newMeteors.push({
-        id: i,
-        size: Math.random() * 2 + 1,
-        x: Math.random() * 100,
-        y: Math.random() * 20,
-        delay: Math.random() * 15,
-        animationDuration: Math.random() * 3 + 3,
-      });
-    }
-
-    setMeteors(newMeteors);
-  };
-
+  console.log("StarBackground render – isDark:", isDark);
   return (
-    <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      {stars.map((star) => (
+    <>
+      {!isDark && (
         <div
-          key={star.id}
-          className="star animate-pulse-subtle"
           style={{
-            width: star.size + "px",
-            height: star.size + "px",
-            left: star.x + "%",
-            top: star.y + "%",
-            opacity: star.opacity,
-            animationDuration: star.animationDuration + "s",
+            position: 'fixed',
+            inset: 0,
+            backgroundColor: '#ffffff',
+            zIndex: 0,
           }}
         />
-      ))}
-
-      {meteors.map((meteor) => (
-        <div
-          key={meteor.id}
-          className="meteor animate-meteor"
+      )}
+      {isDark && (
+        <Particles
+          id="tsparticles"
+          init={particlesInit}
           style={{
-            width: meteor.size * 20 + "px",
-            height: meteor.size  + "px",
-            left: meteor.x + "%",
-            top: meteor.y + "%",
-            animationDelay: meteor.delay,
-            animationDuration: meteor.animationDuration + "s",
+            position: 'fixed',
+            inset: 0,
+            width: '100vw',
+            height: '100vh',
+            zIndex: 0,
+          }}
+          options={{
+            background: {
+              color: {
+                value: "#000000",
+              },
+            },
+            fpsLimit: 60,
+            particles: {
+              number: {
+                value: 80,
+                density: {
+                  enable: true,
+                  area: 800,
+                },
+              },
+              color: {
+                value: "#ffffff",
+              },
+              shape: {
+                type: "circle",
+              },
+              opacity: {
+                value: 0.5,
+              },
+              size: {
+                value: 3,
+                random: true,
+              },
+              move: {
+                enable: true,
+                speed: 1,
+                direction: "none",
+                outModes: {
+                  default: "out",
+                },
+              },
+              links: {
+                enable: true,
+                distance: 150,
+                color: "#ffffff",
+                opacity: 0.4,
+                width: 1,
+              },
+            },
+            interactivity: {
+              events: {
+                onHover: {
+                  enable: true,
+                  mode: "repulse",
+                },
+                onClick: {
+                  enable: true,
+                  mode: "push",
+                },
+                resize: true,
+              },
+              modes: {
+                repulse: {
+                  distance: 100,
+                  duration: 0.4,
+                },
+                push: {
+                  quantity: 4,
+                },
+              },
+            },
+            detectRetina: true,
           }}
         />
-      ))}
-    </div>
+      )}
+    </>
   );
 };
