@@ -16,7 +16,7 @@ Welcome to my personal portfolio, built using React and Tailwind CSS. This proje
 
 ## 🌐 Live Demo
 
-Experience the portfolio live, hosted on **Vercel**:  
+Experience the portfolio live, hosted on **Vercel**:
 🔗 [portfolio-pierreprudh.vercel.app](https://portfolio-pierreprudh.vercel.app)
 
 ---
@@ -26,8 +26,8 @@ Experience the portfolio live, hosted on **Vercel**:
 | Light Mode | Dark Mode |
 |------------|-----------|
 | ![Light Mode](./src/assets/light-mode.png) | ![Dark Mode](./src/assets/dark-mode.png) |
+| ![Light Mode](./src/assets/mobile-light.png) | ![Dark Mode](./src/assets/mobile-dark.png) |
 
-Watch the [base tutorial](https://www.youtube.com/watch?v=ifOJ0R5UQOc&t=4615s) on YouTube.
 
 
 ---
@@ -98,3 +98,7 @@ npm run preview
 ```
 
 ---
+
+## 📚 Base tutotial
+
+Watch the [base tutorial](https://www.youtube.com/watch?v=ifOJ0R5UQOc&t=4615s) on YouTube.
