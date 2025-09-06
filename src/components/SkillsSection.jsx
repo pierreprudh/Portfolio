@@ -13,8 +13,7 @@ const skills = [
   {name : "Data Manipulation", level:80, category: "Data Science", icon: "SiPandas"},
   {name : "Computer Vision", level:75, category: "Data Science", icon: "SiOpencv"},
   {name : "SQL", level:75, category: "Data Science", icon: "SiMysql"},
-  { name: "Clustering", level: 70, category: "Data Science", icon: "SiKeras" },
-
+  {name: "Clustering", level: 70, category: "Data Science", icon: "SiKeras" },
 
   // Data Visualization
   {name : "Plotly", level:75, category: "Visualization", icon: "SiPlotly"},
@@ -32,6 +31,7 @@ const skills = [
   {name : "LaTeX", level:80, category: "Tools", icon: "SiLatex"},
   {name : "Docker", level:60, category: "Tools", icon: "SiDocker"},
   {name: "Hugging Face", level: 65, category: "Tools", icon: "SiHuggingface" },
+  {name: "n8n", level: 70, category: "Tools", icon: "SiN8N"},
   {name : "Vs Code", level:75, category: "Tools", icon: "VscVscode"},
 
   // Others
@@ -88,9 +88,19 @@ export const SkillsSection =  () => {
             <div key={key} className="bg-card p-6 rounded-lg shadow-xs card-hover transition-opacity duration-700 ease-in-out opacity-100 hover:scale-105 hover:shadow-md transition-transform transition-shadow duration-500">
               <div className="text-left mb-4 flex items-center">
                 {(() => {
-                  if (skill.icon === "VscVscode") return <VscVscode className="text-2xl mr-2" />;
-                  const IconComponent = skill.icon ? SiIcons[skill.icon] : null;
-                  return IconComponent ? <IconComponent className="text-2xl mr-2" /> : null;
+                  // Handle VS Code icon from a different pack
+                  if (skill.icon === "VscVscode") return <VscVscode className="text-2xl mr-2" />
+
+                  // Alias map for icons whose export names differ from common strings
+                  const aliasMap = {
+                    SiN8n: "SiN8N", // react-icons exports n8n as SiN8N
+                  }
+
+                  const key = aliasMap[skill.icon] || skill.icon
+                  const IconComponent = key ? SiIcons[key] : null
+
+                  // If icon is missing (older react-icons version), render nothing
+                  return IconComponent ? <IconComponent className="text-2xl mr-2" /> : null
                 })()}
                 <h3 className="font-semibold text-lg">{skill.name}</h3>
               </div>

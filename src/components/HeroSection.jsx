@@ -12,7 +12,7 @@ export const HeroSection = () => {
         </h1>
 
         <p className="text-lg md:text-xl text-muted-foreground max-2-2xl mx-auto opacity-0 animate-fade-in-delay-3">
-          I'm a passionate data-science student at ENSIIE with a strong interest in Agentic AI, Python development, and AI-driven analytics. Welcome to my personal portfolio — feel free to explore my projects and get in touch!
+          I’m a data science student at ENSIIE with a passion for Agentic AI, Python development, and leveraging AI-driven analytics to solve real-world challenges. Welcome to my personal portfolio — feel free to explore my projects and get in touch!
         </p>
         <div className="pt-4 opacity-0 animate-fade-in-delay-4">
           <a href="#projects" className="cosmic-button">
