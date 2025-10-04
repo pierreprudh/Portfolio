@@ -46,6 +46,14 @@ const projects = [
     image: "/projects/Project - Cars.jpg",
     tags: ["Python", "Machine Learning", "Clustering", "Pandas", "Plotly"],
     //githubUrl: "https://github.com/pierreprudh/BMW-Study-case"
+  },
+  {
+    id: 6,
+    title: "Strava Dashboard",
+    description: "React dahboard using React and Python to call Strava API",
+    image: "/projects/Project - Strava Dashboard.png",
+    tags: ["Python", "React", "API"],
+    githubUrl: "https://github.com/pierreprudh/Strava-Dashboard"
   }
 ]
 
@@ -90,7 +98,7 @@ export const ProjectsSection = () => {
 
         <div className={gridClass}>
           {projects.map((project,key) => (
-            <div key={key} className="group bg-card rounded-lg overflow-hidden shadow-xs card-hover">
+            <div key={key} className="relative group bg-card rounded-lg overflow-hidden shadow-xs card-hover">
               <div className="h-48 overflow-hidden ">
                 <img src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"/>
               </div>
@@ -109,24 +117,18 @@ export const ProjectsSection = () => {
               <p className="text-muted-foreground text-sm mb-4 whitespace-pre-line">
                 {project.description}
               </p>
-              <div className="flex justify-between items-center">
-                  <div className="flex space-x-3">
-                    {/* <a href={project.demoUrl}>
-
-                      <CiLink />
-                    </a> */}
-                    {project.githubUrl && (
-                      <a
-                        href={project.githubUrl}
-                        className="text-foreground/80 hover:text-primary transition-colors duration-300"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <SiIcons.SiGithub size={25} />
-                      </a>
-                    )}
-                  </div>
+              {project.githubUrl && (
+                <div className="absolute bottom-4 left-4">
+                  <a
+                    href={project.githubUrl}
+                    className="text-foreground/80 hover:text-primary transition-colors duration-300"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <SiIcons.SiGithub size={25} />
+                  </a>
                 </div>
+              )}
               </div>
             </div>
           ))}
