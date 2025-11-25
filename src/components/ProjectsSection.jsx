@@ -54,6 +54,14 @@ const projects = [
     image: "/projects/Project - Strava Dashboard.png",
     tags: ["Python", "React", "API"],
     githubUrl: "https://github.com/pierreprudh/Strava-Dashboard"
+  }, 
+  {
+    id: 7,
+    title: "Agentic document information extraction",
+    description: "Autogen and Streamlit application for document extraction",
+    image: "projects/Project - Document information extractor.png",
+    tags: ["Python", "Autogen", "AI Agent", "OCR"],
+    githubUrl: "https://github.com/pierreprudh/Document-Information-Extraction"
   }
 ]
 
