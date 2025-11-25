@@ -42,10 +42,10 @@ export const AboutSection = () => {
               </div>
               <div className="text-left">
                 <h4 className="font-semibold text-lg">
-                  Data Scientist/Analyst
+                  Data Scientist/Analyst - AI engineer
                 </h4>
                 <p className="text-muted-foreground">
-                  Building Model and Dashboard/Insights
+                  Building model and solutions.
                 </p>
               </div>
             </div>
@@ -77,7 +77,7 @@ export const AboutSection = () => {
                   Work
                 </h4>
                 <p className="text-muted-foreground">
-                  International Internship at <span className="text-blue-800">Limpide Energy</span>
+                  Looking for a first opportunity in data science.
                 </p>
               </div>
             </div>

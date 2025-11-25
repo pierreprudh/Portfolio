@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { cn } from "../lib/utils";
 import * as SiIcons from "react-icons/si"
 import { VscVscode } from "react-icons/vsc"
+import { FaEye } from "react-icons/fa"
 
 const skills = [
   // Data Science
@@ -12,8 +13,10 @@ const skills = [
   {name : "Statistical Analysis", level:70, category: "Data Science", icon: "SiChartdotjs"},
   {name : "Data Manipulation", level:80, category: "Data Science", icon: "SiPandas"},
   {name : "Computer Vision", level:75, category: "Data Science", icon: "SiOpencv"},
+  {name : "Azure OCR", level: 65, category: "Data Science", icon: "FaEye"},
+  {name : "PyTesseract", level: 70, category: "Data Science", icon: "SiPython"},
   {name : "SQL", level:75, category: "Data Science", icon: "SiMysql"},
-  {name: "Clustering", level: 70, category: "Data Science", icon: "SiKeras" },
+  {name : "Clustering", level: 70, category: "Data Science", icon: "SiKeras" },
 
   // Data Visualization
   {name : "Plotly", level:75, category: "Visualization", icon: "SiPlotly"},
@@ -31,8 +34,10 @@ const skills = [
   {name : "LaTeX", level:80, category: "Tools", icon: "SiLatex"},
   {name : "Docker", level:60, category: "Tools", icon: "SiDocker"},
   {name: "Hugging Face", level: 65, category: "Tools", icon: "SiHuggingface" },
+  {name: "LLM APIs (OpenAI, Mistral)", level: 70, category: "Tools", icon: "SiOpenai" },
   {name: "n8n", level: 70, category: "Tools", icon: "SiN8N"},
   {name : "Vs Code", level:75, category: "Tools", icon: "VscVscode"},
+   
 
   // Others
   {name : "React", level:60, category: "Others", icon: "SiReact"}
@@ -94,10 +99,11 @@ export const SkillsSection =  () => {
                   // Alias map for icons whose export names differ from common strings
                   const aliasMap = {
                     SiN8n: "SiN8N", // react-icons exports n8n as SiN8N
+                    FaEye: "FaEye",
                   }
 
                   const key = aliasMap[skill.icon] || skill.icon
-                  const IconComponent = key ? SiIcons[key] : null
+                  const IconComponent = key ? (SiIcons[key] || FaEye) : null
 
                   // If icon is missing (older react-icons version), render nothing
                   return IconComponent ? <IconComponent className="text-2xl mr-2" /> : null
