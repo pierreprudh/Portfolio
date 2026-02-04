@@ -143,14 +143,23 @@ export const ProjectsSection = () => {
 
         </div>
         <hr className="my-12 border-muted" />
-        <div className="text-center mt-12">
+        <div className="text-center mt-12 flex justify-center gap-4">
           <a
             href="https://github.com/pierreprudh"
-            className="cosmic-button w-fit flex items-center mx-auto gap-2"
+            className="cosmic-button w-fit flex items-center gap-2"
             target="_blank"
             rel="noopener noreferrer"
           >
-            Check my github <SiIcons.SiGithub size={20} />
+            GitHub <SiIcons.SiGithub size={20} />
+          </a>
+
+          <a
+            href="https://leetcode.com/pierreprudh"
+            className="cosmic-button w-fit flex items-center gap-2"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            LeetCode <SiIcons.SiLeetcode size={20} />
           </a>
         </div>
     </div>
