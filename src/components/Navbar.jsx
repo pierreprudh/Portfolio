@@ -68,7 +68,7 @@ export const Navbar = () => {
         .filter(Boolean);
       const offset = 80;
       for (let i = sections.length - 1; i >= 0; i--) {
-        if (sections[i].offsetTop - offset <= window.scrollY) {
+        if (sections[i].getBoundingClientRect().top + window.scrollY - offset <= window.scrollY) {
           setActiveSection(sections[i].id);
           return;
         }
