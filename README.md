@@ -4,19 +4,20 @@
     <img src="https://img.shields.io/badge/-TailwindCSS-06B6D4?style=for-the-badge&logo=tailwindcss" alt="Tailwind CSS" />
     <img src="https://img.shields.io/badge/-Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
     <img src="https://img.shields.io/badge/-Lucide Icons-FD4D4D?style=for-the-badge&logo=lucide" alt="Lucide Icons" />
-    <img src="https://img.shields.io/badge/-Radix UI-9D4EDD?style=for-the-badge&logo=data:image/svg+xml;base64..." alt="Radix UI" />
+    <img src="https://img.shields.io/badge/-React Icons-E91E63?style=for-the-badge&logo=react&logoColor=white" alt="React Icons" />
+    <img src="https://img.shields.io/badge/-tsParticles-7B2FBE?style=for-the-badge" alt="tsParticles" />
   </div>
 </div>
 
-# 📁 Portfolio — Pierre Prudhomme
+# Portfolio — Pierre Prudhomme
 
-Welcome to my personal portfolio, built using React and Tailwind CSS. This project highlights my background, featured projects, and contact information through a sleek, responsive design with full light 🌞 and dark 🌙 mode support, including an animated Aurora background and starfield effects.
+Personal portfolio built with React and Tailwind CSS. Highlights my background as a Data Scientist and AI Engineer, featuring projects, skills, and contact info — with a polished, fully responsive design and light/dark mode support.
 
 ---
 
 ## 🌐 Live Demo
 
-Experience the portfolio live, hosted on **Vercel**:
+Hosted on **Vercel**:
 🔗 [portfolio-pierreprudh.vercel.app](https://portfolio-pierreprudh.vercel.app)
 
 ---
@@ -28,29 +29,34 @@ Experience the portfolio live, hosted on **Vercel**:
 | ![Light Mode](./src/assets/light-mode.png) | ![Dark Mode](./src/assets/dark-mode.png) |
 | ![Light Mode](./src/assets/mobile-light.png) | ![Dark Mode](./src/assets/mobile-dark.png) |
 
-
-
-
 ---
 
 ## ✨ Features
 
-- ⚡ Fully responsive layout for all screen sizes
-- 🎨 Smooth theme transitions (light/dark mode)
-- 🧩 Modular and reusable components
-- 📂 Dynamic project section sourced from a JSON config
-- ✉️ Contact section with icon-enhanced links
-- 🌌 Dynamic animated Aurora background in light mode, and starfield background in dark mode
+- Fully responsive layout for all screen sizes
+- Smooth light/dark theme toggle with animated transitions
+- Animated splash screen on first load
+- Floating pill navbar with scroll-aware active section tracking and mobile accordion menu
+- Scroll progress bar
+- Scroll-reveal animations on section entry
+- Hero section with animated role cycling and particle background
+- Skills section organized by category (Data Science, Visualization, Big Data, Web Dev, AI/LLM)
+- Projects section with live and GitHub links
+- Contact section with email, phone, location, and LinkedIn
+- Aurora background (light mode) and starfield background (dark mode)
 
 ---
 
 ## 🛠️ Tech Stack
 
-- ⚛️ **React**
-- 💨 **Tailwind CSS**
-- 🌙 **Dark Mode** via Tailwind
-- 📦 **Vite** for bundling and dev server
-- 🌈 Custom CSS animations with Tailwind and keyframes
+- **React 19** with hooks
+- **Tailwind CSS v4**
+- **Vite 7** for bundling and dev server
+- **react-router-dom** for routing
+- **tsparticles** for particle animations
+- **lucide-react** and **react-icons** for icons
+- **clsx** + **tailwind-merge** for conditional class utilities
+- Custom CSS keyframe animations
 
 ---
 
@@ -58,12 +64,12 @@ Experience the portfolio live, hosted on **Vercel**:
 
 ```
 src/
-├── assets/            # Static images and icons
-├── components/        # UI components (Navbar, Footer, Cards, Backgrounds)
-├── data/              # Project or contact data in JSON
-├── pages/             # Section containers (Home, Projects, Contact)
-├── App.jsx            # Main layout and routing
-└── main.jsx           # App entry and root render
+├── assets/            # Static images
+├── components/        # All UI components (sections, navbar, backgrounds, effects)
+├── lib/               # Utility functions (cn helper)
+├── pages/             # Page-level containers (Home, NotFound)
+├── App.jsx            # Root layout and routing
+└── main.jsx           # App entry point
 ```
 
 ---
@@ -86,20 +92,7 @@ npm run dev
 
 ## 🏗️ Production Build
 
-Build the app for production:
-
 ```bash
 npm run build
-```
-
-Preview the production build locally:
-
-```bash
 npm run preview
 ```
-
----
-
-## 📚 Base tutotial
-
-Watch the [base tutorial](https://www.youtube.com/watch?v=ifOJ0R5UQOc&t=4615s) on YouTube.
