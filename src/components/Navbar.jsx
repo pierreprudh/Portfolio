@@ -1,124 +1,173 @@
 import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "../lib/utils";
 
 const navItems = [
   {
-    name: "Home", href: "#hero"
+    name: "Home", href: "#hero", id: "hero"
   },
   {
-    name: "About", href: "#about"
+    name: "About", href: "#about", id: "about"
   },
   {
-    name: "Skills", href: "#skills"
+    name: "Skills", href: "#skills", id: "skills"
   },
   {
-    name: "Project", href: "#projects"
+    name: "Projects", href: "#projects", id: "projects"
   },
   {
-    name: "Contact", href: "#contact"
+    name: "Contact", href: "#contact", id: "contact"
   },
-]
+];
 
 export const Navbar = () => {
-
-  const [isScrolled, setisScrolled] = useState(false);
+  const navRef = useRef(null);
+  const [isScrolled, setIsScrolled] = useState(false);
   const [isAccordionOpen, setIsAccordionOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
 
   useEffect(() => {
-    let lastScrollY = window.scrollY;
-
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      setisScrolled(currentScrollY > lastScrollY && currentScrollY > 10);
-      lastScrollY = currentScrollY;
+      setIsScrolled(window.scrollY > 24);
     };
 
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
-  // Gestion fermeture du menu mobile lors d'un clic à l'extérieur (hors bouton menu)
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        isAccordionOpen &&
-        !event.target.closest("nav") &&
-        !event.target.closest("button[aria-label='Open Menu']")
-      ) {
+      if (isAccordionOpen && navRef.current && !navRef.current.contains(event.target)) {
         setIsAccordionOpen(false);
       }
     };
+
+    const handleEscape = (event) => {
+      if (event.key === "Escape") {
+        setIsAccordionOpen(false);
+      }
+    };
+
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
   }, [isAccordionOpen]);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = navItems
+        .map((item) => document.getElementById(item.id))
+        .filter(Boolean);
+      const offset = 80;
+      for (let i = sections.length - 1; i >= 0; i--) {
+        if (sections[i].offsetTop - offset <= window.scrollY) {
+          setActiveSection(sections[i].id);
+          return;
+        }
+      }
+      setActiveSection(navItems[0].id);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
-  return <nav className={cn(
-  "fixed w-full z-40 transition-all duration-300 py-4 sm:py-6",
-  isScrolled ? "opacity-0 -translate-y-full pointer-events-none" : "opacity-100 translate-y-0"
-)}>
-    <div className={cn(
-      "container rounded-full py-4 sm:py-5 px-6 sm:px-8 md:px-10 lg:px-12 max-w-screen-sm sm:max-w-screen-md md:max-w-screen-lg lg:max-w-7xl",
-      "bg-white/20 dark:bg-white/5 backdrop-blur-xl shadow-2xl ring-1 ring-white/40 dark:ring-white/10 border border-white/30 dark:border-white/5"
-    )}>
-    <div className={cn(
-      "flex w-full items-center justify-between transition-all duration-500",
-      isAccordionOpen ? "justify-center" : ""
-    )}>
-      <a className="text-2xl font-bold text-primary flex items-center"
-         href="#hero">
-        <span className="relative z-10">
-          <span className="text-glow text-foreground">
-              Pierreprudh
-          </span>{" "}
-          Portfolio
-        </span>
-      </a>
+  useEffect(() => {
+    document.body.style.overflow = isAccordionOpen ? "hidden" : "";
 
-      {/*Desktop version*/}
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isAccordionOpen]);
 
-      <div className="hidden md:flex space-x-10">
-        {navItems.map((item, key) => (
-          <a key = {key} href={item.href} className="text-lg text-foreground/80 hover:text-primary transition-colors duration-500">
+  return (
+    <nav className="fixed inset-x-0 top-4 z-40 flex justify-center pointer-events-none" style={{ animation: "navEnter 1s cubic-bezier(0.16, 1, 0.3, 1) 2.6s both" }}>
+
+      {/* Desktop — centered pill */}
+      <div
+        ref={navRef}
+        className={cn(
+          "pointer-events-auto hidden md:flex items-center gap-1 rounded-full border px-3 py-2.5 transition-all duration-300",
+          isScrolled
+            ? "border-border/60 bg-background/85 shadow-lg backdrop-blur-2xl"
+            : "border-border/30 bg-background/50 shadow-sm backdrop-blur-xl"
+        )}
+      >
+        {navItems.map((item) => (
+          <a
+            key={item.id}
+            href={item.href}
+            className={cn(
+              "rounded-full px-5 py-2 text-sm font-medium transition-all duration-200",
+              activeSection === item.id
+                ? "bg-primary text-primary-foreground shadow-sm"
+                : "text-foreground/55 hover:text-foreground hover:bg-foreground/8"
+            )}
+          >
             {item.name}
           </a>
         ))}
       </div>
 
-      {/*Mobile version*/}
+      {/* Mobile — pill with hamburger */}
+      <div
+        ref={navRef}
+        className={cn(
+          "pointer-events-auto flex md:hidden flex-col rounded-3xl border transition-all duration-300 w-[calc(100vw-2rem)]",
+          isScrolled
+            ? "border-border/60 bg-background/85 shadow-lg backdrop-blur-2xl"
+            : "border-border/30 bg-background/50 shadow-sm backdrop-blur-xl"
+        )}
+      >
+        <div className="flex items-center justify-between px-4 py-2.5">
+          <a href="#hero" className="text-sm font-semibold tracking-tight text-foreground">
+            Pierre Prudhomme
+          </a>
+          <button
+            onClick={() => setIsAccordionOpen((prev) => !prev)}
+            className="rounded-full p-1.5 text-foreground transition-colors duration-200 hover:bg-foreground/8"
+            aria-label={isAccordionOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isAccordionOpen}
+            aria-controls="mobile-navigation"
+          >
+            {isAccordionOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
 
-      {!isAccordionOpen && (
-        <button
-          onClick={() => setIsAccordionOpen(true)}
-          className="md:hidden p-2 text-foreground z-50"
-          aria-label="Open Menu"
+        <div
+          id="mobile-navigation"
+          className={cn(
+            "overflow-hidden transition-all duration-300",
+            isAccordionOpen ? "max-h-72 opacity-100 pb-2" : "max-h-0 opacity-0"
+          )}
         >
-          <Menu size={24} />
-        </button>
-      )}
-
-    </div>
-
-    <div
-      className={cn(
-        "md:hidden w-full overflow-hidden transition-all duration-500 ease-in-out flex flex-col items-center gap-y-4 z-0 -mt-4 px-4",
-        isAccordionOpen ? "max-h-[500px] opacity-100 py-4" : "max-h-0 opacity-0"
-      )}
-    >
-      {navItems.map((item, key) => (
-        <a
-          key={key}
-          href={item.href}
-          className="text-xl text-foreground/80 hover:text-primary transition-colors duration-300"
-          onClick={() => setIsAccordionOpen(false)}
-          size
-        >
-          {item.name}
-        </a>
-      ))}
-    </div>
-    </div>
-  </nav>
-
-}
+          <div className="flex flex-col gap-1 px-2 pb-2">
+            {navItems.map((item) => (
+              <a
+                key={item.id}
+                href={item.href}
+                className={cn(
+                  "rounded-2xl px-4 py-2.5 text-sm font-medium transition-colors duration-200",
+                  activeSection === item.id
+                    ? "bg-primary text-primary-foreground"
+                    : "text-foreground/65 hover:bg-foreground/8"
+                )}
+                onClick={() => setIsAccordionOpen(false)}
+              >
+                {item.name}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </nav>
+  );
+};

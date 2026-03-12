@@ -1,7 +1,5 @@
 import { Mail, MapPin, Phone } from "lucide-react"
 import { SiLinkedin } from "react-icons/si"
-import { cn } from "../lib/utils"
-
 
 export const ContactSection = () => {
 
@@ -12,7 +10,7 @@ export const ContactSection = () => {
       </h2>
 
       <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-        You want to have more informations, feel free to contact me !
+        If my work in AI, data systems, or product-minded tooling feels relevant to your team, feel free to reach out.
       </p>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 items-start">

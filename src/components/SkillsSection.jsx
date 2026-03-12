@@ -29,21 +29,25 @@ const skills = [
   { name: "Dataiku", level: 50, category: "Data Science", icon: "SiDataiku" },
   { name: "OpenSearch", level: 60, category: "Data Science", icon: "SiOpensearch" },
 
+  // Agentic AI
+  {name: "LLM APIs (OpenAI, Mistral)", level: 70, category: "Agentic AI", icon: "SiOpenai" },
+  {name: "LangChain", level: 70, category: "Agentic AI", icon: "SiPython"},
+  {name: "LangGraph", level: 65, category: "Agentic AI", icon: "SiPython"},
+  {name: "AutoGen", level: 68, category: "Agentic AI", icon: "FaEye"},
+  {name: "n8n", level: 70, category: "Agentic AI", icon: "SiN8N"},
+  {name: "Hugging Face", level: 65, category: "Agentic AI", icon: "SiHuggingface" },
+
   // Tools
   {name : "Git/Github", level:85, category: "Tools", icon: "SiGithub"},
   {name : "LaTeX", level:80, category: "Tools", icon: "SiLatex"},
   {name : "Docker", level:60, category: "Tools", icon: "SiDocker"},
-  {name: "Hugging Face", level: 65, category: "Tools", icon: "SiHuggingface" },
-  {name: "LLM APIs (OpenAI, Mistral)", level: 70, category: "Tools", icon: "SiOpenai" },
-  {name: "n8n", level: 70, category: "Tools", icon: "SiN8N"},
   {name : "Vs Code", level:75, category: "Tools", icon: "VscVscode"},
-   
 
   // Others
   {name : "React", level:60, category: "Others", icon: "SiReact"}
 ]
 
-const categories = ["all", "Data Science", "Visualization", "Big Data", "Tools", "Others"]
+const categories = ["all", "Data Science", "Agentic AI", "Visualization", "Big Data", "Tools", "Others"]
 
 export const SkillsSection =  () => {
 

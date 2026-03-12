@@ -30,14 +30,6 @@ export const StarBackground = () => {
     };
   }, []);
 
-  useEffect(() => {
-    const htmlClassList = document.documentElement.classList;
-    const darkMode = htmlClassList.contains("dark");
-    if (darkMode !== isDark) {
-      setIsDark(darkMode);
-    }
-  });
-
   const particlesInit = useCallback(async (engine) => {
     await loadFull(engine);
     console.log("tsparticles loaded");
