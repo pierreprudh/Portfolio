@@ -6,7 +6,37 @@ import { useState } from "react";
 
 const projects = [
   {
-    id:1,
+    id: 1,
+    title: "Self-hosted private AI stack",
+    description: "Docker-orchestrated AI platform for a small team — chat UI, Ollama LLM runtime, code-execution sandbox, web search, and automation, all on a private network",
+    image: "projects/AI stack.png",
+    tags: ["TypeScript", "React", "Express", "Docker", "Postgres", "Ollama", "AI"],
+  },
+  {
+    id: 2,
+    title: "Process-aware customer-service AI agent",
+    description: "Agentic after-sales-support (SAV) pipeline built on LangGraph — identifies the customer, auto-creates a ticket, runs a structured diagnostic dialogue, and routes each case to the right resolution branch. Runs fully local on Ollama (or OpenAI/hybrid), with RAG retrieval over past execution traces, MCP tool servers, and an A/B benchmark harness that proves memory-augmented agents beat blank-slate ones.",
+    image: "projects/ai-chabot.jpg",
+    tags: ["Python", "LangGraph", "LangChain", "Ollama", "ChromaDB", "FastAPI", "RAG", "MCP", "AI"],
+  },
+  {
+    id: 3,
+    title: "Agentic document information extraction",
+    description: "Autogen and Streamlit application for document extraction",
+    image: "projects/Project - Document information extractor.png",
+    tags: ["Python", "Autogen", "AI Agent", "OCR"],
+    githubUrl: "https://github.com/pierreprudh/Document-Information-Extraction"
+  },
+  {
+    id: 4,
+    title: "Strava Dashboard",
+    description: "React dahboard using React and Python to call Strava API",
+    image: "/projects/Project - Strava Dashboard.png",
+    tags: ["Python", "React", "API"],
+    githubUrl: "https://github.com/pierreprudh/Strava-Dashboard"
+  },
+  {
+    id:5,
     title: "Masked Face Detection",
     description: "A deep learning project that detects whether individuals are wearing face masks using MobileNet and EfficientNet architectures. Focused on real-time image classification and public health monitoring.",
     image: "/projects/Project - Mask Detection.png",
@@ -15,7 +45,7 @@ const projects = [
     githubUrl: "https://github.com/WacimN/SF-mask-detection"
   },
   {
-    id:2,
+    id:6,
     title: "French Mobile Network Analysis",
     description: "Big data pipeline analyzing mobile network coverage in France using Hadoop, Kafka, Spark, and Opensearch. Includes visualization and processing of large-scale geospatial data from ANFR.",
     image: "/projects/Project - French Mobile.png",
@@ -24,7 +54,7 @@ const projects = [
     githubUrl: "https://github.com/pierreprudh/Antens_Map"
   },
   {
-    id: 3,
+    id: 7,
     title: "Animal Face Recognition",
     description: "A computer vision system built with TensorFlow/Keras to detect and classify animal faces. Demonstrates convolutional neural networks applied to wildlife image recognition.",
     image: "/projects/Project - Animal face recognition.png",
@@ -32,7 +62,7 @@ const projects = [
     githubUrl: "https://github.com/pierreprudh/Animal_face_recognition"
   },
   {
-    id: 4,
+    id: 8,
     title: "File Analysis Tool",
     description: "A Python utility for processing CSV/XLSX files, extracting structured data, and automatically generating JSON summaries and PDF dashboards for reporting.",
     image: "/projects/Project - Default.jpg",
@@ -40,42 +70,12 @@ const projects = [
     githubUrl: "https://github.com/pierreprudh/File-Analysis"
   },
   {
-    id: 5,
+    id: 9,
     title: "Cars customer clustering",
     description: "Clustering and segmentation of car customers using unsupervised learning techniques like KMeans. Built for a car brand to explore marketing insights from customer data.",
     image: "/projects/Project - Cars.jpg",
     tags: ["Python", "Machine Learning", "Clustering", "Pandas", "Plotly"],
     //githubUrl: "https://github.com/pierreprudh/BMW-Study-case"
-  },
-  {
-    id: 6,
-    title: "Strava Dashboard",
-    description: "React dahboard using React and Python to call Strava API",
-    image: "/projects/Project - Strava Dashboard.png",
-    tags: ["Python", "React", "API"],
-    githubUrl: "https://github.com/pierreprudh/Strava-Dashboard"
-  }, 
-  {
-    id: 7,
-    title: "Agentic document information extraction",
-    description: "Autogen and Streamlit application for document extraction",
-    image: "projects/Project - Document information extractor.png",
-    tags: ["Python", "Autogen", "AI Agent", "OCR"],
-    githubUrl: "https://github.com/pierreprudh/Document-Information-Extraction"
-  },
-  {
-    id: 8,
-    title: "Self-hosted private AI stack",
-    description: "Docker-orchestrated AI platform for a small team — chat UI, Ollama LLM runtime, code-execution sandbox, web search, and automation, all on a private network",
-    image: "projects/AI stack.png",
-    tags: ["TypeScript", "React", "Express", "Docker", "Postgres", "Ollama", "AI"],
-  },
-  {
-    id: 9,
-    title: "Process-aware customer-service AI agent",
-    description: "Agentic after-sales-support (SAV) pipeline built on LangGraph — identifies the customer, auto-creates a ticket, runs a structured diagnostic dialogue, and routes each case to the right resolution branch. Runs fully local on Ollama (or OpenAI/hybrid), with RAG retrieval over past execution traces, MCP tool servers, and an A/B benchmark harness that proves memory-augmented agents beat blank-slate ones.",
-    image: "projects/ai-chabot.jpg",
-    tags: ["Python", "LangGraph", "LangChain", "Ollama", "ChromaDB", "FastAPI", "RAG", "MCP", "AI"],
   }
 ]
 
