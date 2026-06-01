@@ -67,14 +67,14 @@ const projects = [
     id: 8,
     title: "Self-hosted private AI stack",
     description: "Docker-orchestrated AI platform for a small team — chat UI, Ollama LLM runtime, code-execution sandbox, web search, and automation, all on a private network",
-    image: "projects/Project - AI stack.png",
+    image: "projects/AI stack.png",
     tags: ["TypeScript", "React", "Express", "Docker", "Postgres", "Ollama", "AI"],
   },
   {
     id: 9,
     title: "Process-aware customer-service AI agent",
     description: "Agentic after-sales-support (SAV) pipeline built on LangGraph — identifies the customer, auto-creates a ticket, runs a structured diagnostic dialogue, and routes each case to the right resolution branch. Runs fully local on Ollama (or OpenAI/hybrid), with RAG retrieval over past execution traces, MCP tool servers, and an A/B benchmark harness that proves memory-augmented agents beat blank-slate ones.",
-    image: "public/projects/ai-chabot.jpg",
+    image: "projects/ai-chabot.jpg",
     tags: ["Python", "LangGraph", "LangChain", "Ollama", "ChromaDB", "FastAPI", "RAG", "MCP", "AI"],
   }
 ]
