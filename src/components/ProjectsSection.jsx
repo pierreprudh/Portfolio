@@ -62,7 +62,14 @@ const projects = [
     image: "projects/Project - Document information extractor.png",
     tags: ["Python", "Autogen", "AI Agent", "OCR"],
     githubUrl: "https://github.com/pierreprudh/Document-Information-Extraction"
+  },
+  {
+    id: 9,
+    title: "Process-aware customer-service AI agent",
+    description: "Agentic after-sales-support (SAV) pipeline built on LangGraph — identifies the customer, auto-creates a ticket, runs a structured diagnostic dialogue, and routes each case to the right resolution branch. Runs fully local on Ollama (or OpenAI/hybrid), with RAG retrieval over past execution traces, MCP tool servers, and an A/B benchmark harness that proves memory-augmented agents beat blank-slate ones.",
+    tags: ["Python", "LangGraph", "LangChain", "Ollama", "ChromaDB", "FastAPI", "RAG", "MCP", "AI"],
   }
+  
 ]
 
 

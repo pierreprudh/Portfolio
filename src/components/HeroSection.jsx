@@ -4,7 +4,7 @@ import { SiGithub, SiLinkedin, SiLeetcode } from "react-icons/si"
 import Particles from "react-tsparticles"
 import { loadFull } from "tsparticles"
 
-const roles = ["Data Scientist", "AI Engineer", "Agentic AI Builder", "LLM Developer"]
+const roles = ["Data Scientist", "AI Engineer", "Agentic AI Builder", "AI Forward Deployed Engineer"]
 
 const SplitWord = ({ word, baseDelay }) => (
   <span className="inline-flex">
