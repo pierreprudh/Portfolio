@@ -43,23 +43,22 @@ const MagneticButton = ({ href, children, className }) => {
 
 const HeroVisual = ({ isDark }) => {
   const canvasRef = useRef(null)
+  const containerRef = useRef(null)
+  const isDarkRef = useRef(isDark)
+
+  useEffect(() => {
+    isDarkRef.current = isDark
+  }, [isDark])
 
   useEffect(() => {
     const canvas = canvasRef.current
-    if (!canvas) return
+    const container = containerRef.current
+    if (!canvas || !container) return
     const ctx = canvas.getContext("2d")
 
-    // Retina-sharp rendering
-    const S = 540
-    const dpr = window.devicePixelRatio || 1
-    canvas.width = S * dpr
-    canvas.height = S * dpr
-    canvas.style.width = S + "px"
-    canvas.style.height = S + "px"
-    ctx.scale(dpr, dpr)
-
-    const cx = S / 2, cy = S / 2
-    const BASE_R = 215
+    let S = 540
+    let dpr = window.devicePixelRatio || 1
+    let cx = S / 2, cy = S / 2
     const N = 190
     let angle = 0
     let rafId
@@ -68,7 +67,8 @@ const HeroVisual = ({ isDark }) => {
       ctx.clearRect(0, 0, S, S)
 
       // Subtle breathe: ±4% radius over ~6 s
-      const R = BASE_R * (1 + Math.sin(angle * 0.55) * 0.04)
+      const baseR = S * 0.46
+      const R = baseR * (1 + Math.sin(angle * 0.55) * 0.04)
 
       const pts = []
 
@@ -99,17 +99,18 @@ const HeroVisual = ({ isDark }) => {
       pts.sort((a, b) => a.zf - b.zf)
 
       // ── Constellation lines ──
+      const linkDist = S * 0.089
       for (let i = 0; i < pts.length; i++) {
         for (let j = i + 1; j < pts.length; j++) {
           const dx = pts[i].sx - pts[j].sx
           const dy = pts[i].sy - pts[j].sy
           const d  = Math.sqrt(dx * dx + dy * dy)
-          if (d < 48) {
-            const lineOp = (1 - d / 48) * Math.min(pts[i].op, pts[j].op) * 0.5
+          if (d < linkDist) {
+            const lineOp = (1 - d / linkDist) * Math.min(pts[i].op, pts[j].op) * 0.5
             ctx.beginPath()
             ctx.moveTo(pts[i].sx, pts[i].sy)
             ctx.lineTo(pts[j].sx, pts[j].sy)
-            ctx.strokeStyle = isDark
+            ctx.strokeStyle = isDarkRef.current
               ? `rgba(200, 220, 255, ${lineOp})`
               : `rgba(10, 30, 25, ${lineOp})`
             ctx.lineWidth = 0.7
@@ -122,7 +123,7 @@ const HeroVisual = ({ isDark }) => {
       pts.forEach(({ sx, sy, op, r, depth }) => {
         ctx.beginPath()
         ctx.arc(sx, sy, r, 0, Math.PI * 2)
-        if (isDark) {
+        if (isDarkRef.current) {
           const l = 70 + depth * 28   // back: mid-white → front: bright white
           ctx.fillStyle = `hsla(210, 40%, ${l}%, ${op})`
         } else {
@@ -136,16 +137,45 @@ const HeroVisual = ({ isDark }) => {
       rafId = requestAnimationFrame(draw)
     }
 
+    const resize = () => {
+      const vw = window.innerWidth
+      const vh = window.innerHeight
+      const rect = container.getBoundingClientRect()
+      const colWidth = container.offsetWidth || rect.width || vw * 0.58
+      const target = Math.min(colWidth * 0.96, vw * 0.44, vh * 0.78)
+      S = Math.round(Math.max(320, target))
+      dpr = window.devicePixelRatio || 1
+      canvas.width = S * dpr
+      canvas.height = S * dpr
+      canvas.style.width = S + "px"
+      canvas.style.height = S + "px"
+      container.style.minHeight = S + "px"
+      cx = S / 2
+      cy = S / 2
+      ctx.setTransform(1, 0, 0, 1, 0, 0)
+      ctx.scale(dpr, dpr)
+    }
+
+    resize()
+    const ro = new ResizeObserver(resize)
+    ro.observe(container)
+    window.addEventListener("resize", resize)
+
     draw()
-    return () => cancelAnimationFrame(rafId)
-  }, [isDark])
+    return () => {
+      cancelAnimationFrame(rafId)
+      ro.disconnect()
+      window.removeEventListener("resize", resize)
+    }
+  }, [])
 
   return (
     <div
-      className="hidden lg:flex items-center justify-end relative -mr-16"
-      style={{ opacity: 0, animation: "sphereSpawn 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.4s both" }}
+      ref={containerRef}
+      className="hidden lg:flex w-full relative items-center justify-center overflow-visible"
+      style={{ minHeight: "min(74vh, 720px)", opacity: 0, animation: "sphereSpawn 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.4s both" }}
     >
-      <canvas ref={canvasRef} className="relative z-10" />
+      <canvas ref={canvasRef} className="z-10 block" />
     </div>
   )
 }
@@ -189,7 +219,7 @@ export const HeroSection = () => {
   }, [displayed, isDeleting, roleIndex])
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden pl-8 pr-0 md:pl-16 md:pr-0">
+    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden px-6 py-28 sm:px-10 lg:px-16 xl:px-20">
 
       <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none bg-gradient-to-t from-transparent to-transparent" />
 
@@ -254,11 +284,11 @@ export const HeroSection = () => {
         </div>
       )}
 
-      <div className="relative z-10 w-full max-w-6xl ml-0 mr-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.4fr] gap-4 items-center">
+      <div className="relative z-10 w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] gap-10 lg:gap-12 xl:gap-16 items-center">
 
           {/* ── Left: content ── */}
-          <div className="flex flex-col items-start gap-7 text-left">
+          <div className="flex flex-col items-start gap-7 text-left max-w-[620px] justify-self-start">
 
             {/* Badge 
             <div style={{ animation: "fade-in 0.5s ease-out 0.1s both" }}>
