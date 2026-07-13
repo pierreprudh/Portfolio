@@ -11,7 +11,7 @@ import { ProjectsSection } from "../components/ProjectsSection";
 import { ContactSection } from "../components/ContactSection";
 import { Footer } from "../components/Footer";
 import { ScrollProgress } from "../components/ScrollProgress";
-import { ScrollReveal } from "../components/ScrollReveal";
+import { Reveal } from "../components/Reveal";
 import { SectionDivider } from "../components/SectionDivider";
 
 export const Home = () => {
@@ -40,18 +40,18 @@ export const Home = () => {
         <HeroSection />
         <SectionDivider />
         <AboutSection />
-        <ScrollReveal delay={0.05}>
+        <Reveal delay={0.05}>
           <ExperienceSection />
-        </ScrollReveal>
-        <ScrollReveal delay={0.05}>
+        </Reveal>
+        <Reveal delay={0.05}>
           <SkillsSection />
-        </ScrollReveal>
-        <ScrollReveal delay={0.05}>
+        </Reveal>
+        <Reveal delay={0.05}>
           <ProjectsSection />
-        </ScrollReveal>
-        <ScrollReveal delay={0.05}>
+        </Reveal>
+        <Reveal delay={0.05}>
           <ContactSection />
-        </ScrollReveal>
+        </Reveal>
         </main>
         <Footer />
     </div>

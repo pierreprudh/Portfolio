@@ -1,31 +1,6 @@
 import { Briefcase, MapPin } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
-
-const RevealBox = ({ children, delay = 0, className = "" }) => {
-  const ref = useRef(null)
-  const [visible, setVisible] = useState(false)
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true) },
-      { threshold: 0.08, rootMargin: "0px 0px -50px 0px" }
-    )
-    if (ref.current) observer.observe(ref.current)
-    return () => observer.disconnect()
-  }, [])
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "none" : "translateY(40px)",
-        transition: `opacity 0.75s ease ${delay}s, transform 0.8s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
-      }}
-    >
-      {children}
-    </div>
-  )
-}
+import { Reveal } from "./Reveal"
+import { SectionHeader } from "./SectionHeader"
 
 const experiences = [
   {
@@ -80,24 +55,15 @@ export const ExperienceSection = () => {
     <section id="experience" className="py-24 px-4 relative">
       <div className="container mx-auto max-w-5xl">
 
-        <RevealBox delay={0}>
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-10 bg-primary/40" />
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Career</span>
-            <div className="h-px w-10 bg-primary/40" />
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
-            Work <span className="text-primary">Experience</span>
-          </h2>
-        </RevealBox>
+        <SectionHeader kicker="Career" title="Work" accent="Experience" />
 
-        <div className="relative">
+        <div className="relative mt-16">
           {/* Vertical line */}
           <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-border/70 md:-translate-x-px" />
 
           <div className="flex flex-col gap-12">
             {experiences.map((exp, i) => (
-              <RevealBox key={exp.company + exp.period} delay={0.1 + i * 0.08}>
+              <Reveal key={exp.company + exp.period} delay={0.1 + i * 0.08}>
                 <div className={`relative flex flex-col md:flex-row gap-6 md:gap-0 ${i % 2 === 0 ? "" : "md:flex-row-reverse"}`}>
 
                   {/* Dot */}
@@ -117,7 +83,7 @@ export const ExperienceSection = () => {
 
                   {/* Card — padded on the line-facing side */}
                   <div className={`w-full md:w-1/2 pl-10 md:pl-0 ${i % 2 === 0 ? "md:pl-16" : "md:pr-16"}`}>
-                    <div className="group rounded-2xl border border-border/70 bg-card p-6 text-left hover:border-primary/30 transition-colors duration-300">
+                    <div className="group rounded-xl border border-border/70 bg-card p-6 text-left card-hover">
                       <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2 md:hidden">
                         <span className="font-mono">{exp.period}</span>
                       </div>
@@ -156,7 +122,7 @@ export const ExperienceSection = () => {
                   </div>
 
                 </div>
-              </RevealBox>
+              </Reveal>
             ))}
           </div>
         </div>

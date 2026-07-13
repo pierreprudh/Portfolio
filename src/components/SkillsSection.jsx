@@ -1,141 +1,111 @@
-import { useState, useEffect } from "react"
-import { cn } from "../lib/utils";
+import { Bot, Cpu, Layers, LineChart } from "lucide-react"
 import {
   SiPython, SiOpenai, SiOllama, SiHuggingface, SiN8N, SiTypescript, SiReact,
   SiExpress, SiPostgresql, SiRust, SiFastapi, SiDocker, SiGithubactions,
-  SiCloudflare, SiTailscale, SiJsonwebtokens, SiTensorflow, SiPytorch,
-  SiOpencv, SiPandas, SiMysql, SiR, SiApachehadoop, SiApachekafka,
-  SiApachespark, SiOpensearch, SiGithub, SiPlotly, SiLatex, SiAnthropic,
+  SiCloudflare, SiTailscale, SiTensorflow, SiPytorch, SiOpencv, SiPandas,
+  SiApachespark, SiApachekafka, SiAnthropic, SiLangchain,
 } from "react-icons/si"
-import { FaEye } from "react-icons/fa"
+import { Reveal } from "./Reveal"
+import { SectionHeader } from "./SectionHeader"
 
-const iconMap = {
-  SiPython, SiOpenai, SiOllama, SiHuggingface, SiN8N, SiTypescript, SiReact,
-  SiExpress, SiPostgresql, SiRust, SiFastapi, SiDocker, SiGithubactions,
-  SiCloudflare, SiTailscale, SiJsonwebtokens, SiTensorflow, SiPytorch,
-  SiOpencv, SiPandas, SiMysql, SiR, SiApachehadoop, SiApachekafka,
-  SiApachespark, SiOpensearch, SiGithub, SiPlotly, SiLatex, SiAnthropic,
-  FaEye,
-}
-
-const skills = [
-  // Agentic AI
-  {name: "LLM APIs (OpenAI, Mistral, Claude)", level: 85, category: "Agentic AI", icon: "SiOpenai" },
-  {name: "MCP", level: 85, category: "Agentic AI", icon: "SiPython"},
-  {name: "RAG", level: 80, category: "Agentic AI", icon: "SiPython"},
-  {name: "LangChain / LangGraph", level: 78, category: "Agentic AI", icon: "SiPython"},
-  {name: "Local inference (Ollama, MLX)", level: 85, category: "Agentic AI", icon: "SiOllama"},
-  {name: "Fine-tuning (LoRA)", level: 70, category: "Agentic AI", icon: "SiHuggingface"},
-  {name: "AutoGen", level: 70, category: "Agentic AI", icon: "FaEye"},
-  {name: "n8n", level: 75, category: "Agentic AI", icon: "SiN8N"},
-
-  // Engineering
-  {name : "TypeScript", level:75, category: "Engineering", icon: "SiTypescript"},
-  {name : "React", level:75, category: "Engineering", icon: "SiReact"},
-  {name : "Express / Node.js", level:72, category: "Engineering", icon: "SiExpress"},
-  {name : "PostgreSQL", level:70, category: "Engineering", icon: "SiPostgresql"},
-  {name : "Rust", level:55, category: "Engineering", icon: "SiRust"},
-  {name : "FastAPI", level:70, category: "Engineering", icon: "SiFastapi"},
-
-  // Infrastructure
-  {name : "Docker", level:80, category: "Infrastructure", icon: "SiDocker"},
-  {name : "CI/CD", level:72, category: "Infrastructure", icon: "SiGithubactions"},
-  {name : "Caddy / Cloudflare Tunnel", level:70, category: "Infrastructure", icon: "SiCloudflare"},
-  {name : "Tailscale / Networking", level:68, category: "Infrastructure", icon: "SiTailscale"},
-  {name : "Auth & Security (JWT)", level:72, category: "Infrastructure", icon: "SiJsonwebtokens"},
-
-  // Data Science
-  {name : "Python", level:92, category: "Data Science", icon: "SiPython"},
-  {name : "Machine Learning", level:82, category: "Data Science", icon: "SiTensorflow"},
-  {name : "Deep Learning", level:78, category: "Data Science", icon: "SiPytorch"},
-  {name : "Computer Vision", level:78, category: "Data Science", icon: "SiOpencv"},
-  {name : "Data Manipulation", level:82, category: "Data Science", icon: "SiPandas"},
-  {name : "SQL", level:75, category: "Data Science", icon: "SiMysql"},
-  {name : "OCR (Azure, Tesseract)", level: 70, category: "Data Science", icon: "FaEye"},
-  {name : "R", level:65, category: "Data Science", icon: "SiR"},
-
-  // Big Data
-  {name : "Hadoop", level:65, category: "Big Data", icon: "SiApachehadoop"},
-  {name : "Kafka", level:60, category: "Big Data", icon: "SiApachekafka"},
-  {name : "Spark", level:65, category: "Big Data", icon: "SiApachespark"},
-  {name : "OpenSearch", level: 60, category: "Big Data", icon: "SiOpensearch" },
-
-  // Tools
-  {name : "Git/Github", level:88, category: "Tools", icon: "SiGithub"},
-  {name : "Plotly / Streamlit", level:75, category: "Tools", icon: "SiPlotly"},
-  {name : "LaTeX", level:80, category: "Tools", icon: "SiLatex"},
-  {name : "Claude Code", level:85, category: "Tools", icon: "SiAnthropic"},
+const groups = [
+  {
+    icon: Bot,
+    title: "Agentic Systems",
+    proof: "Multi-agent pipelines shipped at Limpide and Ontraak — and in KLIDE, my own agent runtime.",
+    accent: "from-primary/20 to-primary/5",
+    chips: [
+      { name: "MCP", icon: SiAnthropic },
+      { name: "RAG", icon: SiLangchain },
+      { name: "LangChain / LangGraph", icon: SiLangchain },
+      { name: "AutoGen", icon: SiPython },
+      { name: "n8n", icon: SiN8N },
+      { name: "OpenAI / Mistral / Claude APIs", icon: SiOpenai },
+    ],
+  },
+  {
+    icon: Cpu,
+    title: "LLM Infrastructure",
+    proof: "On-device inference in production on Apple Silicon — tuned, secured, and self-hosted end-to-end.",
+    accent: "from-emerald-500/20 to-emerald-500/5",
+    chips: [
+      { name: "Ollama", icon: SiOllama },
+      { name: "MLX", icon: SiApachespark },
+      { name: "LoRA fine-tuning", icon: SiHuggingface },
+      { name: "KV-cache & context tuning", icon: SiOllama },
+      { name: "Hugging Face", icon: SiHuggingface },
+    ],
+  },
+  {
+    icon: Layers,
+    title: "Full-stack Engineering",
+    proof: "The Ontraak assistant stack: typed front to back, containerized, tunneled, and CI/CD-deployed.",
+    accent: "from-violet-500/20 to-violet-500/5",
+    chips: [
+      { name: "TypeScript", icon: SiTypescript },
+      { name: "React", icon: SiReact },
+      { name: "Express", icon: SiExpress },
+      { name: "PostgreSQL", icon: SiPostgresql },
+      { name: "FastAPI", icon: SiFastapi },
+      { name: "Rust", icon: SiRust },
+      { name: "Docker", icon: SiDocker },
+      { name: "CI/CD", icon: SiGithubactions },
+      { name: "Caddy / Cloudflare", icon: SiCloudflare },
+      { name: "Tailscale", icon: SiTailscale },
+    ],
+  },
+  {
+    icon: LineChart,
+    title: "Data & Machine Learning",
+    proof: "From predictive models at the Ministère de l'Éducation to computer vision in the energy market.",
+    accent: "from-sky-500/20 to-sky-500/5",
+    chips: [
+      { name: "Python", icon: SiPython },
+      { name: "PyTorch", icon: SiPytorch },
+      { name: "TensorFlow", icon: SiTensorflow },
+      { name: "Computer Vision", icon: SiOpencv },
+      { name: "Pandas / SQL", icon: SiPandas },
+      { name: "Spark / Kafka", icon: SiApachekafka },
+    ],
+  },
 ]
 
-const categories = ["all", "Agentic AI", "Engineering", "Infrastructure", "Data Science", "Big Data", "Tools"]
-
-export const SkillsSection =  () => {
-
-  const [activeCategory, setActiveCategory] = useState("all")
-  const [animatingCategory, setAnimatingCategory] = useState(activeCategory)
-  const filteredSkills = skills.filter((skill) => activeCategory === "all" || skill.category === activeCategory)
-
-  useEffect(() => {
-    setAnimatingCategory(null);
-    const timeout = setTimeout(() => {
-      setAnimatingCategory(activeCategory);
-    }, 300);
-    return () => clearTimeout(timeout);
-  }, [activeCategory]);
-
-  return <section id="skills" className="py-24 px-4 relative bg-secondary/30">
+export const SkillsSection = () => {
+  return (
+    <section id="skills" className="py-24 px-4 relative bg-secondary/30">
       <div className="container mx-auto max-w-5xl">
-        <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-          My <span className="text-primary">Skills </span>
-        </h2>
+        <SectionHeader
+          kicker="Capabilities"
+          title="What I"
+          accent="work with"
+          lead="Not a tool inventory — the four areas I operate in, each backed by things that run in production."
+        />
 
-        <div className="relative flex flex-wrap justify-center gap-4 mb-12">
-          {categories.map((category, key) => (
-            <button
-              key={key}
-              onClick={() => setActiveCategory(category)}
-              className={cn(
-                "relative px-5 py-2 rounded-full transition-all duration-700 ease-in-out capitalize",
-                activeCategory === category
-                  ? "bg-primary text-primary-foreground scale-105"
-                  : "text-foreground hover:bg-secondary"
-              )}
-            >
-              {category}
-            </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-14">
+          {groups.map(({ icon: Icon, title, proof, accent, chips }, i) => (
+            <Reveal key={title} delay={0.08 + i * 0.07}>
+              <div className="group h-full rounded-xl border border-border/70 bg-card p-6 text-left card-hover">
+                <div className={`inline-flex p-2.5 rounded-xl bg-gradient-to-br ${accent} border border-border/50 mb-4`}>
+                  <Icon className="h-5 w-5 text-primary" />
+                </div>
+                <h3 className="font-semibold text-lg text-card-foreground mb-1.5">{title}</h3>
+                <p className="text-sm text-muted-foreground leading-relaxed mb-5">{proof}</p>
+                <div className="flex flex-wrap gap-2">
+                  {chips.map(({ name, icon: ChipIcon }) => (
+                    <span
+                      key={name}
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-mono border border-border/70 bg-background/60 text-foreground/75"
+                    >
+                      <ChipIcon className="h-3 w-3 text-primary/80" />
+                      {name}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
           ))}
         </div>
-
-        <div
-          className={cn(
-            "grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6 transition-all duration-700 ease-in-out",
-            animatingCategory === activeCategory ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
-          )}
-        >
-          {filteredSkills.map((skill, key) =>
-          (
-            <div key={key} className="bg-card p-6 rounded-lg shadow-xs card-hover transition-opacity duration-700 ease-in-out opacity-100 hover:scale-105 hover:shadow-md transition-transform transition-shadow duration-500">
-              <div className="text-left mb-4 flex items-center">
-                {(() => {
-                  const IconComponent = iconMap[skill.icon] || FaEye
-                  return <IconComponent className="text-2xl mr-2" />
-                })()}
-                <h3 className="font-semibold text-lg">{skill.name}</h3>
-              </div>
-              <div className="w-full bg-secondary/50 h-2 rounded-full overflow-hidden">
-                <div
-                  className="bg-primary h-2 rounded-full origin-left transition-all duration-1000 ease-in-out"
-                  style={{width: skill.level + "%"}}
-                />
-              </div>
-              <div className="text-right mt-1 ">
-                <span className="text-sm text-muted-foreground">{skill.level}%</span>
-              </div>
-            </div>
-          )
-          )}
-        </div>
       </div>
-
-  </section>
+    </section>
+  )
 }

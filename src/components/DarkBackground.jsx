@@ -109,6 +109,7 @@ export const DarkBackground = ({ className = "" }) => {
       }} />
 
       {/* Particles — only below the hero (starts at 100vh) */}
+      {!window.matchMedia("(prefers-reduced-motion: reduce)").matches && (
       <div style={{
         position: "fixed",
         top: "100vh",
@@ -149,6 +150,7 @@ export const DarkBackground = ({ className = "" }) => {
           }}
         />
       </div>
+      )}
 
     </div>
   )

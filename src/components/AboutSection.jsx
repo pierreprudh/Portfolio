@@ -1,32 +1,6 @@
 import { Briefcase, Code, Sparkles, MapPin, ArrowRight } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
-
-const RevealBox = ({ children, direction = "up", delay = 0, className = "" }) => {
-  const ref = useRef(null)
-  const [visible, setVisible] = useState(false)
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true) },
-      { threshold: 0.08, rootMargin: "0px 0px -50px 0px" }
-    )
-    if (ref.current) observer.observe(ref.current)
-    return () => observer.disconnect()
-  }, [])
-  const hidden = { up: "translateY(40px)", left: "translateX(-48px)", right: "translateX(48px)" }[direction]
-  return (
-    <div
-      ref={ref}
-      className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "none" : hidden,
-        transition: `opacity 0.75s ease ${delay}s, transform 0.8s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
-      }}
-    >
-      {children}
-    </div>
-  )
-}
+import { Reveal } from "./Reveal"
+import { SectionHeader } from "./SectionHeader"
 
 const stats = [
   { value: "2025", label: "ENSIIE graduate" },
@@ -60,26 +34,16 @@ export const AboutSection = () => {
     <section id="about" className="py-28 px-4 relative overflow-hidden">
       <div className="container mx-auto max-w-5xl">
 
-        {/* Section label */}
-        <RevealBox direction="up" delay={0}>
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <div className="h-px w-10 bg-primary/40" />
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-primary">About me</span>
-            <div className="h-px w-10 bg-primary/40" />
-          </div>
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-16">
-            Who I <span className="text-primary">am</span>
-          </h2>
-        </RevealBox>
+        <SectionHeader kicker="About me" title="Who I" accent="am" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start mt-16">
 
           {/* Left — slides from left */}
-          <RevealBox direction="left" delay={0.1}>
+          <Reveal direction="left" delay={0.1}>
             <div className="flex flex-col gap-6 text-left">
 
               {/* Location badge */}
-              <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
+              <div className="inline-flex items-center gap-2 font-mono text-sm text-muted-foreground">
                 <MapPin size={14} className="text-primary" />
                 <span>Paris, France · Ontraak</span>
               </div>
@@ -115,13 +79,13 @@ export const AboutSection = () => {
                 </a>
               </div>
             </div>
-          </RevealBox>
+          </Reveal>
 
           {/* Right — slides from right, cards staggered */}
           <div className="flex flex-col gap-4">
             {cards.map(({ icon, title, desc, accent }, i) => (
-              <RevealBox key={title} direction="right" delay={0.15 + i * 0.1}>
-                <div className="group relative rounded-2xl border border-border/70 bg-card p-5 overflow-hidden hover:border-primary/30 transition-colors duration-300">
+              <Reveal key={title} direction="right" delay={0.15 + i * 0.1}>
+                <div className="group relative rounded-xl border border-border/70 bg-card p-5 overflow-hidden text-left card-hover">
                   {/* Gradient accent top */}
                   <div className={`absolute inset-x-0 top-0 h-px bg-gradient-to-r ${accent}`} />
                   <div className="flex items-start gap-4">
@@ -129,12 +93,12 @@ export const AboutSection = () => {
                       {icon}
                     </div>
                     <div>
-                      <h4 className="font-semibold text-foreground mb-1">{title}</h4>
+                      <h3 className="font-semibold text-card-foreground mb-1">{title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">{desc}</p>
                     </div>
                   </div>
                 </div>
-              </RevealBox>
+              </Reveal>
             ))}
           </div>
 

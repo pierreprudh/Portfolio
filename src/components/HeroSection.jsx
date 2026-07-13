@@ -4,6 +4,10 @@ import { SiGithub, SiLinkedin, SiLeetcode } from "react-icons/si"
 import Particles from "react-tsparticles"
 import { loadSlim } from "tsparticles-slim"
 
+const reducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia("(prefers-reduced-motion: reduce)").matches
+
 const roles = ["AI Engineer", "Agentic AI Builder", "LLM Systems Engineer", "Full-stack AI Developer"]
 
 const SplitWord = ({ word, baseDelay }) => (
@@ -133,6 +137,8 @@ const HeroVisual = ({ isDark }) => {
         ctx.fill()
       })
 
+      // Reduced motion: render a single static frame instead of animating
+      if (reducedMotion()) return
       angle += 0.0028
       rafId = requestAnimationFrame(draw)
     }
@@ -224,7 +230,7 @@ export const HeroSection = () => {
       <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none bg-gradient-to-t from-transparent to-transparent" />
 
       {/* Light-mode floating embers/leaves — left half only */}
-      {!isDark && (
+      {!isDark && !reducedMotion() && (
         <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: "50%", overflow: "hidden", zIndex: 1, pointerEvents: "none" }}>
           <Particles
             id="hero-day-particles-v2"
@@ -259,7 +265,7 @@ export const HeroSection = () => {
       )}
 
       {/* Dark-mode hero particles — left half only, so they don't overlay the sphere */}
-      {isDark && (
+      {isDark && !reducedMotion() && (
         <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: "50%", overflow: "hidden", zIndex: 1, pointerEvents: "none" }}>
           <Particles
             id="hero-particles"
