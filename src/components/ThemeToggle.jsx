@@ -1,63 +1,34 @@
 import { useEffect, useState } from "react"
 import { Moon, Sun } from "lucide-react"
-import { cn } from "../lib/utils";
 
+// Compact inline toggle, lives in the navbar.
 export const ThemeToggle = () => {
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(
+    () => typeof document !== "undefined" && document.documentElement.classList.contains("dark")
+  );
 
   useEffect(() => {
-  const storedTheme = localStorage.getItem("theme")
-  if (storedTheme === "dark"){
-    setIsDarkMode(true)
-    document.documentElement.classList.add("dark")
-  } else {
-    setIsDarkMode(false)
-    document.documentElement.classList.remove("dark")
-  }
+    const storedTheme = localStorage.getItem("theme")
+    const dark = storedTheme === "dark"
+    setIsDarkMode(dark)
+    document.documentElement.classList.toggle("dark", dark)
   }, [])
 
   const toggleTheme = () => {
-    if (isDarkMode) {
-      document.documentElement.classList.remove("dark")
-      localStorage.setItem("theme", "light")
-      setIsDarkMode(false)
-      document.dispatchEvent(new Event("themeChanged"));
-    } else {
-      document.documentElement.classList.add("dark")
-      localStorage.setItem("theme", "dark")
-      setIsDarkMode(true)
-      document.dispatchEvent(new Event("themeChanged"));
-    }
+    const next = !isDarkMode
+    document.documentElement.classList.toggle("dark", next)
+    localStorage.setItem("theme", next ? "dark" : "light")
+    setIsDarkMode(next)
   }
 
   return (
-    <button onClick={toggleTheme} aria-label="Toggle theme" className={cn(
-      "fixed bottom-4 right-4 z-50 p-2 rounded-full transition-all duration-300 transform hover:scale-110 hover:rotate-6",
-      "md:bottom-20 md:right-20 md:p-5",
-      "bg-white/10 dark:bg-gray-800/10 backdrop-blur-md shadow-md",
-      "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-    )}>
-
-      <div className="relative w-8 h-8 md:w-9 md:h-9 grid place-items-center">
-        <Moon
-          className={cn(
-            "absolute transition-all duration-500 transform flex items-center justify-center",
-            !isDarkMode
-              ? "opacity-100 scale-100 rotate-0"
-              : "opacity-0 scale-75 rotate-90",
-            "text-blue-900"
-          )}
-        />
-        <Sun
-          className={cn(
-            "absolute transition-all duration-500 transform flex items-center justify-center",
-            isDarkMode
-              ? "opacity-100 scale-100 rotate-0"
-              : "opacity-0 scale-75 rotate-90",
-            "text-yellow-300"
-          )}
-        />
-      </div>
+    <button
+      onClick={toggleTheme}
+      aria-label="Toggle theme"
+      className="p-2 rounded-full text-muted-foreground hover:text-primary hover:bg-foreground/5 transition-colors duration-200
+        focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+    >
+      {isDarkMode ? <Sun size={16} /> : <Moon size={16} />}
     </button>
   );
 };

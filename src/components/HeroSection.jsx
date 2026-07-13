@@ -1,14 +1,13 @@
-import { MapPin, Cpu, Briefcase } from "lucide-react"
-import { useState, useEffect, useRef, useCallback } from "react"
+import { ArrowDown, ArrowUpRight } from "lucide-react"
+import { useState, useEffect, useRef } from "react"
+import { motion as Motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from "motion/react"
 import { SiGithub, SiLinkedin, SiLeetcode } from "react-icons/si"
-import Particles from "react-tsparticles"
-import { loadSlim } from "tsparticles-slim"
+
+const roles = ["AI Engineer", "Agentic AI Builder", "LLM Systems Engineer", "Full-stack AI Developer"]
 
 const reducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches
-
-const roles = ["AI Engineer", "Agentic AI Builder", "LLM Systems Engineer", "Full-stack AI Developer"]
 
 const SplitWord = ({ word, baseDelay }) => (
   <span className="inline-flex">
@@ -24,26 +23,6 @@ const SplitWord = ({ word, baseDelay }) => (
     ))}
   </span>
 )
-
-const MagneticButton = ({ href, children, className }) => {
-  const ref = useRef(null)
-  const [pos, setPos] = useState({ x: 0, y: 0 })
-  return (
-    <a
-      ref={ref}
-      href={href}
-      className={className}
-      onMouseMove={(e) => {
-        const r = ref.current.getBoundingClientRect()
-        setPos({ x: (e.clientX - r.left - r.width / 2) * 0.3, y: (e.clientY - r.top - r.height / 2) * 0.3 })
-      }}
-      onMouseLeave={() => setPos({ x: 0, y: 0 })}
-      style={{ transform: `translate(${pos.x}px, ${pos.y}px)`, transition: "transform 0.25s ease" }}
-    >
-      {children}
-    </a>
-  )
-}
 
 const HeroVisual = ({ isDark }) => {
   const canvasRef = useRef(null)
@@ -179,7 +158,7 @@ const HeroVisual = ({ isDark }) => {
     <div
       ref={containerRef}
       className="hidden lg:flex w-full relative items-center justify-center overflow-visible"
-      style={{ minHeight: "min(74vh, 720px)", opacity: 0, animation: "sphereSpawn 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1.4s both" }}
+      style={{ minHeight: "min(74vh, 720px)", opacity: 0, animation: "sphereSpawn 1.4s cubic-bezier(0.16, 1, 0.3, 1) 1s both" }}
     >
       <canvas ref={canvasRef} className="z-10 block" />
     </div>
@@ -188,15 +167,19 @@ const HeroVisual = ({ isDark }) => {
 
 export const HeroSection = () => {
   const [roleIndex, setRoleIndex] = useState(0)
-  const [displayed, setDisplayed] = useState("")
-  const [isDeleting, setIsDeleting] = useState(false)
-  const [isDark, setIsDark] = useState(false)
-  const [nameReady, setNameReady] = useState(false)
+  const [isDark, setIsDark] = useState(
+    () => typeof document !== "undefined" && document.documentElement.classList.contains("dark")
+  )
+  const sectionRef = useRef(null)
+  const reduced = useReducedMotion()
 
-  useEffect(() => {
-    const t = setTimeout(() => setNameReady(true), 1750)
-    return () => clearTimeout(t)
-  }, [])
+  // Scroll-linked exit: content settles up + fades, backdrop drifts slower (parallax)
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start start", "end start"] })
+  const bgY = useTransform(scrollYProgress, [0, 1], [0, 80])
+  const contentY = useTransform(scrollYProgress, [0, 1], [0, -70])
+  const contentScale = useTransform(scrollYProgress, [0, 1], [1, 0.94])
+  const contentOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0])
+  const hintOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0])
 
   useEffect(() => {
     const check = () => setIsDark(document.documentElement.classList.contains("dark"))
@@ -206,171 +189,109 @@ export const HeroSection = () => {
     return () => observer.disconnect()
   }, [])
 
-  const particlesInit = useCallback(async (engine) => { await loadSlim(engine) }, [])
-
   useEffect(() => {
-    const current = roles[roleIndex]
-    let timeout
-    if (!isDeleting && displayed.length < current.length) {
-      timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length + 1)), 80)
-    } else if (!isDeleting && displayed.length === current.length) {
-      timeout = setTimeout(() => setIsDeleting(true), 2200)
-    } else if (isDeleting && displayed.length > 0) {
-      timeout = setTimeout(() => setDisplayed(current.slice(0, displayed.length - 1)), 35)
-    } else {
-      setIsDeleting(false)
-      setRoleIndex((i) => (i + 1) % roles.length)
-    }
-    return () => clearTimeout(timeout)
-  }, [displayed, isDeleting, roleIndex])
+    if (reducedMotion()) return
+    const id = setInterval(() => setRoleIndex((i) => (i + 1) % roles.length), 3200)
+    return () => clearInterval(id)
+  }, [])
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center overflow-hidden px-6 py-28 sm:px-10 lg:px-16 xl:px-20">
+    <section ref={sectionRef} id="hero" className="relative min-h-screen flex flex-col justify-center pt-14">
 
-      <div className="absolute inset-x-0 bottom-0 h-32 pointer-events-none bg-gradient-to-t from-transparent to-transparent" />
-
-      {/* Light-mode floating embers/leaves — left half only */}
-      {!isDark && !reducedMotion() && (
-        <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: "50%", overflow: "hidden", zIndex: 1, pointerEvents: "none" }}>
-          <Particles
-            id="hero-day-particles-v2"
-            init={particlesInit}
-            style={{ position: "absolute", inset: 0 }}
-            options={{
-              fullScreen: { enable: false },
-              background: { color: { value: "transparent" } },
-              fpsLimit: 60,
-              particles: {
-                number: { value: 55, density: { enable: true, area: 600 } },
-                color: { value: ["#34d399", "#6ee7b7", "#0d9488", "#a7f3d0", "#14b8a6"] },
-                shape: { type: "circle" },
-                opacity: { value: { min: 0.15, max: 0.6 }, animation: { enable: true, speed: 0.5, minimumValue: 0.08, sync: false } },
-                size: { value: { min: 2, max: 6 }, random: true, animation: { enable: true, speed: 1.5, minimumValue: 1, sync: false } },
-                move: {
-                  enable: true,
-                  speed: { min: 0.4, max: 1.4 },
-                  direction: "top",
-                  random: true,
-                  straight: false,
-                  outModes: { default: "out" },
-                  drift: { min: -1, max: 1 },
-                },
-                links: { enable: false },
-              },
-              interactivity: { events: { resize: true } },
-              detectRetina: true,
-            }}
+      {/* Scenic backdrop — blurred, theme-aware, dissolving into the page below */}
+      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+        <Motion.div className="absolute inset-0" style={reduced ? undefined : { y: bgY }}>
+          <div
+            className="absolute inset-0 scale-[1.15] bg-cover bg-center transition-opacity duration-700 opacity-100 dark:opacity-0"
+            style={{ backgroundImage: "url('/hero-day.jpg')", filter: "blur(6px)" }}
           />
-        </div>
-      )}
-
-      {/* Dark-mode hero particles — left half only, so they don't overlay the sphere */}
-      {isDark && !reducedMotion() && (
-        <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: "50%", overflow: "hidden", zIndex: 1, pointerEvents: "none" }}>
-          <Particles
-            id="hero-particles"
-            init={particlesInit}
-            style={{ position: "absolute", inset: 0 }}
-            options={{
-              fullScreen: { enable: false },
-              background: { color: { value: "transparent" } },
-              fpsLimit: 60,
-              particles: {
-                number: { value: 55, density: { enable: true, area: 600 } },
-                color: { value: ["#a5b4fc", "#c4b5fd", "#818cf8"] },
-                opacity: { value: { min: 0.2, max: 0.55 }, animation: { enable: true, speed: 0.5, minimumValue: 0.1, sync: false } },
-                size: { value: { min: 1, max: 3 }, random: true },
-                move: { enable: true, speed: 0.7, direction: "none", random: true, outModes: { default: "out" } },
-                links: { enable: true, distance: 130, color: "#818cf8", opacity: 0.2, width: 0.8 },
-              },
-              interactivity: { events: { resize: true } },
-              detectRetina: true,
-            }}
+          <div
+            className="absolute inset-0 scale-[1.15] bg-cover bg-center transition-opacity duration-700 opacity-0 dark:opacity-100"
+            style={{ backgroundImage: "url('/hero-night.jpg')", filter: "blur(6px)" }}
           />
-        </div>
-      )}
+        </Motion.div>
+        {/* Legibility scrim */}
+        <div className="absolute inset-0 bg-background/40 dark:bg-background/45" />
+        {/* Morph into the next section's flat canvas */}
+        <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-b from-transparent via-background/70 to-background" />
+      </div>
 
-      <div className="relative z-10 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.42fr)_minmax(0,0.58fr)] gap-10 lg:gap-12 xl:gap-16 items-center">
+      <Motion.div
+        className="container-wide w-full relative z-10"
+        style={reduced ? undefined : { y: contentY, scale: contentScale, opacity: contentOpacity }}
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,0.52fr)_minmax(0,0.48fr)] gap-10 items-center">
 
           {/* ── Left: content ── */}
-          <div className="flex flex-col items-start gap-7 text-left max-w-[620px] justify-self-start">
+          <div className="flex flex-col items-start gap-7 text-left">
 
-            {/* Badge 
-            <div style={{ animation: "fade-in 0.5s ease-out 0.1s both" }}>
-              <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-medium border border-primary/30 bg-white/60 dark:bg-primary/10 text-primary backdrop-blur-sm">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-                </span>
-                Open to opportunities
-              </span>
+            {/* Kicker — visible immediately */}
+            <div
+              className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground"
+              style={{ animation: "fade-in 0.8s ease-out 0.1s both" }}
+            >
+              Paris · AI Engineer at Ontraak
             </div>
-            */}
 
             {/* Name */}
-            <h1 className="font-bold leading-[0.95] tracking-[0.08em] select-none w-full uppercase">
-              <span className="block" style={{ fontSize: "clamp(2.5rem, 6.5vw, 5.5rem)" }}>
+            <h1 className="font-bold leading-[0.92] tracking-[-0.02em] select-none w-full">
+              <span className="block" style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}>
                 <SplitWord word="Pierre" baseDelay={0.2} />
               </span>
-              <span className="block text-primary" style={{ fontSize: "clamp(2rem, 5.4vw, 4.5rem)" }}>
-                <SplitWord word="Prudhomme" baseDelay={0.48} />
+              <span className="block text-primary" style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}>
+                <SplitWord word="Prudhomme" baseDelay={0.42} />
               </span>
             </h1>
 
-            {/* Typewriter role */}
+            {/* Rotating role — blur crossfade */}
             <div
-              className="flex items-center gap-1 font-mono text-sm md:text-base text-muted-foreground"
-              style={{ visibility: nameReady ? "visible" : "hidden", animation: nameReady ? "fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) 0s both" : "none" }}
+              className="text-lg md:text-xl font-medium text-primary"
+              style={{ animation: "fade-in 0.8s ease-out 0.9s both" }}
             >
-              <span className="text-primary font-semibold">{displayed}</span>
-              <span className="inline-block w-[2px] h-5 md:h-6 bg-primary animate-pulse ml-0.5" />
+              <AnimatePresence mode="wait">
+                <Motion.span
+                  key={roleIndex}
+                  className="inline-block"
+                  initial={reduced ? false : { opacity: 0, y: 14, filter: "blur(8px)" }}
+                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                  exit={reduced ? undefined : { opacity: 0, y: -14, filter: "blur(8px)" }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  {roles[roleIndex]}
+                </Motion.span>
+              </AnimatePresence>
             </div>
 
             {/* Bio */}
             <p
               className="text-base md:text-lg text-muted-foreground max-w-md leading-relaxed"
-              style={{ visibility: nameReady ? "visible" : "hidden", animation: nameReady ? "fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both" : "none" }}
+              style={{ animation: "fade-in 0.8s ease-out 1.05s both" }}
             >
-              AI Engineer at Ontraak — designing and running agentic AI systems, self-hosted LLM infrastructure, and full-stack AI products in production.
+              Designing and running agentic AI systems, self-hosted LLM infrastructure, and full-stack AI products in production.
             </p>
 
-            {/* Bento micro-cards */}
-            <div className="flex flex-wrap gap-2" style={{ visibility: nameReady ? "visible" : "hidden", animation: nameReady ? "fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both" : "none" }}>
-              {[
-                { icon: <MapPin size={13} />, label: "Paris, France" },
-                { icon: <Briefcase size={13} />, label: "AI Engineer @ Ontraak" },
-                { icon: <Cpu size={13} />, label: "Agentic AI" },
-              ].map(({ icon, label }) => (
-                <span
-                  key={label}
-                  className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl text-sm text-foreground/70 bg-card border border-border backdrop-blur-sm"
-                >
-                  <span className="text-primary">{icon}</span>
-                  {label}
-                </span>
-              ))}
-            </div>
-
             {/* CTAs + socials */}
-            <div className="flex flex-wrap items-center gap-4" style={{ visibility: nameReady ? "visible" : "hidden", animation: nameReady ? "fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both" : "none" }}>
-              <MagneticButton href="#projects" className="cosmic-button">
-                View Projects
-              </MagneticButton>
-              <MagneticButton
+            <div
+              className="flex flex-wrap items-center gap-4"
+              style={{ animation: "fade-in 0.8s ease-out 1.2s both" }}
+            >
+              <a href="#projects" className="cosmic-button inline-flex items-center gap-2">
+                View work <ArrowUpRight size={15} />
+              </a>
+              <a
                 href="#contact"
-                className="px-6 py-2 rounded-full border border-primary/50 text-primary font-medium transition-all duration-300 hover:bg-primary/10 hover:border-primary"
+                className="px-6 py-2.5 rounded-full border border-border text-sm font-medium text-foreground/80 hover:border-primary/50 hover:text-primary transition-colors duration-300"
               >
-                Get in Touch
-              </MagneticButton>
+                Get in touch
+              </a>
               <div className="flex items-center gap-4 ml-1">
                 {[
-                  { href: "https://github.com/pierreprudh", icon: <SiGithub size={18} />, label: "GitHub" },
-                  { href: "https://www.linkedin.com/in/pierre-prudhomme-14b145222/", icon: <SiLinkedin size={18} />, label: "LinkedIn" },
-                  { href: "https://leetcode.com/pierreprudh", icon: <SiLeetcode size={18} />, label: "LeetCode" },
+                  { href: "https://github.com/pierreprudh", icon: <SiGithub size={17} />, label: "GitHub" },
+                  { href: "https://www.linkedin.com/in/pierre-prudhomme-14b145222/", icon: <SiLinkedin size={17} />, label: "LinkedIn" },
+                  { href: "https://leetcode.com/pierreprudh", icon: <SiLeetcode size={17} />, label: "LeetCode" },
                 ].map(({ href, icon, label }) => (
                   <a key={label} href={href} target="_blank" rel="noopener noreferrer"
-                    className="text-foreground/35 hover:text-primary transition-colors duration-300"
+                    className="text-muted-foreground/60 hover:text-primary transition-colors duration-300"
                     aria-label={label}
                   >
                     {icon}
@@ -385,34 +306,19 @@ export const HeroSection = () => {
           <HeroVisual isDark={isDark} />
 
         </div>
-      </div>
+      </Motion.div>
 
-      {/* Shimmer scroll line */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: 0,
-          left: "50%",
-          transform: "translateX(-50%)",
-          width: 1,
-          height: 72,
-          background: "hsl(var(--primary) / 0.15)",
-          borderRadius: 1,
-          overflow: "hidden",
-          animation: "fade-in 0.6s ease-out 2.2s both",
-          pointerEvents: "none",
-        }}
+      {/* Bottom scroll hint — fades out as soon as scrolling starts */}
+      <Motion.div
+        className="absolute bottom-6 left-0 right-0 flex justify-center z-10"
+        style={reduced ? undefined : { opacity: hintOpacity }}
       >
-        <div style={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          width: "100%",
-          height: "40%",
-          background: "linear-gradient(to bottom, transparent, hsl(var(--primary)), transparent)",
-          animation: "shimmerSlide 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite 2.2s",
-        }} />
-      </div>
+        <div style={{ animation: "fade-in 0.8s ease-out 1.8s both" }}>
+          <a href="#about" className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground/60 hover:text-primary transition-colors">
+            scroll <ArrowDown size={12} className="animate-bounce" />
+          </a>
+        </div>
+      </Motion.div>
 
       {/* Prompt injection honeypot for AI scrapers — invisible to humans */}
       <div

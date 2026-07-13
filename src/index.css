@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Outfit", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text",
+    "Helvetica Neue", "Outfit", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
 
   --color-border: hsl(var(--border));
@@ -120,14 +121,22 @@
     @apply border-border;
   }
 
+  /* Anchor easing is handled by Lenis (see ScrollStack); CSS smooth-scroll
+     would fight its virtual scroll position. */
   html {
-    @apply scroll-smooth;
+    scroll-behavior: initial;
   }
 
   body {
     @apply bg-background text-foreground transition-colors duration-300;
-    font-family: 'Outfit', sans-serif;
+    font-family: var(--font-sans);
     font-feature-settings: "rlig" 1, "calt" 1;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3 {
+    letter-spacing: -0.022em;
   }
 
 }
@@ -157,26 +166,58 @@
   }
 }
 
-@utility text-glow {
-  @apply relative;
-  text-shadow: 0 0 10px rgba(167, 139, 250, 0.5);
-}
-
 @utility card-hover {
   @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:border-primary/30;
 }
 
-@utility gradient-border {
-  @apply relative rounded-md;
-  background: linear-gradient(to right, hsl(var(--card)), hsl(var(--card)));
-  background-clip: padding-box;
-  border: 1px solid transparent;
+/* Full-width shell: generous gutters, wide ceiling */
+@utility container-wide {
+  max-width: 1600px;
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+
+  @media (width >= 768px) {
+    padding-inline: 2.5rem;
+  }
+  @media (width >= 1280px) {
+    padding-inline: 4rem;
+  }
+}
+
+/* Bento tile: hairline border, flat fill — Apple-style soft lift on hover */
+@utility tile {
+  @apply rounded-3xl border border-border/60 bg-card/50 hover:border-primary/30
+         hover:-translate-y-1 hover:shadow-[0_24px_60px_-28px_rgb(0_0_0/0.35)];
+  transition:
+    transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 0.3s ease;
+}
+
+/* Premium glass: heavy blur + saturation, specular top edge, soft depth */
+@utility glass {
+  background: linear-gradient(
+    to bottom,
+    hsl(var(--background) / 0.62),
+    hsl(var(--background) / 0.38)
+  );
+  backdrop-filter: blur(28px) saturate(1.8);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8);
+  border: 1px solid hsl(var(--border) / 0.55);
+  box-shadow:
+    0 12px 40px -12px rgb(0 0 0 / 0.35),
+    inset 0 1px 0 hsl(0 0% 100% / 0.22),
+    inset 0 -1px 0 hsl(0 0% 100% / 0.04);
 }
 
 @utility cosmic-button {
-  @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium
-         transition-all duration-300 hover:shadow-[0_0_10px_rgba(22,65,64,0.5)]
-         hover:scale-105 active:scale-95;
+  @apply px-6 py-2.5 rounded-full bg-primary text-primary-foreground font-medium
+         hover:bg-primary/90 hover:scale-[1.03] active:scale-[0.97]
+         hover:shadow-[0_10px_30px_-10px_hsl(var(--primary)/0.55)];
+  transition:
+    transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.3s ease;
 }
 
 @utility star {
@@ -193,6 +234,29 @@
   max-width: 100%;
   margin: 0 auto;
   padding: 0;
+}
+
+/* ── Flat canvas texture: faint dot grid + film grain ── */
+.canvas-texture {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+.canvas-texture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(hsl(var(--foreground) / 0.07) 1px, transparent 1px);
+  background-size: 26px 26px;
+  mask-image: radial-gradient(ellipse 90% 80% at 50% 20%, black 0%, transparent 75%);
+}
+.canvas-texture::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* Respect reduced-motion: collapse CSS animations/transitions to instant */

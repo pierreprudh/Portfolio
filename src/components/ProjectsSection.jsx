@@ -1,76 +1,50 @@
-import { SiGithub, SiLeetcode } from "react-icons/si"
+import { SiGithub } from "react-icons/si"
 import { ArrowUpRight } from "lucide-react"
 import { useEffect, useRef } from "react"
 import { Reveal } from "./Reveal"
 import { SectionHeader } from "./SectionHeader"
 
-const flagships = [
-  {
-    id: "klide",
-    title: "KLIDE — AI-native IDE",
-    description: "Local-first AI-native IDE pairing a VS Code–style shell (Monaco editor, diff review) with a custom Rust agent loop, embedded terminals running delegate CLI agents, and a 16-tool schema with approval-gated execution. A cross-agent orchestration layer (Sessions MCP) drives sibling sessions and parallel git worktrees, and a LoRA fine-tuned on-device model handles local tool calling reliably.",
-    image: "projects/Project - KLIDE.jpg",
-    video: "projects/klide-demo.mp4",
-    tags: ["Rust", "TypeScript", "React", "MCP", "LoRA"],
-    githubUrl: "https://github.com/pierreprudh/KLIDE",
-  },
-  {
-    id: "ai-stack",
-    title: "Self-hosted private AI stack",
-    description: "Docker-orchestrated AI platform for a small team — chat UI, Ollama LLM runtime, code-execution sandbox, web search, and automation, all on a private network with zero data leaving it. The system I architect and operate in production at Ontraak.",
-    image: "projects/AI stack.jpg",
-    tags: ["TypeScript", "React", "Express", "PostgreSQL", "Ollama", "Docker"],
-  },
-  {
-    id: "sav-agent",
-    title: "Process-aware customer-service AI agent",
-    description: "Agentic after-sales-support pipeline built on LangGraph — identifies the customer, auto-creates a ticket, runs a structured diagnostic dialogue, and routes each case to the right resolution branch. Runs fully local on Ollama (or hybrid), with RAG over past execution traces, MCP tool servers, and an A/B benchmark harness proving memory-augmented agents beat blank-slate ones.",
-    image: "projects/ai-chabot.jpg",
-    tags: ["Python", "LangGraph", "Ollama", "ChromaDB", "RAG", "MCP"],
-  },
-]
-
 const archive = [
   {
     id: "doc-extraction",
     title: "Agentic document extraction",
-    description: "Multi-agent AutoGen pipeline with self-improving prompt optimization, applied to energy-market documents.",
-    tags: ["Python", "AutoGen", "OCR"],
+    description: "Self-improving AutoGen agents over energy-market documents",
+    tags: "python · autogen · ocr",
     githubUrl: "https://github.com/pierreprudh/Document-Information-Extraction",
   },
   {
     id: "strava",
     title: "Strava Dashboard",
-    description: "Interactive React + Python dashboard visualizing training data from the Strava API.",
-    tags: ["React", "Python", "API"],
+    description: "React + Python dashboard over the Strava API",
+    tags: "react · python · api",
     githubUrl: "https://github.com/pierreprudh/Strava-Dashboard",
   },
   {
     id: "mask-detection",
     title: "Masked Face Detection",
-    description: "Real-time mask classification with MobileNet and EfficientNet architectures.",
-    tags: ["Deep Learning", "Computer Vision"],
+    description: "Real-time mask classification, MobileNet / EfficientNet",
+    tags: "deep learning · cv",
     githubUrl: "https://github.com/WacimN/SF-mask-detection",
   },
   {
     id: "anfr",
     title: "French Mobile Network Analysis",
-    description: "Big-data pipeline over ANFR geospatial data with Hadoop, Kafka, Spark, and OpenSearch.",
-    tags: ["Hadoop", "Spark", "Kafka"],
+    description: "Big-data pipeline over ANFR geospatial data",
+    tags: "hadoop · spark · kafka",
     githubUrl: "https://github.com/pierreprudh/Antens_Map",
   },
   {
     id: "animal-faces",
     title: "Animal Face Recognition",
-    description: "CNN-based classification of animal faces with TensorFlow/Keras.",
-    tags: ["Keras", "Computer Vision"],
+    description: "CNN classification of animal faces",
+    tags: "keras · cv",
     githubUrl: "https://github.com/pierreprudh/Animal_face_recognition",
   },
   {
     id: "file-analysis",
     title: "File Analysis Tool",
-    description: "CSV/XLSX processing utility generating JSON summaries and PDF dashboard reports.",
-    tags: ["Python", "Pandas"],
+    description: "CSV/XLSX processing with JSON + PDF report generation",
+    tags: "python · pandas",
     githubUrl: "https://github.com/pierreprudh/File-Analysis",
   },
 ]
@@ -106,119 +80,143 @@ const ProjectVideo = ({ src, poster, title }) => {
   )
 }
 
-const Tag = ({ children }) => (
-  <span className="px-2.5 py-0.5 rounded-full text-[11px] font-mono border border-border/70 bg-primary/10 text-foreground/75">
-    {children}
-  </span>
+const MonoTags = ({ children }) => (
+  <div className="font-mono text-[11px] text-muted-foreground/70">{children}</div>
 )
 
 export const ProjectsSection = () => {
   return (
-    <section id="projects" className="py-24 px-4 relative">
-      <div className="container mx-auto max-w-5xl">
+    <section id="projects" className="py-24 md:py-32 border-t border-border/40 relative">
+      <div className="container-wide">
+
         <SectionHeader
-          kicker="Selected work"
-          title="Featured"
-          accent="Projects"
+          index="04"
+          label="Selected work"
+          title="Projects"
           lead="Three systems I'm proud of — and the earlier experiments that led here."
         />
 
-        {/* Flagships */}
-        <div className="flex flex-col gap-10 mt-14">
-          {flagships.map((project, i) => (
-            <Reveal key={project.id} delay={0.05}>
-              <article className="group grid grid-cols-1 lg:grid-cols-2 rounded-xl border border-border/70 bg-card overflow-hidden card-hover">
-                <div className={`relative h-56 lg:h-full min-h-56 overflow-hidden ${i % 2 === 1 ? "lg:order-2" : ""}`}>
-                  {project.video ? (
-                    <ProjectVideo src={project.video} poster={project.image} title={project.title} />
-                  ) : (
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      loading="lazy"
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  )}
-                </div>
-                <div className="p-7 lg:p-8 text-left flex flex-col gap-4">
-                  <div className="flex flex-wrap gap-2">
-                    {project.tags.map((tag) => <Tag key={tag}>{tag}</Tag>)}
-                  </div>
-                  <h3 className="text-xl md:text-2xl font-semibold tracking-tight text-card-foreground">
-                    {project.title}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-4">
+
+          {/* KLIDE — feature tile */}
+          <Reveal className="lg:col-span-8" delay={0.05}>
+            <div className="tile group h-full overflow-hidden flex flex-col text-left">
+              <div className="relative h-64 md:h-80 overflow-hidden border-b border-border/60">
+                <ProjectVideo src="projects/klide-demo.mp4" poster="projects/Project - KLIDE.jpg" title="KLIDE demo" />
+              </div>
+              <div className="p-7 md:p-8 flex flex-col gap-3 flex-1">
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-2xl md:text-3xl font-semibold tracking-tight text-card-foreground">
+                    KLIDE <span className="text-muted-foreground font-normal">—</span> <span className="text-primary">AI-native IDE</span>
                   </h3>
-                  <p className="text-sm md:text-[15px] text-muted-foreground leading-relaxed">
-                    {project.description}
-                  </p>
-                  {project.githubUrl && (
-                    <a
-                      href={project.githubUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="mt-auto inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline underline-offset-4 w-fit"
-                    >
-                      <SiGithub size={16} /> View source <ArrowUpRight size={14} />
-                    </a>
-                  )}
+                  <a
+                    href="https://github.com/pierreprudh/KLIDE"
+                    target="_blank" rel="noopener noreferrer"
+                    aria-label="KLIDE on GitHub"
+                    className="text-muted-foreground/60 hover:text-primary transition-colors shrink-0 mt-1.5"
+                  >
+                    <SiGithub size={19} />
+                  </a>
                 </div>
-              </article>
-            </Reveal>
-          ))}
+                <p className="text-sm md:text-[15px] text-muted-foreground leading-relaxed max-w-2xl">
+                  Local-first IDE pairing a VS Code–style shell with a custom Rust agent loop — embedded terminals running delegate CLI agents, a 16-tool schema with approval-gated execution, cross-agent orchestration over MCP, and a LoRA fine-tuned on-device model for reliable local tool calling.
+                </p>
+                <MonoTags>rust · typescript · react · mcp · lora</MonoTags>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* AI stack tile */}
+          <Reveal className="lg:col-span-4" delay={0.12}>
+            <div className="tile group h-full overflow-hidden flex flex-col text-left">
+              <div className="relative h-44 overflow-hidden border-b border-border/60">
+                <img
+                  src="projects/AI stack.jpg"
+                  alt="Self-hosted AI stack"
+                  loading="lazy"
+                  className="absolute inset-0 w-full h-full object-cover object-top"
+                />
+              </div>
+              <div className="p-7 flex flex-col gap-3 flex-1">
+                <h3 className="text-xl font-semibold tracking-tight text-card-foreground">
+                  Self-hosted private AI stack
+                </h3>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Docker-orchestrated AI platform — chat UI, Ollama runtime, code sandbox, web search, and automation on a private network. Running in production at Ontraak.
+                </p>
+                <div className="mt-auto pt-2">
+                  <MonoTags>typescript · express · postgresql · ollama</MonoTags>
+                </div>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* SAV agent tile */}
+          <Reveal className="lg:col-span-7" delay={0.08}>
+            <div className="tile group h-full p-7 md:p-8 text-left flex flex-col gap-3">
+              <h3 className="text-xl md:text-2xl font-semibold tracking-tight text-card-foreground">
+                Process-aware customer-service agent
+              </h3>
+              <p className="text-sm md:text-[15px] text-muted-foreground leading-relaxed max-w-2xl">
+                Agentic after-sales pipeline on LangGraph — identifies the customer, auto-creates a ticket, runs a structured diagnostic dialogue, and routes each case to the right resolution branch. Fully local on Ollama, with RAG over past execution traces, MCP tool servers, and an A/B harness proving memory-augmented agents beat blank-slate ones.
+              </p>
+              <div className="mt-auto pt-2">
+                <MonoTags>python · langgraph · ollama · chromadb · rag · mcp</MonoTags>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* GitHub CTA tile */}
+          <Reveal className="lg:col-span-5" delay={0.14}>
+            <a
+              href="https://github.com/pierreprudh"
+              target="_blank" rel="noopener noreferrer"
+              className="tile group h-full p-7 md:p-8 text-left flex flex-col justify-between gap-6 min-h-48"
+            >
+              <div className="flex items-center justify-between">
+                <SiGithub size={22} className="text-muted-foreground group-hover:text-primary transition-colors" />
+                <ArrowUpRight size={18} className="text-muted-foreground/50 group-hover:text-primary transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </div>
+              <div>
+                <div className="text-lg font-semibold text-card-foreground group-hover:text-primary transition-colors">
+                  More on GitHub
+                </div>
+                <div className="font-mono text-xs text-muted-foreground mt-1">
+                  github.com/pierreprudh
+                </div>
+              </div>
+            </a>
+          </Reveal>
         </div>
 
-        {/* Archive */}
+        {/* Archive index */}
         <Reveal delay={0.05}>
-          <div className="flex items-center gap-4 mt-16 mb-8">
-            <span className="font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground shrink-0">More projects</span>
-            <div className="h-px flex-1 bg-border/70" />
+          <div className="flex items-baseline gap-4 mt-16 mb-2">
+            <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">archive</span>
+            <div className="h-px flex-1 self-center bg-border/60" />
           </div>
         </Reveal>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div>
           {archive.map((project, i) => (
-            <Reveal key={project.id} delay={0.04 + (i % 3) * 0.05}>
+            <Reveal key={project.id} delay={0.03 + i * 0.03}>
               <a
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex flex-col h-full rounded-xl border border-border/70 bg-card p-5 text-left card-hover"
+                className="group grid grid-cols-[1fr_auto] md:grid-cols-[minmax(0,2fr)_minmax(0,2.4fr)_minmax(0,1.4fr)_auto] items-baseline gap-4 md:gap-8 py-4 border-b border-border/40 text-left transition-colors hover:bg-card/40 md:px-4 md:-mx-4 rounded-md"
               >
-                <div className="flex items-start justify-between gap-3 mb-2">
-                  <h3 className="font-semibold text-card-foreground leading-snug">{project.title}</h3>
-                  <ArrowUpRight size={16} className="shrink-0 text-muted-foreground/60 group-hover:text-primary transition-colors mt-0.5" />
-                </div>
-                <p className="text-sm text-muted-foreground leading-relaxed mb-4">{project.description}</p>
-                <div className="flex flex-wrap gap-1.5 mt-auto">
-                  {project.tags.map((tag) => (
-                    <span key={tag} className="text-[11px] font-mono text-muted-foreground/80">
-                      {tag}{project.tags.indexOf(tag) < project.tags.length - 1 ? " ·" : ""}
-                    </span>
-                  ))}
-                </div>
+                <span className="font-medium text-foreground/90 group-hover:text-primary transition-colors leading-snug">
+                  {project.title}
+                </span>
+                <span className="hidden md:block text-sm text-muted-foreground truncate">{project.description}</span>
+                <span className="hidden md:block font-mono text-[11px] text-muted-foreground/70">{project.tags}</span>
+                <ArrowUpRight size={15} className="text-muted-foreground/40 group-hover:text-primary transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 self-center" />
               </a>
             </Reveal>
           ))}
         </div>
 
-        {/* CTAs */}
-        <div className="text-center mt-14 flex justify-center items-center gap-6">
-          <a
-            href="https://github.com/pierreprudh"
-            className="cosmic-button w-fit flex items-center gap-2"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            More on GitHub <SiGithub size={18} />
-          </a>
-          <a
-            href="https://leetcode.com/pierreprudh"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary transition-colors"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <SiLeetcode size={16} /> LeetCode
-          </a>
-        </div>
       </div>
     </section>
   )

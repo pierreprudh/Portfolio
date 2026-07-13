@@ -1,18 +1,19 @@
 import { Reveal } from "./Reveal"
 
-// Unified section header: mono kicker between rules, then title with accent word.
-export const SectionHeader = ({ kicker, title, accent, lead }) => (
+// Editorial section header: mono index + label on a full-width hairline,
+// then an oversized left-aligned title.
+export const SectionHeader = ({ index, label, title, lead }) => (
   <Reveal>
-    <div className="flex items-center justify-center gap-3 mb-4">
-      <div className="h-px w-10 bg-primary/40" />
-      <span className="font-mono text-xs font-medium uppercase tracking-[0.25em] text-primary">{kicker}</span>
-      <div className="h-px w-10 bg-primary/40" />
+    <div className="flex items-baseline gap-4 mb-10 md:mb-14">
+      <span className="font-mono text-sm text-primary">{index}</span>
+      <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">{label}</span>
+      <div className="h-px flex-1 self-center bg-border/60" />
     </div>
-    <h2 className="text-3xl md:text-4xl font-bold text-center tracking-tight">
-      {title} <span className="text-primary">{accent}</span>
+    <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-left mb-4">
+      {title}
     </h2>
     {lead && (
-      <p className="text-center text-muted-foreground mt-4 mb-0 max-w-2xl mx-auto leading-relaxed">
+      <p className="text-left text-muted-foreground max-w-xl leading-relaxed mb-0">
         {lead}
       </p>
     )}

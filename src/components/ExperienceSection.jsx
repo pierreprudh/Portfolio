@@ -1,4 +1,3 @@
-import { Briefcase, MapPin } from "lucide-react"
 import { Reveal } from "./Reveal"
 import { SectionHeader } from "./SectionHeader"
 
@@ -6,127 +5,88 @@ const experiences = [
   {
     role: "AI Engineer",
     company: "Ontraak",
-    location: "Paris, France",
-    period: "Feb 2026 — Present",
+    location: "paris, fr",
+    period: "2026 —",
     current: true,
-    highlights: [
-      "Architected and operate a self-hosted, privacy-first AI assistant stack running fully on-premise on Apple Silicon — React/TypeScript UI, Express API, PostgreSQL, and local LLM inference via Ollama/MLX with Metal GPU offload.",
-      "Tuned on-device inference (KV-cache and context sizing, persistent model residency) and integrated private web search and n8n automation behind a Cloudflare Tunnel and Caddy reverse proxy.",
-      "Engineered security and reliability end-to-end: JWT auth with silent refresh and revocation, rate limiting, sandboxed code execution, Tailscale-gated admin with zero public ports, and automated backups with tested restore runbooks.",
-    ],
-    tags: ["TypeScript", "React", "Express", "PostgreSQL", "Ollama", "MLX", "Docker", "n8n", "CI/CD"],
+    summary: "Architect and operate a self-hosted, privacy-first AI assistant stack running fully on-premise on Apple Silicon — local LLM inference (Ollama/MLX, Metal offload), typed React/Express services, and security engineered end-to-end: JWT auth with revocation, sandboxed code execution, Tailscale-gated admin with zero public ports, CI/CD and tested backup runbooks.",
+    tags: ["typescript", "react", "express", "postgresql", "ollama", "mlx", "docker", "ci/cd"],
   },
   {
     role: "AI Engineer Intern",
     company: "Limpide",
-    location: "Prague, Czech Republic",
-    period: "May 2025 — Nov 2025",
-    highlights: [
-      "Designed a computer-vision document information extraction tool for the energy market, using fine-tuned AI models and self-improving agents with continuous prompt optimization.",
-      "Developed collaborative agents and deployed a multi-agent architecture integrating MCP and RAG.",
-    ],
-    tags: ["Python", "AutoGen", "LangChain", "n8n", "MCP", "RAG", "OCR", "Azure"],
+    location: "prague, cz",
+    period: "2025",
+    summary: "Computer-vision document information extraction for the energy market — fine-tuned models and self-improving agents with continuous prompt optimization; deployed a multi-agent architecture integrating MCP and RAG.",
+    tags: ["python", "autogen", "langchain", "mcp", "rag", "ocr", "azure"],
   },
   {
     role: "Data Scientist Intern",
     company: "Ministère de l'Éducation Nationale",
-    location: "Paris, France",
-    period: "May 2023 — Aug 2023",
-    highlights: [
-      "Implemented a predictive model for staff management based on student grades and academic trajectories.",
-      "Built a self-assessment tool for dataset analysis, processing and visualizing data from relational databases.",
-    ],
-    tags: ["Python", "Machine Learning", "SQL", "Data Visualization"],
+    location: "paris, fr",
+    period: "2023",
+    summary: "Predictive model for staff management based on student grades and academic trajectories; built a self-assessment tool for dataset analysis over relational databases.",
+    tags: ["python", "machine learning", "sql"],
   },
   {
     role: "Data Protection Officer Intern",
     company: "Confiance Digitale",
-    location: "Massy, France",
-    period: "May 2022 — Aug 2022",
-    highlights: [
-      "Set up and administered virtual machines via Active Directory, implemented patch management, and deployed anti-spam solutions across Microsoft domains.",
-    ],
-    tags: ["Active Directory", "Sysadmin", "Security"],
+    location: "massy, fr",
+    period: "2022",
+    summary: "Virtual machine administration via Active Directory, patch management, and anti-spam deployment across Microsoft domains.",
+    tags: ["active directory", "sysadmin", "security"],
   },
 ]
 
 export const ExperienceSection = () => {
   return (
-    <section id="experience" className="py-24 px-4 relative">
-      <div className="container mx-auto max-w-5xl">
+    <section id="experience" className="py-24 md:py-32 border-t border-border/40 relative">
+      <div className="container-wide">
 
-        <SectionHeader kicker="Career" title="Work" accent="Experience" />
+        <SectionHeader index="02" label="Career" title="Experience" />
 
-        <div className="relative mt-16">
-          {/* Vertical line */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-border/70 md:-translate-x-px" />
+        <div className="mt-4 border-t border-border/50">
+          {experiences.map((exp, i) => (
+            <Reveal key={exp.company + exp.period} delay={0.05 + i * 0.05}>
+              <article className="group grid grid-cols-1 md:grid-cols-[8rem_1fr_auto] gap-3 md:gap-8 py-8 md:py-10 border-b border-border/50 text-left transition-colors duration-300 hover:bg-card/40 md:px-4 md:-mx-4 rounded-lg">
 
-          <div className="flex flex-col gap-12">
-            {experiences.map((exp, i) => (
-              <Reveal key={exp.company + exp.period} delay={0.1 + i * 0.08}>
-                <div className={`relative flex flex-col md:flex-row gap-6 md:gap-0 ${i % 2 === 0 ? "" : "md:flex-row-reverse"}`}>
-
-                  {/* Dot */}
-                  <div className="absolute left-4 md:left-1/2 top-1.5 -translate-x-1/2 z-10">
-                    <span className="relative flex h-3.5 w-3.5">
-                      {exp.current && (
-                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-50" />
-                      )}
-                      <span className={`relative inline-flex rounded-full h-3.5 w-3.5 border-2 border-background ${exp.current ? "bg-primary" : "bg-muted-foreground/60"}`} />
+                {/* Period */}
+                <div className="font-mono text-sm text-muted-foreground pt-1 flex items-start gap-2">
+                  {exp.current && (
+                    <span className="relative flex h-2 w-2 mt-1.5 shrink-0">
+                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
+                      <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
                     </span>
-                  </div>
-
-                  {/* Period — opposite side on desktop, hugging the center line */}
-                  <div className={`hidden md:flex w-1/2 items-start ${i % 2 === 0 ? "justify-end pr-16" : "justify-start pl-16"}`}>
-                    <span className="text-sm font-mono text-muted-foreground pt-0.5">{exp.period}</span>
-                  </div>
-
-                  {/* Card — padded on the line-facing side */}
-                  <div className={`w-full md:w-1/2 pl-10 md:pl-0 ${i % 2 === 0 ? "md:pl-16" : "md:pr-16"}`}>
-                    <div className="group rounded-xl border border-border/70 bg-card p-6 text-left card-hover">
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground mb-2 md:hidden">
-                        <span className="font-mono">{exp.period}</span>
-                      </div>
-                      <div className="flex items-start justify-between gap-3 mb-1">
-                        <h3 className="font-semibold text-lg text-foreground">{exp.role}</h3>
-                        {exp.current && (
-                          <span className="shrink-0 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-primary/10 text-primary border border-primary/30">
-                            Current
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted-foreground mb-4">
-                        <span className="inline-flex items-center gap-1.5 text-primary font-medium">
-                          <Briefcase size={13} /> {exp.company}
-                        </span>
-                        <span className="inline-flex items-center gap-1.5">
-                          <MapPin size={13} /> {exp.location}
-                        </span>
-                      </div>
-                      <ul className="flex flex-col gap-2 mb-4">
-                        {exp.highlights.map((h, j) => (
-                          <li key={j} className="text-sm text-muted-foreground leading-relaxed pl-4 relative">
-                            <span className="absolute left-0 top-[0.55em] h-1 w-1 rounded-full bg-primary/60" />
-                            {h}
-                          </li>
-                        ))}
-                      </ul>
-                      <div className="flex flex-wrap gap-1.5">
-                        {exp.tags.map((tag) => (
-                          <span key={tag} className="px-2 py-0.5 text-[11px] font-medium rounded-full bg-primary/10 border border-border/60 text-secondary-foreground">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
+                  )}
+                  <span className={exp.current ? "text-primary" : ""}>{exp.period}</span>
                 </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
 
+                {/* Role + summary */}
+                <div className="max-w-3xl">
+                  <h3 className="text-xl md:text-2xl font-semibold tracking-tight text-foreground">
+                    {exp.role} <span className="text-muted-foreground font-normal">·</span>{" "}
+                    <span className={exp.current ? "text-primary" : "text-foreground/80"}>{exp.company}</span>
+                  </h3>
+                  <p className="text-sm md:text-[15px] text-muted-foreground leading-relaxed mt-3">
+                    {exp.summary}
+                  </p>
+                  <div className="flex flex-wrap gap-x-3 gap-y-1 mt-4">
+                    {exp.tags.map((tag) => (
+                      <span key={tag} className="font-mono text-[11px] text-muted-foreground/70">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Location */}
+                <div className="hidden md:block font-mono text-xs text-muted-foreground/70 pt-2">
+                  {exp.location}
+                </div>
+
+              </article>
+            </Reveal>
+          ))}
+        </div>
       </div>
     </section>
   )

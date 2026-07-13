@@ -1,42 +1,26 @@
-import { useEffect, useRef, useState } from "react"
+import { motion as Motion, useReducedMotion } from "motion/react"
 
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia("(prefers-reduced-motion: reduce)").matches
-
-// Single scroll-reveal primitive for the whole site — one easing, one distance.
+// Single scroll-reveal primitive for the whole site — Apple-style blur-up:
+// one easing, one distance, settles crisp.
 export const Reveal = ({ children, direction = "up", delay = 0, className = "" }) => {
-  const ref = useRef(null)
-  const [visible, setVisible] = useState(() => prefersReducedMotion())
+  const reduced = useReducedMotion()
 
-  useEffect(() => {
-    if (visible) return
-    const observer = new IntersectionObserver(
-      ([entry]) => { if (entry.isIntersecting) setVisible(true) },
-      { threshold: 0.08, rootMargin: "0px 0px -50px 0px" }
-    )
-    if (ref.current) observer.observe(ref.current)
-    return () => observer.disconnect()
-  }, [visible])
-
-  const hidden = {
-    up: "translateY(40px)",
-    down: "translateY(-40px)",
-    left: "translateX(-48px)",
-    right: "translateX(48px)",
-  }[direction] ?? "translateY(40px)"
+  const offset = {
+    up: { y: 36 },
+    down: { y: -36 },
+    left: { x: -44 },
+    right: { x: 44 },
+  }[direction] ?? { y: 36 }
 
   return (
-    <div
-      ref={ref}
+    <Motion.div
       className={className}
-      style={{
-        opacity: visible ? 1 : 0,
-        transform: visible ? "none" : hidden,
-        transition: `opacity 0.75s ease ${delay}s, transform 0.8s cubic-bezier(0.22,1,0.36,1) ${delay}s`,
-      }}
+      initial={reduced ? { opacity: 1 } : { opacity: 0, filter: "blur(12px)", ...offset }}
+      whileInView={{ opacity: 1, filter: "blur(0px)", x: 0, y: 0 }}
+      viewport={{ once: true, margin: "0px 0px -60px 0px" }}
+      transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
     >
       {children}
-    </div>
+    </Motion.div>
   )
 }
