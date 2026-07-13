@@ -3,10 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      try {
+        if (localStorage.getItem("theme") === "dark") document.documentElement.classList.add("dark");
+      } catch (e) {}
+    </script>
     <title>Pierre Prudhomme | AI Engineer & Data Projects</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#f6f9fc" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#060a13" />
     <meta
       name="description"
-      content="Portfolio of Pierre Prudhomme, showcasing AI engineering, agentic AI, data science, and product-minded technical projects."
+      content="Portfolio of Pierre Prudhomme, AI Engineer — agentic AI systems, self-hosted LLM infrastructure, and full-stack AI products in production."
     />
     <meta property="og:title" content="Pierre Prudhomme | AI Engineer & Data Projects" />
     <meta
@@ -14,7 +22,10 @@
       content="Explore projects in agentic AI, LLM workflows, analytics, and data-driven product development."
     />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://portfolio-pierreprudh.vercel.app" />
+    <meta property="og:image" content="https://portfolio-pierreprudh.vercel.app/og.png" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://portfolio-pierreprudh.vercel.app/og.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />

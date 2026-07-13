@@ -29,28 +29,28 @@ const RevealBox = ({ children, direction = "up", delay = 0, className = "" }) =>
 }
 
 const stats = [
-  { value: "3rd", label: "Year at ENSIIE" },
+  { value: "2025", label: "ENSIIE graduate" },
   { value: "10+", label: "Projects built" },
-  { value: "2", label: "Internships" },
+  { value: "4", label: "Roles across AI & data" },
 ]
 
 const cards = [
   {
     icon: <Code className="h-5 w-5 text-primary" />,
-    title: "Data Scientist & AI Engineer",
-    desc: "Building end-to-end ML pipelines, LLM systems and agentic workflows that turn data into decisions.",
+    title: "AI Engineer",
+    desc: "Designing and operating production AI systems — agentic workflows, LLM inference infrastructure, and full-stack AI products.",
     accent: "from-primary/20 to-primary/5",
   },
   {
     icon: <Sparkles className="h-5 w-5 text-emerald-500" />,
-    title: "Curious & Self-driven",
-    desc: "Constantly exploring new techniques — from RAG architectures to reinforcement learning and beyond.",
+    title: "Local-first & Privacy-minded",
+    desc: "Specialized in self-hosted AI: on-device inference, fine-tuned open-source models, and secure infrastructure with zero data leaving the network.",
     accent: "from-emerald-500/20 to-emerald-500/5",
   },
   {
     icon: <Briefcase className="h-5 w-5 text-violet-500" />,
-    title: "Open to Opportunities",
-    desc: "Looking for a first full-time role in data science or AI engineering — internship or graduate position.",
+    title: "End-to-end Ownership",
+    desc: "From architecture to CI/CD, auth, and backup runbooks — I ship systems that hold up in production, not just demos.",
     accent: "from-violet-500/20 to-violet-500/5",
   },
 ]
@@ -81,14 +81,14 @@ export const AboutSection = () => {
               {/* Location badge */}
               <div className="inline-flex items-center gap-2 text-sm text-muted-foreground">
                 <MapPin size={14} className="text-primary" />
-                <span>Paris, France · ENSIIE</span>
+                <span>Paris, France · Ontraak</span>
               </div>
 
               <p className="text-foreground/80 leading-relaxed text-base md:text-lg">
-                I'm a data science student at <span className="text-primary font-medium">ENSIIE</span>, passionate about building agentic AI systems, LLM pipelines, and data-driven products that actually ship.
+                I'm an AI Engineer at <span className="text-primary font-medium">Ontraak</span>, where I architect and operate a self-hosted, privacy-first AI assistant stack — from local LLM inference to security, CI/CD, and everything in between.
               </p>
               <p className="text-muted-foreground leading-relaxed">
-                I've gained hands-on experience through internships and personal projects — from predictive modeling and data visualization to building full agentic workflows with LangChain and LangGraph.
+                ENSIIE graduate (2025) with experience across agentic AI, computer vision, and data science — from multi-agent document extraction in the energy market to building KLIDE, my own AI-native IDE with a custom Rust agent loop.
               </p>
 
               {/* Stats */}

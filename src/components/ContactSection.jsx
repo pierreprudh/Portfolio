@@ -6,7 +6,7 @@ export const ContactSection = () => {
   return <section id="contact" className="py-4  px-4 relative bg-secondary/30">
   <div className="container mx-auto max-w-5xl">
       <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
-        Get in <span className="text-primary"> Touch </span>
+        Get in <span className="text-primary">Touch</span>
       </h2>
 
       <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
@@ -54,7 +54,7 @@ export const ContactSection = () => {
           </div>
           <div>
             <h4 className="font-medium">LinkedIn</h4>
-            <a href="https://www.linkedin.com/in/pierre-prudhomme-14b145222/" target="_blank" className="text-muted-foreground hover:text-primary transition-colors">
+            <a href="https://www.linkedin.com/in/pierre-prudhomme-14b145222/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-colors">
               pierre-prudhomme
             </a>
           </div>

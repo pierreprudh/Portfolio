@@ -10,6 +10,9 @@ const navItems = [
     name: "About", href: "#about", id: "about"
   },
   {
+    name: "Experience", href: "#experience", id: "experience"
+  },
+  {
     name: "Skills", href: "#skills", id: "skills"
   },
   {
@@ -146,7 +149,7 @@ export const Navbar = () => {
           id="mobile-navigation"
           className={cn(
             "overflow-hidden transition-all duration-300",
-            isAccordionOpen ? "max-h-72 opacity-100 pb-2" : "max-h-0 opacity-0"
+            isAccordionOpen ? "max-h-96 opacity-100 pb-2" : "max-h-0 opacity-0"
           )}
         >
           <div className="flex flex-col gap-1 px-2 pb-2">

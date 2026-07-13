@@ -1,53 +1,73 @@
 import { useState, useEffect } from "react"
 import { cn } from "../lib/utils";
-import * as SiIcons from "react-icons/si"
-import { VscVscode } from "react-icons/vsc"
+import {
+  SiPython, SiOpenai, SiOllama, SiHuggingface, SiN8N, SiTypescript, SiReact,
+  SiExpress, SiPostgresql, SiRust, SiFastapi, SiDocker, SiGithubactions,
+  SiCloudflare, SiTailscale, SiJsonwebtokens, SiTensorflow, SiPytorch,
+  SiOpencv, SiPandas, SiMysql, SiR, SiApachehadoop, SiApachekafka,
+  SiApachespark, SiOpensearch, SiGithub, SiPlotly, SiLatex, SiAnthropic,
+} from "react-icons/si"
 import { FaEye } from "react-icons/fa"
 
-const skills = [
-  // Data Science
-  {name : "Python", level:90, category: "Data Science", icon: "SiPython"},
-  {name : "R", level:70, category: "Data Science", icon: "SiR"},
-  {name : "Machine Learning", level:80, category: "Data Science", icon: "SiTensorflow"},
-  {name : "Deep Learning", level:75, category: "Data Science", icon: "SiPytorch"},
-  {name : "Statistical Analysis", level:70, category: "Data Science", icon: "SiChartdotjs"},
-  {name : "Data Manipulation", level:80, category: "Data Science", icon: "SiPandas"},
-  {name : "Computer Vision", level:75, category: "Data Science", icon: "SiOpencv"},
-  {name : "Azure OCR", level: 65, category: "Data Science", icon: "FaEye"},
-  {name : "PyTesseract", level: 70, category: "Data Science", icon: "SiPython"},
-  {name : "SQL", level:75, category: "Data Science", icon: "SiMysql"},
-  {name : "Clustering", level: 70, category: "Data Science", icon: "SiKeras" },
+const iconMap = {
+  SiPython, SiOpenai, SiOllama, SiHuggingface, SiN8N, SiTypescript, SiReact,
+  SiExpress, SiPostgresql, SiRust, SiFastapi, SiDocker, SiGithubactions,
+  SiCloudflare, SiTailscale, SiJsonwebtokens, SiTensorflow, SiPytorch,
+  SiOpencv, SiPandas, SiMysql, SiR, SiApachehadoop, SiApachekafka,
+  SiApachespark, SiOpensearch, SiGithub, SiPlotly, SiLatex, SiAnthropic,
+  FaEye,
+}
 
-  // Data Visualization
-  {name : "Plotly", level:75, category: "Visualization", icon: "SiPlotly"},
-  {name : "Streamlit", level:75, category: "Visualization", icon: "SiStreamlit"},
+const skills = [
+  // Agentic AI
+  {name: "LLM APIs (OpenAI, Mistral, Claude)", level: 85, category: "Agentic AI", icon: "SiOpenai" },
+  {name: "MCP", level: 85, category: "Agentic AI", icon: "SiPython"},
+  {name: "RAG", level: 80, category: "Agentic AI", icon: "SiPython"},
+  {name: "LangChain / LangGraph", level: 78, category: "Agentic AI", icon: "SiPython"},
+  {name: "Local inference (Ollama, MLX)", level: 85, category: "Agentic AI", icon: "SiOllama"},
+  {name: "Fine-tuning (LoRA)", level: 70, category: "Agentic AI", icon: "SiHuggingface"},
+  {name: "AutoGen", level: 70, category: "Agentic AI", icon: "FaEye"},
+  {name: "n8n", level: 75, category: "Agentic AI", icon: "SiN8N"},
+
+  // Engineering
+  {name : "TypeScript", level:75, category: "Engineering", icon: "SiTypescript"},
+  {name : "React", level:75, category: "Engineering", icon: "SiReact"},
+  {name : "Express / Node.js", level:72, category: "Engineering", icon: "SiExpress"},
+  {name : "PostgreSQL", level:70, category: "Engineering", icon: "SiPostgresql"},
+  {name : "Rust", level:55, category: "Engineering", icon: "SiRust"},
+  {name : "FastAPI", level:70, category: "Engineering", icon: "SiFastapi"},
+
+  // Infrastructure
+  {name : "Docker", level:80, category: "Infrastructure", icon: "SiDocker"},
+  {name : "CI/CD", level:72, category: "Infrastructure", icon: "SiGithubactions"},
+  {name : "Caddy / Cloudflare Tunnel", level:70, category: "Infrastructure", icon: "SiCloudflare"},
+  {name : "Tailscale / Networking", level:68, category: "Infrastructure", icon: "SiTailscale"},
+  {name : "Auth & Security (JWT)", level:72, category: "Infrastructure", icon: "SiJsonwebtokens"},
+
+  // Data Science
+  {name : "Python", level:92, category: "Data Science", icon: "SiPython"},
+  {name : "Machine Learning", level:82, category: "Data Science", icon: "SiTensorflow"},
+  {name : "Deep Learning", level:78, category: "Data Science", icon: "SiPytorch"},
+  {name : "Computer Vision", level:78, category: "Data Science", icon: "SiOpencv"},
+  {name : "Data Manipulation", level:82, category: "Data Science", icon: "SiPandas"},
+  {name : "SQL", level:75, category: "Data Science", icon: "SiMysql"},
+  {name : "OCR (Azure, Tesseract)", level: 70, category: "Data Science", icon: "FaEye"},
+  {name : "R", level:65, category: "Data Science", icon: "SiR"},
 
   // Big Data
   {name : "Hadoop", level:65, category: "Big Data", icon: "SiApachehadoop"},
   {name : "Kafka", level:60, category: "Big Data", icon: "SiApachekafka"},
   {name : "Spark", level:65, category: "Big Data", icon: "SiApachespark"},
-  { name: "Dataiku", level: 50, category: "Data Science", icon: "SiDataiku" },
-  { name: "OpenSearch", level: 60, category: "Data Science", icon: "SiOpensearch" },
-
-  // Agentic AI
-  {name: "LLM APIs (OpenAI, Mistral)", level: 70, category: "Agentic AI", icon: "SiOpenai" },
-  {name: "LangChain", level: 70, category: "Agentic AI", icon: "SiPython"},
-  {name: "LangGraph", level: 65, category: "Agentic AI", icon: "SiPython"},
-  {name: "AutoGen", level: 68, category: "Agentic AI", icon: "FaEye"},
-  {name: "n8n", level: 70, category: "Agentic AI", icon: "SiN8N"},
-  {name: "Hugging Face", level: 65, category: "Agentic AI", icon: "SiHuggingface" },
+  {name : "OpenSearch", level: 60, category: "Big Data", icon: "SiOpensearch" },
 
   // Tools
-  {name : "Git/Github", level:85, category: "Tools", icon: "SiGithub"},
+  {name : "Git/Github", level:88, category: "Tools", icon: "SiGithub"},
+  {name : "Plotly / Streamlit", level:75, category: "Tools", icon: "SiPlotly"},
   {name : "LaTeX", level:80, category: "Tools", icon: "SiLatex"},
-  {name : "Docker", level:60, category: "Tools", icon: "SiDocker"},
-  {name : "Vs Code", level:75, category: "Tools", icon: "VscVscode"},
-
-  // Others
-  {name : "React", level:60, category: "Others", icon: "SiReact"}
+  {name : "Claude Code", level:85, category: "Tools", icon: "SiAnthropic"},
 ]
 
-const categories = ["all", "Data Science", "Agentic AI", "Visualization", "Big Data", "Tools", "Others"]
+const categories = ["all", "Agentic AI", "Engineering", "Infrastructure", "Data Science", "Big Data", "Tools"]
 
 export const SkillsSection =  () => {
 
@@ -97,20 +117,8 @@ export const SkillsSection =  () => {
             <div key={key} className="bg-card p-6 rounded-lg shadow-xs card-hover transition-opacity duration-700 ease-in-out opacity-100 hover:scale-105 hover:shadow-md transition-transform transition-shadow duration-500">
               <div className="text-left mb-4 flex items-center">
                 {(() => {
-                  // Handle VS Code icon from a different pack
-                  if (skill.icon === "VscVscode") return <VscVscode className="text-2xl mr-2" />
-
-                  // Alias map for icons whose export names differ from common strings
-                  const aliasMap = {
-                    SiN8n: "SiN8N", // react-icons exports n8n as SiN8N
-                    FaEye: "FaEye",
-                  }
-
-                  const key = aliasMap[skill.icon] || skill.icon
-                  const IconComponent = key ? (SiIcons[key] || FaEye) : null
-
-                  // If icon is missing (older react-icons version), render nothing
-                  return IconComponent ? <IconComponent className="text-2xl mr-2" /> : null
+                  const IconComponent = iconMap[skill.icon] || FaEye
+                  return <IconComponent className="text-2xl mr-2" />
                 })()}
                 <h3 className="font-semibold text-lg">{skill.name}</h3>
               </div>

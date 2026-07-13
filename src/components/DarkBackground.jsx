@@ -1,10 +1,10 @@
 import { useCallback } from "react"
 import Particles from "react-tsparticles"
-import { loadFull } from "tsparticles"
+import { loadSlim } from "tsparticles-slim"
 
 export const DarkBackground = ({ className = "" }) => {
   const init = useCallback(async (engine) => {
-    await loadFull(engine)
+    await loadSlim(engine)
   }, [])
 
   return (

@@ -1,10 +1,10 @@
-import { MapPin, Cpu, BookOpen } from "lucide-react"
+import { MapPin, Cpu, Briefcase } from "lucide-react"
 import { useState, useEffect, useRef, useCallback } from "react"
 import { SiGithub, SiLinkedin, SiLeetcode } from "react-icons/si"
 import Particles from "react-tsparticles"
-import { loadFull } from "tsparticles"
+import { loadSlim } from "tsparticles-slim"
 
-const roles = ["Data Scientist", "AI Engineer", "Agentic AI Builder", "AI Forward Deployed Engineer"]
+const roles = ["AI Engineer", "Agentic AI Builder", "LLM Systems Engineer", "Full-stack AI Developer"]
 
 const SplitWord = ({ word, baseDelay }) => (
   <span className="inline-flex">
@@ -200,7 +200,7 @@ export const HeroSection = () => {
     return () => observer.disconnect()
   }, [])
 
-  const particlesInit = useCallback(async (engine) => { await loadFull(engine) }, [])
+  const particlesInit = useCallback(async (engine) => { await loadSlim(engine) }, [])
 
   useEffect(() => {
     const current = roles[roleIndex]
@@ -303,14 +303,14 @@ export const HeroSection = () => {
             */}
 
             {/* Name */}
-            <div className="font-bold leading-[0.95] tracking-[0.08em] select-none w-full uppercase">
-              <div style={{ fontSize: "clamp(2.5rem, 6.5vw, 5.5rem)" }}>
+            <h1 className="font-bold leading-[0.95] tracking-[0.08em] select-none w-full uppercase">
+              <span className="block" style={{ fontSize: "clamp(2.5rem, 6.5vw, 5.5rem)" }}>
                 <SplitWord word="Pierre" baseDelay={0.2} />
-              </div>
-              <div className="text-primary" style={{ fontSize: "clamp(2rem, 5.4vw, 4.5rem)" }}>
+              </span>
+              <span className="block text-primary" style={{ fontSize: "clamp(2rem, 5.4vw, 4.5rem)" }}>
                 <SplitWord word="Prudhomme" baseDelay={0.48} />
-              </div>
-            </div>
+              </span>
+            </h1>
 
             {/* Typewriter role */}
             <div
@@ -326,14 +326,14 @@ export const HeroSection = () => {
               className="text-base md:text-lg text-muted-foreground max-w-md leading-relaxed"
               style={{ visibility: nameReady ? "visible" : "hidden", animation: nameReady ? "fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s both" : "none" }}
             >
-              Data science student at ENSIIE — building agentic AI systems, LLM pipelines, and data-driven solutions.
+              AI Engineer at Ontraak — designing and running agentic AI systems, self-hosted LLM infrastructure, and full-stack AI products in production.
             </p>
 
             {/* Bento micro-cards */}
             <div className="flex flex-wrap gap-2" style={{ visibility: nameReady ? "visible" : "hidden", animation: nameReady ? "fade-in 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both" : "none" }}>
               {[
                 { icon: <MapPin size={13} />, label: "Paris, France" },
-                { icon: <BookOpen size={13} />, label: "ENSIIE" },
+                { icon: <Briefcase size={13} />, label: "AI Engineer @ Ontraak" },
                 { icon: <Cpu size={13} />, label: "Agentic AI" },
               ].map(({ icon, label }) => (
                 <span

@@ -1,15 +1,22 @@
-import { ExternalLink } from "lucide-react"
-import * as SiIcons from "react-icons/si"
-import { CiLink, CiGrid41, CiGrid2H } from "react-icons/ci";
-import { ArrowRight } from "lucide-react";
-import { useState } from "react";
+import { SiGithub, SiLeetcode } from "react-icons/si"
+import { CiGrid41, CiGrid2H } from "react-icons/ci";
+import { useEffect, useRef, useState } from "react";
 
 const projects = [
+  {
+    id: 0,
+    title: "KLIDE — AI-native IDE",
+    description: "Local-first AI-native IDE pairing a VS Code–style shell (Monaco editor, diff review) with a custom Rust agent loop, embedded terminals running delegate CLI agents, and a 16-tool schema with approval-gated execution. Includes a cross-agent orchestration layer (Sessions MCP) driving sibling sessions and parallel git worktrees, plus a LoRA fine-tuned on-device model for reliable local tool calling.",
+    image: "projects/Project - KLIDE.jpg",
+    video: "projects/klide-demo.mp4",
+    tags: ["Rust", "TypeScript", "React", "MCP", "LoRA Fine-tuning", "Ollama", "AI"],
+    githubUrl: "https://github.com/pierreprudh/KLIDE"
+  },
   {
     id: 1,
     title: "Self-hosted private AI stack",
     description: "Docker-orchestrated AI platform for a small team — chat UI, Ollama LLM runtime, code-execution sandbox, web search, and automation, all on a private network",
-    image: "projects/AI stack.png",
+    image: "projects/AI stack.jpg",
     tags: ["TypeScript", "React", "Express", "Docker", "Postgres", "Ollama", "AI"],
   },
   {
@@ -22,42 +29,40 @@ const projects = [
   {
     id: 3,
     title: "Agentic document information extraction",
-    description: "Autogen and Streamlit application for document extraction",
-    image: "projects/Project - Document information extractor.png",
+    description: "Multi-agent document extraction pipeline built with AutoGen and Streamlit — self-improving agents with continuous prompt optimization, applied to energy-market documents.",
+    image: "projects/Project - Document information extractor.jpg",
     tags: ["Python", "Autogen", "AI Agent", "OCR"],
     githubUrl: "https://github.com/pierreprudh/Document-Information-Extraction"
   },
   {
     id: 4,
     title: "Strava Dashboard",
-    description: "React dahboard using React and Python to call Strava API",
-    image: "/projects/Project - Strava Dashboard.png",
+    description: "Interactive dashboard built with React and Python to visualize training data from the Strava API",
+    image: "/projects/Project - Strava Dashboard.jpg",
     tags: ["Python", "React", "API"],
     githubUrl: "https://github.com/pierreprudh/Strava-Dashboard"
   },
   {
-    id:5,
+    id: 5,
     title: "Masked Face Detection",
     description: "A deep learning project that detects whether individuals are wearing face masks using MobileNet and EfficientNet architectures. Focused on real-time image classification and public health monitoring.",
-    image: "/projects/Project - Mask Detection.png",
+    image: "/projects/Project - Mask Detection.jpg",
     tags: ["Python", "Deep Learning", "Computer Vision", "Github"],
-    // demoUrl:"#..."
     githubUrl: "https://github.com/WacimN/SF-mask-detection"
   },
   {
-    id:6,
+    id: 6,
     title: "French Mobile Network Analysis",
     description: "Big data pipeline analyzing mobile network coverage in France using Hadoop, Kafka, Spark, and Opensearch. Includes visualization and processing of large-scale geospatial data from ANFR.",
-    image: "/projects/Project - French Mobile.png",
+    image: "/projects/Project - French Mobile.jpg",
     tags: ["Python", "Hadoop", "Spark", "Opensearch"],
-    // demoUrl:"#..."
     githubUrl: "https://github.com/pierreprudh/Antens_Map"
   },
   {
     id: 7,
     title: "Animal Face Recognition",
     description: "A computer vision system built with TensorFlow/Keras to detect and classify animal faces. Demonstrates convolutional neural networks applied to wildlife image recognition.",
-    image: "/projects/Project - Animal face recognition.png",
+    image: "/projects/Project - Animal face recognition.jpg",
     tags: ["Python", "Deep Learning", "Computer Vision", "Keras"],
     githubUrl: "https://github.com/pierreprudh/Animal_face_recognition"
   },
@@ -75,10 +80,39 @@ const projects = [
     description: "Clustering and segmentation of car customers using unsupervised learning techniques like KMeans. Built for a car brand to explore marketing insights from customer data.",
     image: "/projects/Project - Cars.jpg",
     tags: ["Python", "Machine Learning", "Clustering", "Pandas", "Plotly"],
-    //githubUrl: "https://github.com/pierreprudh/BMW-Study-case"
   }
 ]
 
+// Plays only while on screen so the file never loads for visitors who don't scroll to it
+const ProjectVideo = ({ src, poster, title }) => {
+  const ref = useRef(null)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) el.play().catch(() => {})
+        else el.pause()
+      },
+      { threshold: 0.25 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+  return (
+    <video
+      ref={ref}
+      src={src}
+      poster={poster}
+      aria-label={title}
+      muted
+      loop
+      playsInline
+      preload="none"
+      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+    />
+  )
+}
 
 export const ProjectsSection = () => {
   const [gridCols, setGridCols] = useState(() => {
@@ -94,7 +128,9 @@ export const ProjectsSection = () => {
     });
   };
 
-  const gridClass = `grid grid-cols-1 sm:grid-cols-${gridCols} lg:grid-cols-${gridCols} gap-8`;
+  const gridClass = gridCols === 1
+    ? "grid grid-cols-1 gap-8"
+    : "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8";
 
   return <section id="projects" className="py-24 px-4 relative">
     <div className="container mx-auto max-w-5xl">
@@ -105,7 +141,7 @@ export const ProjectsSection = () => {
         </h2>
 
         <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-          Here are some of my recent projects. Some project are for study and other are personal project.
+          A selection of things I've built — from production AI infrastructure to personal experiments in agentic systems, computer vision, and data engineering.
         </p>
 
         <div className="flex justify-end mb-6">
@@ -119,15 +155,19 @@ export const ProjectsSection = () => {
         </div>
 
         <div className={gridClass}>
-          {projects.map((project,key) => (
-            <div key={key} className="relative group bg-card rounded-lg overflow-hidden shadow-xs card-hover">
+          {projects.map((project) => (
+            <div key={project.id} className="relative group bg-card rounded-lg overflow-hidden shadow-xs card-hover">
               <div className="h-48 overflow-hidden ">
-                <img src={project.image} alt={project.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"/>
+                {project.video ? (
+                  <ProjectVideo src={project.video} poster={project.image} title={project.title} />
+                ) : (
+                  <img src={project.image} alt={project.title} loading="lazy" className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"/>
+                )}
               </div>
               <div className="p-6">
                   <div className="flex text-center justify-center flex-wrap gap-2 mb-4">
                   {project.tags.map((tag) => (
-                    <span className="px-2 py-1 text-xs font-medium border animate-hover rounded-full bg-primary/10 justify-center text-center text-secondary-foreground hover:scale-105 hover:shadow-md transition-transform transition-shadow duration-500">
+                    <span key={tag} className="px-2 py-1 text-xs font-medium border animate-hover rounded-full bg-primary/10 justify-center text-center text-secondary-foreground hover:scale-105 hover:shadow-md transition-transform transition-shadow duration-500">
                       {tag}
                     </span>
                   ))}
@@ -146,8 +186,9 @@ export const ProjectsSection = () => {
                     className="text-foreground/80 hover:text-primary transition-colors duration-300"
                     target="_blank"
                     rel="noopener noreferrer"
+                    aria-label={`${project.title} on GitHub`}
                   >
-                    <SiIcons.SiGithub size={25} />
+                    <SiGithub size={25} />
                   </a>
                 </div>
               )}
@@ -164,7 +205,7 @@ export const ProjectsSection = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            GitHub <SiIcons.SiGithub size={20} />
+            GitHub <SiGithub size={20} />
           </a>
 
           <a
@@ -173,7 +214,7 @@ export const ProjectsSection = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            LeetCode <SiIcons.SiLeetcode size={20} />
+            LeetCode <SiLeetcode size={20} />
           </a>
         </div>
     </div>
