@@ -164,13 +164,20 @@ const ScrollStack = ({
     });
     lastTransformsRef.current.clear();
 
+    // Equalize card heights to the tallest: mixed heights (common on phones,
+    // where the bio card wraps long) let a tall early card peek out beneath
+    // the shorter cards stacked on top of it after release.
+    cardsRef.current.forEach(card => { card.style.minHeight = ''; });
+    const naturalHeights = cardsRef.current.map(c => c.getBoundingClientRect().height);
+    const maxCardHeight = Math.max(...naturalHeights);
+    cardsRef.current.forEach(card => { card.style.minHeight = `${maxCardHeight}px`; });
+
     const pageOffset = (el) =>
       useWindowScroll
         ? el.getBoundingClientRect().top + window.scrollY
         : el.offsetTop;
 
     const offsets = cardsRef.current.map(pageOffset);
-    const heights = cardsRef.current.map(c => c.getBoundingClientRect().height);
     cardOffsetsRef.current = offsets;
 
     const { containerHeight } = getScrollData();
@@ -178,8 +185,8 @@ const ScrollStack = ({
     const holdPx = parsePercentage(holdOffset, containerHeight);
     const n = offsets.length;
 
-    // Height of the fully stacked deck (cards offset by itemStackDistance)
-    const deckHeight = Math.max(...heights.map((h, i) => i * itemStackDistance + h));
+    // Height of the fully stacked deck (equal-height cards offset by itemStackDistance)
+    const deckHeight = (n - 1) * itemStackDistance + maxCardHeight;
 
     // Release shortly after the last card lands
     const lastPinStart = offsets[n - 1] - stackPositionPx - itemStackDistance * (n - 1);
