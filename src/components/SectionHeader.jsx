@@ -8,7 +8,6 @@ export const SectionHeader = ({ index, label, title, lead }) => (
     <div className="flex items-baseline gap-4 mb-7 md:mb-9">
       <span className="font-mono text-sm text-primary">{index}</span>
       <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">{label}</span>
-      <div className="h-px flex-1 self-center bg-border/60" />
     </div>
     <h2 className="sr-only">{title}</h2>
     {lead && (

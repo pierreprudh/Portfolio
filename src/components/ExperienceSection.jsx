@@ -39,7 +39,7 @@ const experiences = [
 
 export const ExperienceSection = () => {
   return (
-    <section id="experience" className="py-12 md:py-16 border-t border-border/40 relative">
+    <section id="experience" className="py-12 md:py-16 relative">
       <div className="container-wide">
 
         <SectionHeader index="02" label="Career" title="Experience" />

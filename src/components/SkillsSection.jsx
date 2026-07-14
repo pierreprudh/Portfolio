@@ -297,7 +297,7 @@ const CapabilityCard = ({ group }) => {
 
 export const SkillsSection = () => {
   return (
-    <section id="skills" className="py-12 md:py-16 border-t border-border/40 relative">
+    <section id="skills" className="py-12 md:py-16 relative">
       <div className="container-wide">
 
         <SectionHeader

@@ -349,10 +349,7 @@
 .trail-pulse {
   stroke-dasharray: 80 1620;
   stroke-dashoffset: 1700;
-  animation: trailPulse 6s linear infinite;
-}
-.trail-pulse-late {
-  animation-delay: -3.2s;
+  animation: trailPulse 9s linear infinite;
 }
 @keyframes trailPulse {
   from { stroke-dashoffset: 1700; }
