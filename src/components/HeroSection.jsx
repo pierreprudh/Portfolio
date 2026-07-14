@@ -253,15 +253,17 @@ export const HeroSection = () => {
         >
           <div
             className="absolute inset-0 scale-[1.15] bg-cover bg-center transition-opacity duration-700 opacity-100 dark:opacity-0"
-            style={{ backgroundImage: "url('/hero-day.jpg')", filter: "blur(1px)" }}
+            style={{ backgroundImage: "url('/hero-day.jpg')" }}
           />
           <div
             className="absolute inset-0 scale-[1.15] bg-cover bg-center transition-opacity duration-700 opacity-0 dark:opacity-100"
-            style={{ backgroundImage: "url('/hero-night.jpg')", filter: "blur(1px)" }}
+            style={{ backgroundImage: "url('/hero-night.jpg')" }}
           />
         </Motion.div>
         {/* Legibility scrim */}
-        <div className="absolute inset-0 bg-background/35 dark:bg-background/40" />
+        <div className="absolute inset-0 bg-background/25 dark:bg-background/30" />
+        {/* Left reading zone — keeps crisp type legible over the crisp image */}
+        <div className="absolute inset-y-0 left-0 w-[62%] bg-gradient-to-r from-background/55 via-background/25 to-transparent" />
         {/* Progressive blur: crisp up top, frosted as it approaches the fold */}
         <div
           className="absolute inset-x-0 bottom-0 h-[50%]"
@@ -298,19 +300,22 @@ export const HeroSection = () => {
             </div>
 
             {/* Name */}
-            <h1 className="font-bold leading-[0.92] tracking-[-0.02em] select-none w-full">
+            <h1
+              className="font-bold leading-[0.92] tracking-[-0.02em] select-none w-full"
+              style={{ filter: "drop-shadow(0 2px 14px hsl(var(--background) / 0.55))" }}
+            >
               <span className="block" style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}>
                 <SplitWord
                   word="Pierre"
                   baseDelay={0.2}
-                  charClassName="bg-gradient-to-b from-foreground to-foreground/65 bg-clip-text text-transparent"
+                  charClassName="bg-gradient-to-b from-foreground to-foreground/90 bg-clip-text text-transparent"
                 />
               </span>
               <span className="block" style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}>
                 <SplitWord
                   word="Prudhomme"
                   baseDelay={0.42}
-                  charClassName="bg-gradient-to-b from-primary to-primary/55 bg-clip-text text-transparent"
+                  charClassName="bg-gradient-to-b from-primary to-primary/85 bg-clip-text text-transparent"
                 />
               </span>
             </h1>

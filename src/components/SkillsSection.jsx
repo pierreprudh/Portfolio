@@ -52,9 +52,10 @@ const groups = [
       { Logo: SiLangchain, label: "LangChain / LangGraph" },
       { Logo: SiN8N, label: "n8n" },
     ],
-    stack: [
-      "MCP", "RAG", "LangChain", "LangGraph", "AutoGen", "n8n",
-      "OpenAI", "Claude", "Mistral", "ChromaDB", "Multi-agent orchestration",
+    stackGroups: [
+      { label: "Orchestration", items: ["LangChain", "LangGraph", "AutoGen", "n8n", "Multi-agent systems"] },
+      { label: "Models", items: ["OpenAI", "Claude", "Mistral"] },
+      { label: "Retrieval & protocols", items: ["MCP", "RAG", "ChromaDB"] },
     ],
     statement: "Agents that plan, call tools, and finish the job — from orchestration graphs to a runtime built from scratch.",
     span: "lg:col-span-8",
@@ -71,9 +72,10 @@ const groups = [
       { Logo: SiHuggingface, label: "Hugging Face" },
       { Logo: SiApple, label: "Apple Silicon" },
     ],
-    stack: [
-      "Ollama", "llama.cpp", "MLX", "LoRA fine-tuning", "KV-cache tuning",
-      "Hugging Face", "Apple Silicon", "Self-hosted inference",
+    stackGroups: [
+      { label: "Serving", items: ["Ollama", "llama.cpp", "MLX"] },
+      { label: "Tuning", items: ["LoRA fine-tuning", "KV-cache tuning"] },
+      { label: "Platform", items: ["Hugging Face", "Apple Silicon", "Self-hosted inference"] },
     ],
     statement: "Local models, tuned and served on my own hardware — private by default.",
     span: "lg:col-span-4",
@@ -93,9 +95,10 @@ const groups = [
       { Logo: SiRust, label: "Rust" },
       { Logo: SiDocker, label: "Docker" },
     ],
-    stack: [
-      "TypeScript", "React", "Express", "FastAPI", "PostgreSQL", "Rust",
-      "Docker", "CI/CD", "Caddy", "Cloudflare", "Tailscale", "Tailwind CSS", "Vite",
+    stackGroups: [
+      { label: "Frontend", items: ["React", "Tailwind CSS", "Vite"] },
+      { label: "Backend", items: ["TypeScript", "Express", "FastAPI", "Rust", "PostgreSQL"] },
+      { label: "Infra & deploy", items: ["Docker", "CI/CD", "Caddy", "Cloudflare", "Tailscale"] },
     ],
     statement: "Typed front to back, containerized, deployed — products, not prototypes.",
     span: "lg:col-span-4",
@@ -116,9 +119,10 @@ const groups = [
       { Logo: SiApachespark, label: "Apache Spark" },
       { Logo: SiApachekafka, label: "Apache Kafka" },
     ],
-    stack: [
-      "Python", "PyTorch", "TensorFlow", "Keras", "scikit-learn", "OpenCV",
-      "Computer vision", "OCR", "Pandas", "NumPy", "SQL", "Apache Spark", "Kafka", "Hadoop",
+    stackGroups: [
+      { label: "Modeling", items: ["PyTorch", "TensorFlow", "Keras", "scikit-learn"] },
+      { label: "Vision", items: ["OpenCV", "OCR"] },
+      { label: "Data & pipelines", items: ["Python", "Pandas", "NumPy", "SQL", "Apache Spark", "Kafka", "Hadoop"] },
     ],
     statement: "From classical predictive modeling to deep learning for vision — grounded in the data first.",
     span: "lg:col-span-8",
@@ -132,7 +136,7 @@ const faceBase =
   "overflow-hidden rounded-[1.75rem] p-8 md:p-10 flex flex-col text-left [backface-visibility:hidden] [-webkit-backface-visibility:hidden] transition-shadow duration-500 group-hover:shadow-[0_32px_80px_-32px_rgb(0_0_0/0.4)]"
 
 const CapabilityCard = ({ group }) => {
-  const { icon: Icon, title, concepts, logos, stack, statement, variant, Watermark, watermarkSrc, big } = group
+  const { icon: Icon, title, concepts, logos, stackGroups, statement, variant, Watermark, watermarkSrc, big } = group
   const v = variants[variant]
   const [flipped, setFlipped] = useState(false)
   const reduced = useReducedMotion()
@@ -239,34 +243,44 @@ const CapabilityCard = ({ group }) => {
           </div>
           <div className={`text-xs md:text-sm mt-1.5 ${v.muted}`}>The full working stack, written out.</div>
 
-          {/* Editorial index list — numbered rows, hairline separators */}
+          {/* Grouped editorial list — labeled clusters, hairline rows */}
           <div
-            className={`mt-7 flex-1 grid content-start gap-x-8 md:gap-x-10 ${
+            className={`mt-7 flex-1 grid content-start items-start gap-x-8 md:gap-x-10 gap-y-6 ${
               big ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2"
             }`}
           >
-            {stack.map((item, idx) => (
-              <Motion.div
-                key={item}
-                className={`flex items-baseline gap-2.5 py-2.5 border-b ${v.chip}`}
-                animate={
-                  reduced
-                    ? { opacity: 1 }
-                    : flipped
-                      ? { opacity: 1, y: 0 }
-                      : { opacity: 0, y: 10 }
-                }
-                transition={{
-                  duration: 0.5,
-                  delay: flipped && !reduced ? 0.18 + idx * 0.035 : 0,
-                  ease: [0.16, 1, 0.3, 1],
-                }}
-              >
-                <span className={`text-[10px] font-medium tabular-nums ${v.muted}`}>
-                  {String(idx + 1).padStart(2, "0")}
-                </span>
-                <span className="text-xs md:text-sm font-medium leading-tight">{item}</span>
-              </Motion.div>
+            {stackGroups.map(({ label, items }, gi) => (
+              <div key={label}>
+                <Motion.div
+                  className={`text-[10px] uppercase tracking-[0.22em] font-semibold pb-2 ${v.muted}`}
+                  animate={
+                    reduced ? { opacity: 1 } : flipped ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
+                  }
+                  transition={{
+                    duration: 0.5,
+                    delay: flipped && !reduced ? 0.15 + gi * 0.09 : 0,
+                    ease: [0.16, 1, 0.3, 1],
+                  }}
+                >
+                  {label}
+                </Motion.div>
+                {items.map((item, ii) => (
+                  <Motion.div
+                    key={item}
+                    className={`py-2 text-xs md:text-sm font-medium leading-tight border-b ${v.chip}`}
+                    animate={
+                      reduced ? { opacity: 1 } : flipped ? { opacity: 1, y: 0 } : { opacity: 0, y: 10 }
+                    }
+                    transition={{
+                      duration: 0.5,
+                      delay: flipped && !reduced ? 0.2 + gi * 0.09 + ii * 0.04 : 0,
+                      ease: [0.16, 1, 0.3, 1],
+                    }}
+                  >
+                    {item}
+                  </Motion.div>
+                ))}
+              </div>
             ))}
           </div>
 
