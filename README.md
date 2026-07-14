@@ -5,7 +5,7 @@
     <img src="https://img.shields.io/badge/-Vite-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
     <img src="https://img.shields.io/badge/-Lucide Icons-FD4D4D?style=for-the-badge&logo=lucide" alt="Lucide Icons" />
     <img src="https://img.shields.io/badge/-React Icons-E91E63?style=for-the-badge&logo=react&logoColor=white" alt="React Icons" />
-    <img src="https://img.shields.io/badge/-tsParticles-7B2FBE?style=for-the-badge" alt="tsParticles" />
+    <img src="https://img.shields.io/badge/-Motion-0055FF?style=for-the-badge&logo=framer&logoColor=white" alt="Motion" />
   </div>
 </div>
 
@@ -24,26 +24,26 @@ Hosted on **Vercel**:
 
 ## 🚀 Preview
 
+![Portfolio preview](./src/assets/preview-dark.png)
+
 | Light Mode | Dark Mode |
 |------------|-----------|
 | ![Light Mode](./src/assets/light-mode.png) | ![Dark Mode](./src/assets/dark-mode.png) |
-| ![Light Mode](./src/assets/mobile-light.png) | ![Dark Mode](./src/assets/mobile-dark.png) |
+| ![Light Mode — mobile](./src/assets/mobile-light.png) | ![Dark Mode — mobile](./src/assets/mobile-dark.png) |
 
 ---
 
 ## ✨ Features
 
-- Fully responsive layout for all screen sizes
-- Smooth light/dark theme toggle with animated transitions
-- Animated splash screen on first load
-- Floating pill navbar with scroll-aware active section tracking and mobile accordion menu
-- Scroll progress bar
-- Scroll-reveal animations on section entry
-- Hero section with animated role cycling and particle background
-- Skills section organized by category (Data Science, Visualization, Big Data, Web Dev, AI/LLM)
-- Projects section with live and GitHub links
-- Contact section with email, phone, location, and LinkedIn
-- Aurora background (light mode) and starfield background (dark mode)
+- Cinematic hero: scenic day/night backdrop with camera-settle entrance, scroll + pointer parallax, and a constellation sphere with cursor repulsion
+- Light/dark theme toggle that swaps the entire scenery
+- Apple-style motion system: blur-up reveals, scroll-linked hero dismissal, spring interactions (Motion + Lenis smooth scrolling)
+- Linear-style capability cards that flip to grouped, scrollable stack lists
+- Floating glass pill navbar with scroll-aware active section tracking and mobile accordion menu
+- Projects bento with in-view video demo and archive index
+- Ambient drifting color glows behind the whole page (static on mobile for GPU thrift)
+- Responsive WebP hero images with theme-aware preload, JSON-LD, sitemap and robots.txt
+- Fully responsive, with `prefers-reduced-motion` support throughout
 
 ---
 
@@ -52,8 +52,9 @@ Hosted on **Vercel**:
 - **React 19** with hooks
 - **Tailwind CSS v4**
 - **Vite 7** for bundling and dev server
+- **Motion** (Framer Motion) for scroll-linked and spring animations
+- **Lenis** for smooth scrolling
 - **react-router-dom** for routing
-- **tsparticles** for particle animations
 - **lucide-react** and **react-icons** for icons
 - **clsx** + **tailwind-merge** for conditional class utilities
 - Custom CSS keyframe animations
