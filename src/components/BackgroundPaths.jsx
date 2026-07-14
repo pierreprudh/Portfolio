@@ -5,7 +5,7 @@
  * purple/pink gradient is re-tinted to the site's teal palette.
  */
 
-import { motion } from "motion/react"
+import { motion as Motion } from "motion/react"
 import { memo, useMemo } from "react"
 
 function generateAestheticPath(index, position, type) {
@@ -115,7 +115,7 @@ const FloatingPaths = memo(function FloatingPaths({ position }) {
 
         <g className="primary-waves">
           {primaryPaths.map((path) => (
-            <motion.path
+            <Motion.path
               animate={{ ...sharedAnimationProps, y: [0, -15, 0] }}
               d={path.d}
               initial={{ opacity: 0, scale: 0.8 }}
@@ -139,7 +139,7 @@ const FloatingPaths = memo(function FloatingPaths({ position }) {
 
         <g className="secondary-waves" style={{ opacity: 0.8 }}>
           {secondaryPaths.map((path) => (
-            <motion.path
+            <Motion.path
               animate={{ ...sharedAnimationProps, y: [0, -10, 0] }}
               d={path.d}
               initial={{ opacity: 0, scale: 0.9 }}
@@ -163,7 +163,7 @@ const FloatingPaths = memo(function FloatingPaths({ position }) {
 
         <g className="accent-waves" style={{ opacity: 0.6 }}>
           {accentPaths.map((path) => (
-            <motion.path
+            <Motion.path
               animate={{ ...sharedAnimationProps, y: [0, -5, 0] }}
               d={path.d}
               initial={{ opacity: 0, scale: 0.95 }}

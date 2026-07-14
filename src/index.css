@@ -262,6 +262,22 @@
   padding: 0;
 }
 
+/* Hero backdrop sources — phones get the 900px variants (~80–100 KB) */
+.hero-bg-day {
+  background-image: url("/hero-day.webp");
+}
+.hero-bg-night {
+  background-image: url("/hero-night.webp");
+}
+@media (max-width: 767px) {
+  .hero-bg-day {
+    background-image: url("/hero-day-sm.webp");
+  }
+  .hero-bg-night {
+    background-image: url("/hero-night-sm.webp");
+  }
+}
+
 /* ── Flat canvas texture: film grain only ── */
 .canvas-texture {
   position: fixed;

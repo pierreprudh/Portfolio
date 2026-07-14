@@ -253,12 +253,12 @@ export const HeroSection = () => {
           style={reduced ? undefined : { y: bgYCombined, x: bgDriftX }}
         >
           <div
-            className="absolute inset-0 scale-[1.15] bg-cover bg-center transition-opacity duration-700 opacity-100 dark:opacity-0"
-            style={{ backgroundImage: "url('/hero-day.webp')", animation: "heroSettle 2.6s cubic-bezier(0.16, 1, 0.3, 1) both" }}
+            className="hero-bg-day absolute inset-0 scale-[1.15] bg-cover bg-center transition-opacity duration-700 opacity-100 dark:opacity-0"
+            style={{ animation: "heroSettle 2.6s cubic-bezier(0.16, 1, 0.3, 1) both" }}
           />
           <div
-            className="absolute inset-0 scale-[1.15] bg-cover bg-center transition-opacity duration-700 opacity-0 dark:opacity-100"
-            style={{ backgroundImage: "url('/hero-night.webp')", animation: "heroSettle 2.6s cubic-bezier(0.16, 1, 0.3, 1) both" }}
+            className="hero-bg-night absolute inset-0 scale-[1.15] bg-cover bg-center transition-opacity duration-700 opacity-0 dark:opacity-100"
+            style={{ animation: "heroSettle 2.6s cubic-bezier(0.16, 1, 0.3, 1) both" }}
           />
         </Motion.div>
         {/* Legibility scrim */}

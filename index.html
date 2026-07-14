@@ -7,11 +7,13 @@
       try {
         var dark = localStorage.getItem("theme") === "dark";
         if (dark) document.documentElement.classList.add("dark");
-        // Preload only the active theme's hero backdrop — it's the LCP element
+        // Preload only the active theme's hero backdrop — it's the LCP element.
+        // Phones get the 900px variant (must mirror the .hero-bg-* media query).
+        var sm = window.innerWidth < 768 ? "-sm" : "";
         var preload = document.createElement("link");
         preload.rel = "preload";
         preload.as = "image";
-        preload.href = dark ? "/hero-night.webp" : "/hero-day.webp";
+        preload.href = (dark ? "/hero-night" : "/hero-day") + sm + ".webp";
         document.head.appendChild(preload);
       } catch (e) {}
     </script>

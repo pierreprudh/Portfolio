@@ -1,8 +1,8 @@
 import { ArrowUp, Check, Copy, Mail } from "lucide-react"
 import { SiGithub, SiLinkedin, SiOllama } from "react-icons/si"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Reveal } from "./Reveal"
-import Threads from "./Threads"
+import BackgroundPaths from "./BackgroundPaths"
 
 const EMAIL = "prudh.pierre@gmail.com"
 
@@ -14,17 +14,6 @@ const SOCIALS = [
 
 export const ContactSection = () => {
   const [copied, setCopied] = useState(false)
-  const [isDark, setIsDark] = useState(
-    () => typeof document !== "undefined" && document.documentElement.classList.contains("dark")
-  )
-
-  useEffect(() => {
-    const check = () => setIsDark(document.documentElement.classList.contains("dark"))
-    check()
-    const observer = new MutationObserver(check)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
-    return () => observer.disconnect()
-  }, [])
 
   const copyEmail = async () => {
     try {
@@ -39,13 +28,9 @@ export const ContactSection = () => {
   return (
     <section id="contact" className="-mt-8 md:-mt-12 pt-8 md:pt-12 relative overflow-hidden">
 
-      {/* Flowing threads drifting behind the whole section */}
-      <div className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-50" aria-hidden="true">
-        <Threads
-          color={isDark ? [0.42, 0.74, 0.78] : [0.18, 0.44, 0.46]}
-          amplitude={0.9}
-          distance={0}
-        />
+      {/* Floating background paths drifting behind the whole section */}
+      <div className="absolute inset-0 pointer-events-none opacity-60 dark:opacity-70" aria-hidden="true">
+        <BackgroundPaths />
       </div>
 
       <div className="container-wide relative z-10">
