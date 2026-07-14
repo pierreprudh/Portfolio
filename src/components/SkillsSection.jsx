@@ -239,14 +239,34 @@ const CapabilityCard = ({ group }) => {
           </div>
           <div className={`text-xs md:text-sm mt-1.5 ${v.muted}`}>The full working stack, written out.</div>
 
-          <div className="mt-7 flex flex-wrap content-start gap-2 flex-1">
-            {stack.map((item) => (
-              <span
+          {/* Editorial index list — numbered rows, hairline separators */}
+          <div
+            className={`mt-7 flex-1 grid content-start gap-x-8 md:gap-x-10 ${
+              big ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2"
+            }`}
+          >
+            {stack.map((item, idx) => (
+              <Motion.div
                 key={item}
-                className={`px-3 py-1.5 rounded-full border text-xs md:text-sm ${v.chip}`}
+                className={`flex items-baseline gap-2.5 py-2.5 border-b ${v.chip}`}
+                animate={
+                  reduced
+                    ? { opacity: 1 }
+                    : flipped
+                      ? { opacity: 1, y: 0 }
+                      : { opacity: 0, y: 10 }
+                }
+                transition={{
+                  duration: 0.5,
+                  delay: flipped && !reduced ? 0.18 + idx * 0.035 : 0,
+                  ease: [0.16, 1, 0.3, 1],
+                }}
               >
-                {item}
-              </span>
+                <span className={`text-[10px] font-medium tabular-nums ${v.muted}`}>
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <span className="text-xs md:text-sm font-medium leading-tight">{item}</span>
+              </Motion.div>
             ))}
           </div>
 

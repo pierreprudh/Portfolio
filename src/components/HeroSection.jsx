@@ -1,27 +1,11 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
-import { motion as Motion, AnimatePresence, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring } from "motion/react"
+import { motion as Motion, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring } from "motion/react"
 import { SiGithub, SiLinkedin, SiLeetcode } from "react-icons/si"
-
-const roles = ["AI Engineer", "Agentic AI Builder", "LLM Systems Engineer", "Full-stack AI Developer"]
 
 const reducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches
-
-const HeroClock = () => {
-  const [time, setTime] = useState("")
-  useEffect(() => {
-    const fmt = new Intl.DateTimeFormat("en-GB", {
-      timeZone: "Europe/Paris", hour: "2-digit", minute: "2-digit",
-    })
-    const tick = () => setTime(fmt.format(new Date()))
-    tick()
-    const id = setInterval(tick, 15_000)
-    return () => clearInterval(id)
-  }, [])
-  return <span className="tabular-nums">{time}</span>
-}
 
 const SplitWord = ({ word, baseDelay, charClassName = "" }) => (
   <span className="inline-flex">
@@ -213,7 +197,6 @@ const HeroVisual = ({ isDark }) => {
 }
 
 export const HeroSection = () => {
-  const [roleIndex, setRoleIndex] = useState(0)
   const [isDark, setIsDark] = useState(
     () => typeof document !== "undefined" && document.documentElement.classList.contains("dark")
   )
@@ -252,12 +235,6 @@ export const HeroSection = () => {
     const observer = new MutationObserver(check)
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
     return () => observer.disconnect()
-  }, [])
-
-  useEffect(() => {
-    if (reducedMotion()) return
-    const id = setInterval(() => setRoleIndex((i) => (i + 1) % roles.length), 3200)
-    return () => clearInterval(id)
   }, [])
 
   return (
@@ -338,25 +315,6 @@ export const HeroSection = () => {
               </span>
             </h1>
 
-            {/* Rotating role — blur crossfade */}
-            <div
-              className="text-lg md:text-xl font-medium text-primary"
-              style={{ animation: "fade-in 0.8s ease-out 0.9s both" }}
-            >
-              <AnimatePresence mode="wait">
-                <Motion.span
-                  key={roleIndex}
-                  className="inline-block"
-                  initial={reduced ? false : { opacity: 0, y: 14, filter: "blur(8px)" }}
-                  animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                  exit={reduced ? undefined : { opacity: 0, y: -14, filter: "blur(8px)" }}
-                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-                >
-                  {roles[roleIndex]}
-                </Motion.span>
-              </AnimatePresence>
-            </div>
-
             {/* Bio */}
             <p
               className="text-base md:text-lg text-muted-foreground max-w-md leading-relaxed"
@@ -395,17 +353,6 @@ export const HeroSection = () => {
               </div>
             </div>
 
-            {/* Latest-ship teaser — quiet mono link */}
-            <a
-              href="#projects"
-              className="group inline-flex items-center gap-2 font-mono text-xs text-muted-foreground hover:text-primary transition-colors duration-300"
-              style={{ animation: "fade-in 0.8s ease-out 1.35s both" }}
-            >
-              <span className="text-muted-foreground/60">latest ship</span>
-              <span className="text-foreground/80 group-hover:text-primary transition-colors duration-300 underline-offset-4 group-hover:underline">KLIDE — AI-native IDE</span>
-              <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-
           </div>
 
           {/* ── Right: visual — drifts gently with the pointer ── */}
@@ -416,27 +363,15 @@ export const HeroSection = () => {
         </div>
       </Motion.div>
 
-      {/* Bottom proof strip — fades out as soon as scrolling starts */}
+      {/* Bottom scroll hint — fades out as soon as scrolling starts */}
       <Motion.div
-        className="absolute bottom-0 left-0 right-0 z-10"
+        className="absolute bottom-6 left-0 right-0 flex justify-center z-10"
         style={reduced ? undefined : { opacity: hintOpacity }}
       >
         <div style={{ animation: "fade-in 0.8s ease-out 1.8s both" }}>
-          <div className="container-wide flex items-center justify-between gap-6 py-4 border-t border-border/25">
-            <div className="hidden sm:flex items-center gap-2 font-mono text-[11px] tracking-wide text-muted-foreground/70">
-              previously <span className="text-foreground/60">Limpide</span>
-              <span className="text-muted-foreground/40">·</span>
-              <span className="text-foreground/60">Ministère de l'Éducation</span>
-            </div>
-            <a href="#about" className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground/60 hover:text-primary transition-colors">
-              scroll <ArrowDown size={12} className="animate-bounce" />
-            </a>
-            <div className="hidden md:flex items-center gap-2 font-mono text-[11px] tracking-wide text-muted-foreground/70">
-              ENSIIE '25
-              <span className="text-muted-foreground/40">·</span>
-              paris <HeroClock />
-            </div>
-          </div>
+          <a href="#about" className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground/60 hover:text-primary transition-colors">
+            scroll <ArrowDown size={12} className="animate-bounce" />
+          </a>
         </div>
       </Motion.div>
 
