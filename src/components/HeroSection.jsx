@@ -395,14 +395,14 @@ export const HeroSection = () => {
               </div>
             </div>
 
-            {/* Latest-ship teaser */}
+            {/* Latest-ship teaser — quiet mono link */}
             <a
               href="#projects"
-              className="group inline-flex items-center gap-2.5 rounded-full glass px-4 py-2 font-mono text-xs text-foreground/75 hover:text-primary transition-colors duration-300"
+              className="group inline-flex items-center gap-2 font-mono text-xs text-muted-foreground hover:text-primary transition-colors duration-300"
               style={{ animation: "fade-in 0.8s ease-out 1.35s both" }}
             >
-              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
-              latest ship: KLIDE — AI-native IDE
+              <span className="text-muted-foreground/60">latest ship</span>
+              <span className="text-foreground/80 group-hover:text-primary transition-colors duration-300 underline-offset-4 group-hover:underline">KLIDE — AI-native IDE</span>
               <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
 

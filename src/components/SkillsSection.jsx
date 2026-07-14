@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { Bot, Cpu, Layers, LineChart, Plus } from "lucide-react"
+import { ArrowDownLeft, ArrowUpRight, Bot, Cpu, Layers, LineChart } from "lucide-react"
 import { motion as Motion, useReducedMotion } from "motion/react"
 import {
   SiOpenai, SiClaude, SiLangchain, SiN8N,
@@ -184,12 +184,12 @@ const CapabilityCard = ({ group }) => {
             />
           )}
 
-          {/* Flip affordance */}
+          {/* Flip affordance — diagonal arrow, nudges on hover */}
           <span
-            className={`absolute top-6 right-6 inline-flex items-center justify-center h-8 w-8 rounded-full border ${v.chip} ${v.muted} transition-transform duration-300 group-hover:rotate-90`}
+            className={`absolute top-7 right-7 ${v.muted} opacity-60 group-hover:opacity-100 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5`}
             aria-hidden="true"
           >
-            <Plus size={15} />
+            <ArrowUpRight size={19} strokeWidth={1.75} />
           </span>
 
           {/* Statement */}
@@ -227,10 +227,10 @@ const CapabilityCard = ({ group }) => {
         {/* ── Back: the full written list ── */}
         <div className={`absolute inset-0 [transform:rotateY(180deg)] ${faceBase} ${v.card}`}>
           <span
-            className={`absolute top-6 right-6 inline-flex items-center justify-center h-8 w-8 rounded-full border ${v.chip} ${v.muted} rotate-45 transition-transform duration-300 group-hover:rotate-[135deg]`}
+            className={`absolute top-7 right-7 ${v.muted} opacity-60 group-hover:opacity-100 transition-all duration-300 group-hover:-translate-x-0.5 group-hover:translate-y-0.5`}
             aria-hidden="true"
           >
-            <Plus size={15} />
+            <ArrowDownLeft size={19} strokeWidth={1.75} />
           </span>
 
           <div className="flex items-center gap-3">
@@ -250,7 +250,6 @@ const CapabilityCard = ({ group }) => {
             ))}
           </div>
 
-          <div className={`pt-6 text-xs ${v.muted}`}>Click to flip back</div>
         </div>
       </Motion.div>
     </div>
