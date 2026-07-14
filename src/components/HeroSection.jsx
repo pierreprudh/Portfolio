@@ -287,18 +287,6 @@ export const HeroSection = () => {
           {/* ── Left: content ── */}
           <div className="flex flex-col items-start gap-7 text-left">
 
-            {/* Liquid-glass chip — visible immediately */}
-            <div
-              className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-2 text-xs font-medium tracking-wide text-foreground/80"
-              style={{ animation: "fade-in 0.8s ease-out 0.1s both" }}
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
-              </span>
-              Paris · AI Engineer at Ontraak
-            </div>
-
             {/* Name */}
             <h1
               className="font-bold leading-[0.92] tracking-[-0.02em] select-none w-full"
