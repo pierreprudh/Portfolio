@@ -1,3 +1,4 @@
+import { AmbientBackground } from "../components/AmbientBackground";
 import { Navbar } from "../components/Navbar";
 import { HeroSection } from "../components/HeroSection";
 import { AboutSection } from "../components/AboutSection";
@@ -11,7 +12,8 @@ export const Home = () => {
   return (
     <div className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
 
-      {/* Flat canvas: faint dot grid + film grain */}
+      {/* Ambient color glows + faint dot grid + film grain */}
+      <AmbientBackground />
       <div className="canvas-texture" aria-hidden="true" />
 
       <div className="relative z-10">
