@@ -13,13 +13,6 @@ const archive = [
     githubUrl: "https://github.com/pierreprudh/Document-Information-Extraction",
   },
   {
-    id: "strava",
-    title: "Strava Dashboard",
-    description: "React + Python dashboard over the Strava API",
-    tags: "react · python · api",
-    githubUrl: "https://github.com/pierreprudh/Strava-Dashboard",
-  },
-  {
     id: "mask-detection",
     title: "Masked Face Detection",
     description: "Real-time mask classification, MobileNet / EfficientNet",
@@ -81,7 +74,11 @@ const ProjectVideo = ({ src, poster, title }) => {
 }
 
 const MonoTags = ({ children }) => (
-  <div className="font-mono text-[11px] text-muted-foreground/70">{children}</div>
+  <div className="font-mono text-[11px] text-muted-foreground/70 flex flex-wrap gap-x-3 gap-y-1">
+    {children.split("·").map((tag) => (
+      <span key={tag.trim()}>{tag.trim()}</span>
+    ))}
+  </div>
 )
 
 export const ProjectsSection = () => {
@@ -126,26 +123,36 @@ export const ProjectsSection = () => {
             </div>
           </Reveal>
 
-          {/* AI stack tile */}
+          {/* Strava dashboard tile */}
           <Reveal className="lg:col-span-4" delay={0.12}>
             <div className="tile group h-full overflow-hidden flex flex-col text-left">
               <div className="relative h-44 overflow-hidden border-b border-border/60">
                 <img
-                  src="projects/AI stack.jpg"
-                  alt="Self-hosted AI stack"
+                  src="projects/Project - Strava Dashboard.jpg"
+                  alt="Strava Dashboard"
                   loading="lazy"
                   className="absolute inset-0 w-full h-full object-cover object-top"
                 />
               </div>
               <div className="p-7 flex flex-col gap-3 flex-1">
-                <h3 className="text-xl font-semibold tracking-tight text-card-foreground">
-                  Self-hosted private AI stack
-                </h3>
+                <div className="flex items-start justify-between gap-4">
+                  <h3 className="text-xl font-semibold tracking-tight text-card-foreground">
+                    Strava Dashboard
+                  </h3>
+                  <a
+                    href="https://github.com/pierreprudh/Strava-Dashboard"
+                    target="_blank" rel="noopener noreferrer"
+                    aria-label="Strava Dashboard on GitHub"
+                    className="text-muted-foreground/60 hover:text-primary transition-colors shrink-0 mt-0.5"
+                  >
+                    <SiGithub size={17} />
+                  </a>
+                </div>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Docker-orchestrated AI platform — chat UI, Ollama runtime, code sandbox, web search, and automation on a private network. Running in production at Ontraak.
+                  Personal training analytics over the Strava API — a React dashboard on a Python backend, turning raw activity data into pace, load, and progression insights.
                 </p>
                 <div className="mt-auto pt-2">
-                  <MonoTags>typescript · express · postgresql · ollama</MonoTags>
+                  <MonoTags>react · python · strava api</MonoTags>
                 </div>
               </div>
             </div>
@@ -210,7 +217,11 @@ export const ProjectsSection = () => {
                   {project.title}
                 </span>
                 <span className="hidden md:block text-sm text-muted-foreground truncate">{project.description}</span>
-                <span className="hidden md:block font-mono text-[11px] text-muted-foreground/70">{project.tags}</span>
+                <span className="hidden md:flex flex-wrap gap-x-3 font-mono text-[11px] text-muted-foreground/70">
+                  {project.tags.split("·").map((tag) => (
+                    <span key={tag.trim()}>{tag.trim()}</span>
+                  ))}
+                </span>
                 <ArrowUpRight size={15} className="text-muted-foreground/40 group-hover:text-primary transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 self-center" />
               </a>
             </Reveal>

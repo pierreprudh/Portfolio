@@ -211,7 +211,11 @@ const CapabilityCard = ({ group }) => {
               <Icon className="h-6 w-6 shrink-0" strokeWidth={1.75} />
               <div>
                 <div className="text-sm md:text-base font-semibold leading-tight">{title}</div>
-                <div className={`text-xs md:text-sm mt-0.5 ${v.muted}`}>{concepts}</div>
+                <div className={`text-xs md:text-sm mt-0.5 flex flex-wrap gap-x-2.5 ${v.muted}`}>
+                  {concepts.split("·").map((c) => (
+                    <span key={c.trim()}>{c.trim()}</span>
+                  ))}
+                </div>
               </div>
             </div>
             <div className={`flex items-center gap-3.5 ${v.muted}`}>

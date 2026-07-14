@@ -98,25 +98,25 @@
   }
 
   .dark {
-    --background: 222 47% 4%;
+    --background: 222 30% 9%;
     --foreground: 213 31% 91%;
 
-    --card: 222 47% 8%;
+    --card: 222 28% 13%;
     --card-foreground: 213 31% 91%;
 
     --primary: 186 45% 38%;
     --primary-foreground: 213 31% 91%;
 
-    --secondary: 217 33% 14%;
+    --secondary: 217 26% 17%;
     --secondary-foreground: 213 31% 91%;
 
-    --muted: 217 33% 12%;
-    --muted-foreground: 215 18% 65%;
+    --muted: 217 26% 15%;
+    --muted-foreground: 215 18% 67%;
 
-    --accent: 217 33% 16%;
+    --accent: 217 26% 19%;
     --accent-foreground: 213 31% 91%;
 
-    --border: 217 33% 20%;
+    --border: 217 24% 25%;
     --ring: 186 45% 38%;
   }
 
@@ -262,20 +262,12 @@
   padding: 0;
 }
 
-/* ── Flat canvas texture: faint dot grid + film grain ── */
+/* ── Flat canvas texture: film grain only ── */
 .canvas-texture {
   position: fixed;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-}
-.canvas-texture::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background-image: radial-gradient(hsl(var(--foreground) / 0.07) 1px, transparent 1px);
-  background-size: 26px 26px;
-  mask-image: radial-gradient(ellipse 90% 80% at 50% 20%, black 0%, transparent 75%);
 }
 .canvas-texture::after {
   content: "";
@@ -351,6 +343,20 @@
 
 @utility text-gradient {
   @apply bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent;
+}
+
+/* Contact trails: a short dash of light travelling left → right along the path */
+.trail-pulse {
+  stroke-dasharray: 80 1620;
+  stroke-dashoffset: 1700;
+  animation: trailPulse 6s linear infinite;
+}
+.trail-pulse-late {
+  animation-delay: -3.2s;
+}
+@keyframes trailPulse {
+  from { stroke-dashoffset: 1700; }
+  to   { stroke-dashoffset: 0; }
 }
 
 @keyframes navEnter {
