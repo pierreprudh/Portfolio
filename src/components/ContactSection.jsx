@@ -1,7 +1,8 @@
 import { ArrowUp, ArrowUpRight, Check, Copy, Mail } from "lucide-react"
 import { SiGithub, SiLinkedin, SiOllama } from "react-icons/si"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Reveal } from "./Reveal"
+import Threads from "./Threads"
 
 const EMAIL = "prudh.pierre@gmail.com"
 
@@ -10,51 +11,6 @@ const SOCIALS = [
   { href: "https://www.linkedin.com/in/pierre-prudhomme-14b145222/", icon: SiLinkedin, label: "LinkedIn" },
   { href: "https://ollama.com/pierreprudh", icon: SiOllama, label: "Ollama" },
 ]
-
-/* Quiet light trails sweeping across the footer, converging toward the
-   bottom divider on the right. Non-scaling strokes stay hairline-thin. */
-const TrailField = () => (
-  <svg
-    className="absolute inset-0 h-full w-full pointer-events-none"
-    viewBox="0 0 1440 360"
-    preserveAspectRatio="none"
-    aria-hidden="true"
-  >
-    <defs>
-      {/* userSpaceOnUse: bounding-box gradients degenerate on near-flat paths */}
-      <linearGradient id="trail-bright" gradientUnits="userSpaceOnUse" x1="-60" y1="0" x2="1500" y2="0">
-        <stop offset="0" stopColor="hsl(var(--primary))" stopOpacity="0" />
-        <stop offset="0.55" stopColor="hsl(var(--primary))" stopOpacity="0.3" />
-        <stop offset="1" stopColor="hsl(var(--primary))" stopOpacity="0.55" />
-      </linearGradient>
-      <linearGradient id="trail-faint" gradientUnits="userSpaceOnUse" x1="-60" y1="0" x2="1500" y2="0">
-        <stop offset="0" stopColor="hsl(var(--foreground))" stopOpacity="0" />
-        <stop offset="1" stopColor="hsl(var(--foreground))" stopOpacity="0.14" />
-      </linearGradient>
-    </defs>
-
-    <g stroke="url(#trail-faint)" fill="none">
-      <path d="M -60 20 C 420 60, 880 170, 1500 288" vectorEffect="non-scaling-stroke" />
-      <path d="M -60 150 C 460 180, 900 240, 1500 294" vectorEffect="non-scaling-stroke" />
-      <path d="M -60 420 C 520 380, 940 330, 1500 300" vectorEffect="non-scaling-stroke" />
-    </g>
-
-    <g stroke="url(#trail-bright)" fill="none">
-      <path d="M -60 70 C 440 110, 890 200, 1500 290" vectorEffect="non-scaling-stroke" />
-      <path d="M -60 340 C 500 320, 930 308, 1500 297" vectorEffect="non-scaling-stroke" />
-    </g>
-
-    {/* One slow pulse of light along the top trail */}
-    <path
-      className="trail-pulse"
-      d="M -60 70 C 440 110, 890 200, 1500 290"
-      stroke="hsl(var(--primary))"
-      strokeOpacity="0.7"
-      fill="none"
-      vectorEffect="non-scaling-stroke"
-    />
-  </svg>
-)
 
 /* Static phyllotaxis mark — a miniature of the hero sphere */
 const MiniSphere = () => {
@@ -105,6 +61,17 @@ const FooterCol = ({ title, links }) => (
 
 export const ContactSection = () => {
   const [copied, setCopied] = useState(false)
+  const [isDark, setIsDark] = useState(
+    () => typeof document !== "undefined" && document.documentElement.classList.contains("dark")
+  )
+
+  useEffect(() => {
+    const check = () => setIsDark(document.documentElement.classList.contains("dark"))
+    check()
+    const observer = new MutationObserver(check)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] })
+    return () => observer.disconnect()
+  }, [])
 
   const copyEmail = async () => {
     try {
@@ -160,9 +127,15 @@ export const ContactSection = () => {
 
       </div>
 
-      {/* ── Footer — trails drift quietly behind ── */}
+      {/* ── Footer — animated threads drift quietly behind ── */}
       <div className="relative mt-20 md:mt-28 overflow-hidden">
-        <TrailField />
+        <div className="absolute inset-0 pointer-events-none opacity-35 dark:opacity-45" aria-hidden="true">
+          <Threads
+            color={isDark ? [0.42, 0.74, 0.78] : [0.18, 0.44, 0.46]}
+            amplitude={0.9}
+            distance={0}
+          />
+        </div>
 
         <footer className="container-wide relative z-10">
 

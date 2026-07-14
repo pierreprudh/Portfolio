@@ -264,16 +264,6 @@ export const HeroSection = () => {
         <div className="absolute inset-0 bg-background/25 dark:bg-background/30" />
         {/* Left reading zone — keeps crisp type legible over the crisp image */}
         <div className="absolute inset-y-0 left-0 w-[62%] bg-gradient-to-r from-background/55 via-background/25 to-transparent" />
-        {/* Progressive blur: crisp up top, frosted as it approaches the fold */}
-        <div
-          className="absolute inset-x-0 bottom-0 h-[28%]"
-          style={{
-            backdropFilter: "blur(5px)",
-            WebkitBackdropFilter: "blur(5px)",
-            maskImage: "linear-gradient(to bottom, transparent, black 90%)",
-            WebkitMaskImage: "linear-gradient(to bottom, transparent, black 90%)",
-          }}
-        />
         {/* Morph into the next section's flat canvas */}
         <div className="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-b from-transparent via-background/60 to-background" />
       </div>
