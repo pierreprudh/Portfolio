@@ -9,6 +9,20 @@ const reducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
+const HeroClock = () => {
+  const [time, setTime] = useState("")
+  useEffect(() => {
+    const fmt = new Intl.DateTimeFormat("en-GB", {
+      timeZone: "Europe/Paris", hour: "2-digit", minute: "2-digit",
+    })
+    const tick = () => setTime(fmt.format(new Date()))
+    tick()
+    const id = setInterval(tick, 15_000)
+    return () => clearInterval(id)
+  }, [])
+  return <span className="tabular-nums">{time}</span>
+}
+
 const SplitWord = ({ word, baseDelay, charClassName = "" }) => (
   <span className="inline-flex">
     {word.split("").map((char, i) => (
@@ -46,6 +60,18 @@ const HeroVisual = ({ isDark }) => {
     let angle = 0
     let rafId
 
+    // Cursor repulsion — eased so dots flow around the pointer, not snap
+    const mouse = { x: -9999, y: -9999 }
+    const mouseTarget = { x: -9999, y: -9999 }
+    const onPointerMove = (e) => {
+      const rect = canvas.getBoundingClientRect()
+      mouseTarget.x = e.clientX - rect.left
+      mouseTarget.y = e.clientY - rect.top
+      // snap when entering from parked position to avoid a fly-in sweep
+      if (mouse.x < -1000) { mouse.x = mouseTarget.x; mouse.y = mouseTarget.y }
+    }
+    const onPointerLeave = () => { mouseTarget.x = -9999; mouseTarget.y = -9999 }
+
     const draw = () => {
       ctx.clearRect(0, 0, S, S)
 
@@ -80,6 +106,23 @@ const HeroVisual = ({ isDark }) => {
       }
 
       pts.sort((a, b) => a.zf - b.zf)
+
+      // ── Cursor repulsion: displace projected dots around the pointer ──
+      if (!reducedMotion()) {
+        mouse.x += (mouseTarget.x - mouse.x) * 0.12
+        mouse.y += (mouseTarget.y - mouse.y) * 0.12
+        const repelR = S * 0.17
+        for (const p of pts) {
+          const dx = p.sx - mouse.x
+          const dy = p.sy - mouse.y
+          const d = Math.hypot(dx, dy)
+          if (d < repelR && d > 0.001) {
+            const f = Math.pow(1 - d / repelR, 1.6) * S * 0.05
+            p.sx += (dx / d) * f
+            p.sy += (dy / d) * f
+          }
+        }
+      }
 
       // ── Constellation lines ──
       const linkDist = S * 0.089
@@ -145,12 +188,16 @@ const HeroVisual = ({ isDark }) => {
     const ro = new ResizeObserver(resize)
     ro.observe(container)
     window.addEventListener("resize", resize)
+    container.addEventListener("pointermove", onPointerMove)
+    container.addEventListener("pointerleave", onPointerLeave)
 
     draw()
     return () => {
       cancelAnimationFrame(rafId)
       ro.disconnect()
       window.removeEventListener("resize", resize)
+      container.removeEventListener("pointermove", onPointerMove)
+      container.removeEventListener("pointerleave", onPointerLeave)
     }
   }, [])
 
@@ -348,6 +395,17 @@ export const HeroSection = () => {
               </div>
             </div>
 
+            {/* Latest-ship teaser */}
+            <a
+              href="#projects"
+              className="group inline-flex items-center gap-2.5 rounded-full glass px-4 py-2 font-mono text-xs text-foreground/75 hover:text-primary transition-colors duration-300"
+              style={{ animation: "fade-in 0.8s ease-out 1.35s both" }}
+            >
+              <span className="h-1.5 w-1.5 rounded-full bg-primary animate-pulse" />
+              latest ship: KLIDE — AI-native IDE
+              <ArrowUpRight size={13} className="transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
+
           </div>
 
           {/* ── Right: visual — drifts gently with the pointer ── */}
@@ -358,15 +416,27 @@ export const HeroSection = () => {
         </div>
       </Motion.div>
 
-      {/* Bottom scroll hint — fades out as soon as scrolling starts */}
+      {/* Bottom proof strip — fades out as soon as scrolling starts */}
       <Motion.div
-        className="absolute bottom-6 left-0 right-0 flex justify-center z-10"
+        className="absolute bottom-0 left-0 right-0 z-10"
         style={reduced ? undefined : { opacity: hintOpacity }}
       >
         <div style={{ animation: "fade-in 0.8s ease-out 1.8s both" }}>
-          <a href="#about" className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground/60 hover:text-primary transition-colors">
-            scroll <ArrowDown size={12} className="animate-bounce" />
-          </a>
+          <div className="container-wide flex items-center justify-between gap-6 py-4 border-t border-border/25">
+            <div className="hidden sm:flex items-center gap-2 font-mono text-[11px] tracking-wide text-muted-foreground/70">
+              previously <span className="text-foreground/60">Limpide</span>
+              <span className="text-muted-foreground/40">·</span>
+              <span className="text-foreground/60">Ministère de l'Éducation</span>
+            </div>
+            <a href="#about" className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground/60 hover:text-primary transition-colors">
+              scroll <ArrowDown size={12} className="animate-bounce" />
+            </a>
+            <div className="hidden md:flex items-center gap-2 font-mono text-[11px] tracking-wide text-muted-foreground/70">
+              ENSIIE '25
+              <span className="text-muted-foreground/40">·</span>
+              paris <HeroClock />
+            </div>
+          </div>
         </div>
       </Motion.div>
 
