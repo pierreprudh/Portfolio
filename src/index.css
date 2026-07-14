@@ -213,6 +213,29 @@
     inset 0 -1px 0 hsl(0 0% 100% / 0.04);
 }
 
+/* Thin, ink-colored scrollbar for in-card lists */
+@utility scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, currentColor 28%, transparent) transparent;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, currentColor 28%, transparent);
+    border-radius: 9999px;
+  }
+}
+
+/* Soft fade at the bottom edge of a scroll area — hints there's more */
+@utility scroll-fade {
+  mask-image: linear-gradient(to bottom, black calc(100% - 32px), transparent);
+  -webkit-mask-image: linear-gradient(to bottom, black calc(100% - 32px), transparent);
+}
+
 @utility cosmic-button {
   @apply px-6 py-2.5 rounded-full bg-primary text-primary-foreground font-medium
          hover:bg-primary/90 hover:scale-[1.03] active:scale-[0.97]

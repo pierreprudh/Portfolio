@@ -266,16 +266,16 @@ export const HeroSection = () => {
         <div className="absolute inset-y-0 left-0 w-[62%] bg-gradient-to-r from-background/55 via-background/25 to-transparent" />
         {/* Progressive blur: crisp up top, frosted as it approaches the fold */}
         <div
-          className="absolute inset-x-0 bottom-0 h-[50%]"
+          className="absolute inset-x-0 bottom-0 h-[28%]"
           style={{
-            backdropFilter: "blur(14px)",
-            WebkitBackdropFilter: "blur(14px)",
-            maskImage: "linear-gradient(to bottom, transparent, black 75%)",
-            WebkitMaskImage: "linear-gradient(to bottom, transparent, black 75%)",
+            backdropFilter: "blur(5px)",
+            WebkitBackdropFilter: "blur(5px)",
+            maskImage: "linear-gradient(to bottom, transparent, black 90%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent, black 90%)",
           }}
         />
         {/* Morph into the next section's flat canvas */}
-        <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-b from-transparent via-background/70 to-background" />
+        <div className="absolute inset-x-0 bottom-0 h-[30%] bg-gradient-to-b from-transparent via-background/60 to-background" />
       </div>
 
       <Motion.div
@@ -322,7 +322,7 @@ export const HeroSection = () => {
 
             {/* Bio */}
             <p
-              className="text-base md:text-lg text-muted-foreground max-w-md leading-relaxed"
+              className="text-base md:text-lg text-foreground/75 max-w-md leading-relaxed"
               style={{ animation: "fade-in 0.8s ease-out 1.05s both" }}
             >
               Designing and running agentic AI systems, self-hosted LLM infrastructure, and full-stack AI products in production.

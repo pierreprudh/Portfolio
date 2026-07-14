@@ -243,9 +243,10 @@ const CapabilityCard = ({ group }) => {
           </div>
           <div className={`text-xs md:text-sm mt-1.5 ${v.muted}`}>The full working stack, written out.</div>
 
-          {/* Grouped editorial list — labeled clusters, hairline rows */}
+          {/* Grouped editorial list — labeled clusters, hairline rows, scrolls when taller than the card */}
           <div
-            className={`mt-7 flex-1 grid content-start items-start gap-x-8 md:gap-x-10 gap-y-6 ${
+            data-lenis-prevent
+            className={`mt-7 flex-1 min-h-0 overflow-y-auto overscroll-contain scroll-thin scroll-fade pr-2 -mr-2 pb-8 grid content-start items-start gap-x-8 md:gap-x-10 gap-y-6 ${
               big ? "grid-cols-2 md:grid-cols-3" : "grid-cols-2"
             }`}
           >
