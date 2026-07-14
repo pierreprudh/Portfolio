@@ -7,10 +7,9 @@
 }
 
 .scroll-stack-inner {
-  /* Bottom runway = release threshold (50vh) + one section-gap. The pin
-     releases at endMarker − 50vh, so exactly 4rem of space remains between
-     the settled deck and the next section — no dead zone. */
-  padding: 2rem 0 calc(50vh + 4rem);
+  /* Bottom runway is computed in JS from the measured deck height so the
+     settled deck always ends one releaseGap above the next section. */
+  padding: 2rem 0 4rem;
 }
 
 .scroll-stack-card-wrapper {

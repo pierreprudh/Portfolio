@@ -18,6 +18,10 @@ const ScrollStack = ({
   rotationAmount = 0,
   blurAmount = 0,
   useWindowScroll = false,
+  // Scroll distance the completed deck stays pinned before releasing
+  holdOffset = '20%',
+  // Document-space gap between the settled deck and whatever follows
+  releaseGap = 64,
   onStackComplete
 }) => {
   const scrollerRef = useRef(null);
@@ -29,7 +33,7 @@ const ScrollStack = ({
   // scroll. Reading getBoundingClientRect() on transformed cards mid-scroll
   // feeds the applied translateY back into the math and causes visible wobble.
   const cardOffsetsRef = useRef([]);
-  const endOffsetRef = useRef(0);
+  const pinEndRef = useRef(0);
   const lastTransformsRef = useRef(new Map());
   const isUpdatingRef = useRef(false);
 
@@ -62,8 +66,7 @@ const ScrollStack = ({
     const { scrollTop, containerHeight } = getScrollData();
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
-    const endElementTop = endOffsetRef.current;
-    const pinEnd = endElementTop - containerHeight / 2;
+    const pinEnd = pinEndRef.current;
 
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
@@ -149,9 +152,11 @@ const ScrollStack = ({
 
   // Measure untransformed layout positions. Strip transforms, read, then
   // immediately re-apply inside the same task — no paint happens in between.
+  // Also derives the pin release point and sizes the runway so the settled
+  // deck ends exactly `releaseGap` above whatever follows the stack.
   const measureOffsets = useCallback(() => {
     const scroller = scrollerRef.current;
-    if (!scroller) return;
+    if (!scroller || !cardsRef.current.length) return;
 
     cardsRef.current.forEach(card => {
       card.style.transform = 'translateZ(0)';
@@ -164,15 +169,50 @@ const ScrollStack = ({
         ? el.getBoundingClientRect().top + window.scrollY
         : el.offsetTop;
 
-    cardOffsetsRef.current = cardsRef.current.map(pageOffset);
+    const offsets = cardsRef.current.map(pageOffset);
+    const heights = cardsRef.current.map(c => c.getBoundingClientRect().height);
+    cardOffsetsRef.current = offsets;
 
+    const { containerHeight } = getScrollData();
+    const stackPositionPx = parsePercentage(stackPosition, containerHeight);
+    const holdPx = parsePercentage(holdOffset, containerHeight);
+    const n = offsets.length;
+
+    // Height of the fully stacked deck (cards offset by itemStackDistance)
+    const deckHeight = Math.max(...heights.map((h, i) => i * itemStackDistance + h));
+
+    // Release shortly after the last card lands
+    const lastPinStart = offsets[n - 1] - stackPositionPx - itemStackDistance * (n - 1);
+    const pinEnd = lastPinStart + holdPx;
+    pinEndRef.current = pinEnd;
+
+    // After release the deck's top sits at pinEnd + stackPosition in document
+    // space; pad the runway so the next section starts releaseGap below it.
     const endElement = useWindowScroll
       ? document.querySelector('.scroll-stack-end')
       : scroller.querySelector('.scroll-stack-end');
-    endOffsetRef.current = endElement ? pageOffset(endElement) : 0;
+    if (endElement) {
+      const endTop = pageOffset(endElement);
+      const deckBottom = pinEnd + stackPositionPx + deckHeight;
+      const paddingBottom = Math.max(releaseGap, deckBottom + releaseGap - endTop);
+      const inner = scroller.querySelector('.scroll-stack-inner');
+      const current = parseFloat(inner.style.paddingBottom) || 0;
+      if (Math.abs(current - paddingBottom) > 1) {
+        inner.style.paddingBottom = `${paddingBottom}px`;
+      }
+    }
 
     updateCardTransforms();
-  }, [useWindowScroll, updateCardTransforms]);
+  }, [
+    useWindowScroll,
+    updateCardTransforms,
+    getScrollData,
+    parsePercentage,
+    stackPosition,
+    holdOffset,
+    itemStackDistance,
+    releaseGap
+  ]);
 
   const handleScroll = useCallback(() => {
     updateCardTransforms();
