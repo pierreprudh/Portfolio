@@ -119,7 +119,7 @@ export const AboutSection = () => {
   const [reduced] = useState(prefersReducedMotion)
 
   return (
-    <section id="about" className="pt-24 md:pt-32 border-t border-border/40 relative">
+    <section id="about" className="pt-12 md:pt-16 border-t border-border/40 relative">
       <div className="container-wide">
         <SectionHeader index="01" label="About" title="Who I am" />
       </div>

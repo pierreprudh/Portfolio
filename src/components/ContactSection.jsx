@@ -19,7 +19,7 @@ export const ContactSection = () => {
   }
 
   return (
-    <section id="contact" className="py-28 md:py-40 border-t border-border/40 relative">
+    <section id="contact" className="py-16 md:py-24 border-t border-border/40 relative">
       <div className="container-wide">
 
         <Reveal>
