@@ -1,4 +1,4 @@
-import { ArrowUp, Mail } from "lucide-react"
+import { ArrowUp, ArrowUpRight } from "lucide-react"
 import { SiGithub, SiLinkedin, SiOllama } from "react-icons/si"
 import { Reveal } from "./Reveal"
 import BackgroundPaths from "./BackgroundPaths"
@@ -40,9 +40,22 @@ export const ContactSection = () => {
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="mt-8">
-              <a href={`mailto:${EMAIL}`} className="cosmic-button inline-flex items-center gap-2.5">
-                <Mail size={16} /> {EMAIL}
+            <div className="mt-10">
+              <a
+                href={`mailto:${EMAIL}`}
+                className="group relative inline-flex items-center gap-3 pb-2 text-xl md:text-2xl font-medium tracking-tight text-foreground/90 hover:text-foreground transition-colors duration-300"
+              >
+                {EMAIL}
+                <ArrowUpRight
+                  size={20}
+                  className="text-muted-foreground/60 transition-all duration-300 group-hover:text-primary group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+                />
+                {/* Resting hairline, swept over by a primary line on hover */}
+                <span className="absolute bottom-0 left-0 h-px w-full bg-border" aria-hidden="true" />
+                <span
+                  className="absolute bottom-0 left-0 h-px w-full origin-left scale-x-0 bg-primary transition-transform duration-500 ease-out group-hover:scale-x-100"
+                  aria-hidden="true"
+                />
               </a>
             </div>
           </Reveal>
