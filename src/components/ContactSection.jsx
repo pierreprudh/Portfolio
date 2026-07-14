@@ -1,6 +1,5 @@
-import { ArrowUp, Check, Copy, Mail } from "lucide-react"
+import { ArrowUp, Mail } from "lucide-react"
 import { SiGithub, SiLinkedin, SiOllama } from "react-icons/si"
-import { useState } from "react"
 import { Reveal } from "./Reveal"
 import BackgroundPaths from "./BackgroundPaths"
 
@@ -13,23 +12,11 @@ const SOCIALS = [
 ]
 
 export const ContactSection = () => {
-  const [copied, setCopied] = useState(false)
-
-  const copyEmail = async () => {
-    try {
-      await navigator.clipboard.writeText(EMAIL)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // clipboard unavailable — the mailto link still works
-    }
-  }
-
   return (
     <section id="contact" className="-mt-8 md:-mt-12 pt-8 md:pt-12 relative overflow-hidden">
 
-      {/* Floating background paths drifting behind the whole section */}
-      <div className="absolute inset-0 pointer-events-none opacity-60 dark:opacity-70" aria-hidden="true">
+      {/* Floating background paths drawing themselves behind the whole section */}
+      <div className="absolute inset-0 pointer-events-none" aria-hidden="true">
         <BackgroundPaths />
       </div>
 
@@ -53,18 +40,10 @@ export const ContactSection = () => {
           </Reveal>
 
           <Reveal delay={0.16}>
-            <div className="flex flex-wrap items-center gap-3 mt-8">
+            <div className="mt-8">
               <a href={`mailto:${EMAIL}`} className="cosmic-button inline-flex items-center gap-2.5">
                 <Mail size={16} /> {EMAIL}
               </a>
-              <button
-                onClick={copyEmail}
-                aria-label="Copy email address"
-                className="inline-flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-full border border-border font-mono text-xs text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
-              >
-                {copied ? <Check size={14} className="text-primary" /> : <Copy size={14} />}
-                {copied ? "copied" : "copy email"}
-              </button>
             </div>
           </Reveal>
         </div>

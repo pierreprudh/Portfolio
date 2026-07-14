@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUpRight } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { motion as Motion, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring } from "motion/react"
 import { SiGithub, SiLinkedin, SiOllama } from "react-icons/si"
@@ -209,7 +209,6 @@ export const HeroSection = () => {
   const contentY = useTransform(scrollYProgress, [0, 1], [0, -70])
   const contentScale = useTransform(scrollYProgress, [0, 1], [1, 0.94])
   const contentOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0])
-  const hintOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0])
 
   // Pointer parallax: backdrop drifts against the cursor, sphere drifts with it
   const pointerX = useMotionValue(0)
@@ -247,7 +246,16 @@ export const HeroSection = () => {
     >
 
       {/* Scenic backdrop — near-crisp, theme-aware, melting into the page below */}
-      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+      <div
+        className="absolute inset-0 overflow-hidden"
+        aria-hidden="true"
+        style={{
+          // Fade the entire backdrop to transparent so the page's own ambient
+          // canvas shows through — no overlay color to mismatch, no seam.
+          maskImage: "linear-gradient(to bottom, black 72%, transparent 100%)",
+          WebkitMaskImage: "linear-gradient(to bottom, black 72%, transparent 100%)",
+        }}
+      >
         <Motion.div
           className="absolute inset-0"
           style={reduced ? undefined : { y: bgYCombined, x: bgDriftX }}
@@ -265,8 +273,6 @@ export const HeroSection = () => {
         <div className="absolute inset-0 bg-background/25 dark:bg-background/30" />
         {/* Left reading zone — keeps crisp type legible over the crisp image */}
         <div className="absolute inset-y-0 left-0 w-[62%] bg-gradient-to-r from-background/55 via-background/25 to-transparent" />
-        {/* Short edge-fade into the next section's flat canvas */}
-        <div className="absolute inset-x-0 bottom-0 h-[12%] bg-gradient-to-b from-transparent to-background" />
       </div>
 
       <Motion.div
@@ -344,18 +350,6 @@ export const HeroSection = () => {
             <HeroVisual isDark={isDark} />
           </Motion.div>
 
-        </div>
-      </Motion.div>
-
-      {/* Bottom scroll hint — fades out as soon as scrolling starts */}
-      <Motion.div
-        className="absolute bottom-6 left-0 right-0 flex justify-center z-10"
-        style={reduced ? undefined : { opacity: hintOpacity }}
-      >
-        <div style={{ animation: "fade-in 0.8s ease-out 1.8s both" }}>
-          <a href="#about" className="inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.3em] text-muted-foreground/60 hover:text-primary transition-colors">
-            scroll <ArrowDown size={12} className="animate-bounce" />
-          </a>
         </div>
       </Motion.div>
 
