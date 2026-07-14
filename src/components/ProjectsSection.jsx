@@ -88,7 +88,7 @@ export const ProjectsSection = () => {
 
         <SectionHeader
           index="04"
-          label="Selected work"
+          label="Projects"
           title="Projects"
           lead="Three systems I'm proud of — and the earlier experiments that led here."
         />

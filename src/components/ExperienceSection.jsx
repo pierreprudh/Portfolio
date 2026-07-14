@@ -42,7 +42,7 @@ export const ExperienceSection = () => {
     <section id="experience" className="py-12 md:py-16 relative">
       <div className="container-wide">
 
-        <SectionHeader index="02" label="Career" title="Experience" />
+        <SectionHeader index="02" label="Experience" title="Experience" />
 
         <div className="mt-4 border-t border-border/50">
           {experiences.map((exp, i) => (
