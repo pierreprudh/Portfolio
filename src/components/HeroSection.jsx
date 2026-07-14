@@ -203,11 +203,11 @@ export const HeroSection = () => {
         <Motion.div className="absolute inset-0" style={reduced ? undefined : { y: bgY }}>
           <div
             className="absolute inset-0 scale-[1.15] bg-cover bg-center transition-opacity duration-700 opacity-100 dark:opacity-0"
-            style={{ backgroundImage: "url('/hero-day.jpg')", filter: "blur(6px)" }}
+            style={{ backgroundImage: "url('/hero-day.jpg')", filter: "blur(2.5px)" }}
           />
           <div
             className="absolute inset-0 scale-[1.15] bg-cover bg-center transition-opacity duration-700 opacity-0 dark:opacity-100"
-            style={{ backgroundImage: "url('/hero-night.jpg')", filter: "blur(6px)" }}
+            style={{ backgroundImage: "url('/hero-night.jpg')", filter: "blur(2.5px)" }}
           />
         </Motion.div>
         {/* Legibility scrim */}

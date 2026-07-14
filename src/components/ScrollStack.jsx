@@ -15,7 +15,6 @@ const ScrollStack = ({
   stackPosition = '20%',
   scaleEndPosition = '10%',
   baseScale = 0.85,
-  scaleDuration = 0.5,
   rotationAmount = 0,
   blurAmount = 0,
   useWindowScroll = false,
@@ -26,6 +25,11 @@ const ScrollStack = ({
   const animationFrameRef = useRef(null);
   const lenisRef = useRef(null);
   const cardsRef = useRef([]);
+  // Untransformed layout offsets, measured once (and on resize) — never during
+  // scroll. Reading getBoundingClientRect() on transformed cards mid-scroll
+  // feeds the applied translateY back into the math and causes visible wobble.
+  const cardOffsetsRef = useRef([]);
+  const endOffsetRef = useRef(0);
   const lastTransformsRef = useRef(new Map());
   const isUpdatingRef = useRef(false);
 
@@ -44,32 +48,11 @@ const ScrollStack = ({
 
   const getScrollData = useCallback(() => {
     if (useWindowScroll) {
-      return {
-        scrollTop: window.scrollY,
-        containerHeight: window.innerHeight,
-        scrollContainer: document.documentElement
-      };
-    } else {
-      const scroller = scrollerRef.current;
-      return {
-        scrollTop: scroller.scrollTop,
-        containerHeight: scroller.clientHeight,
-        scrollContainer: scroller
-      };
+      return { scrollTop: window.scrollY, containerHeight: window.innerHeight };
     }
+    const scroller = scrollerRef.current;
+    return { scrollTop: scroller.scrollTop, containerHeight: scroller.clientHeight };
   }, [useWindowScroll]);
-
-  const getElementOffset = useCallback(
-    element => {
-      if (useWindowScroll) {
-        const rect = element.getBoundingClientRect();
-        return rect.top + window.scrollY;
-      } else {
-        return element.offsetTop;
-      }
-    },
-    [useWindowScroll]
-  );
 
   const updateCardTransforms = useCallback(() => {
     if (!cardsRef.current.length || isUpdatingRef.current) return;
@@ -79,21 +62,16 @@ const ScrollStack = ({
     const { scrollTop, containerHeight } = getScrollData();
     const stackPositionPx = parsePercentage(stackPosition, containerHeight);
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
-
-    const endElement = useWindowScroll
-      ? document.querySelector('.scroll-stack-end')
-      : scrollerRef.current?.querySelector('.scroll-stack-end');
-
-    const endElementTop = endElement ? getElementOffset(endElement) : 0;
+    const endElementTop = endOffsetRef.current;
+    const pinEnd = endElementTop - containerHeight / 2;
 
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
 
-      const cardTop = getElementOffset(card);
+      const cardTop = cardOffsetsRef.current[i] ?? 0;
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
       const triggerEnd = cardTop - scaleEndPositionPx;
-      const pinStart = cardTop - stackPositionPx - itemStackDistance * i;
-      const pinEnd = endElementTop - containerHeight / 2;
+      const pinStart = triggerStart;
 
       const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
       const targetScale = baseScale + i * itemScale;
@@ -104,16 +82,11 @@ const ScrollStack = ({
       if (blurAmount) {
         let topCardIndex = 0;
         for (let j = 0; j < cardsRef.current.length; j++) {
-          const jCardTop = getElementOffset(cardsRef.current[j]);
-          const jTriggerStart = jCardTop - stackPositionPx - itemStackDistance * j;
-          if (scrollTop >= jTriggerStart) {
-            topCardIndex = j;
-          }
+          const jTriggerStart = (cardOffsetsRef.current[j] ?? 0) - stackPositionPx - itemStackDistance * j;
+          if (scrollTop >= jTriggerStart) topCardIndex = j;
         }
-
         if (i < topCardIndex) {
-          const depthInStack = topCardIndex - i;
-          blur = Math.max(0, depthInStack * blurAmount);
+          blur = Math.max(0, (topCardIndex - i) * blurAmount);
         }
       }
 
@@ -136,18 +109,15 @@ const ScrollStack = ({
       const lastTransform = lastTransformsRef.current.get(i);
       const hasChanged =
         !lastTransform ||
-        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.1 ||
-        Math.abs(lastTransform.scale - newTransform.scale) > 0.001 ||
-        Math.abs(lastTransform.rotation - newTransform.rotation) > 0.1 ||
-        Math.abs(lastTransform.blur - newTransform.blur) > 0.1;
+        Math.abs(lastTransform.translateY - newTransform.translateY) > 0.05 ||
+        Math.abs(lastTransform.scale - newTransform.scale) > 0.0005 ||
+        Math.abs(lastTransform.rotation - newTransform.rotation) > 0.05 ||
+        Math.abs(lastTransform.blur - newTransform.blur) > 0.05;
 
       if (hasChanged) {
-        const transform = `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
-        const filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
-
-        card.style.transform = transform;
-        card.style.filter = filter;
-
+        card.style.transform =
+          `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
+        card.style.filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
         lastTransformsRef.current.set(i, newTransform);
       }
 
@@ -171,13 +141,38 @@ const ScrollStack = ({
     baseScale,
     rotationAmount,
     blurAmount,
-    useWindowScroll,
     onStackComplete,
     calculateProgress,
     parsePercentage,
-    getScrollData,
-    getElementOffset
+    getScrollData
   ]);
+
+  // Measure untransformed layout positions. Strip transforms, read, then
+  // immediately re-apply inside the same task — no paint happens in between.
+  const measureOffsets = useCallback(() => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+
+    cardsRef.current.forEach(card => {
+      card.style.transform = 'translateZ(0)';
+      card.style.filter = '';
+    });
+    lastTransformsRef.current.clear();
+
+    const pageOffset = (el) =>
+      useWindowScroll
+        ? el.getBoundingClientRect().top + window.scrollY
+        : el.offsetTop;
+
+    cardOffsetsRef.current = cardsRef.current.map(pageOffset);
+
+    const endElement = useWindowScroll
+      ? document.querySelector('.scroll-stack-end')
+      : scroller.querySelector('.scroll-stack-end');
+    endOffsetRef.current = endElement ? pageOffset(endElement) : 0;
+
+    updateCardTransforms();
+  }, [useWindowScroll, updateCardTransforms]);
 
   const handleScroll = useCallback(() => {
     updateCardTransforms();
@@ -275,16 +270,21 @@ const ScrollStack = ({
       card.style.transformOrigin = 'top center';
       card.style.backfaceVisibility = 'hidden';
       card.style.transform = 'translateZ(0)';
-      card.style.webkitTransform = 'translateZ(0)';
-      card.style.perspective = '1000px';
-      card.style.webkitPerspective = '1000px';
     });
 
+    measureOffsets();
     setupLenis();
 
-    updateCardTransforms();
+    // Layout shifts (fonts, images, viewport) invalidate cached offsets
+    const onResize = () => measureOffsets();
+    window.addEventListener('resize', onResize);
+    const ro = new ResizeObserver(onResize);
+    ro.observe(scroller);
+    if (document.fonts?.ready) document.fonts.ready.then(onResize);
 
     return () => {
+      window.removeEventListener('resize', onResize);
+      ro.disconnect();
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -296,24 +296,11 @@ const ScrollStack = ({
       }
       stackCompletedRef.current = false;
       cardsRef.current = [];
+      cardOffsetsRef.current = [];
       transformsCache.clear();
       isUpdatingRef.current = false;
     };
-  }, [
-    itemDistance,
-    itemScale,
-    itemStackDistance,
-    stackPosition,
-    scaleEndPosition,
-    baseScale,
-    scaleDuration,
-    rotationAmount,
-    blurAmount,
-    useWindowScroll,
-    onStackComplete,
-    setupLenis,
-    updateCardTransforms
-  ]);
+  }, [itemDistance, useWindowScroll, measureOffsets, setupLenis]);
 
   return (
     <div className={`scroll-stack-scroller ${className}`.trim()} ref={scrollerRef}>
