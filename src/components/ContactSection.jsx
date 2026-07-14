@@ -55,23 +55,20 @@ export const ContactSection = () => {
             <span className="font-mono text-sm text-primary">05</span>
             <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">contact</span>
             <div className="h-px flex-1 self-center bg-border/60" />
-            <span className="hidden sm:inline font-mono text-xs text-muted-foreground/70">open to good conversations</span>
           </div>
         </Reveal>
 
-        <Reveal delay={0.08}>
-          <h2 className="text-left font-bold tracking-tight leading-[1.02] max-w-4xl" style={{ fontSize: "clamp(2.5rem, 6.5vw, 5.5rem)" }}>
-            Let's build something<br />
-            that <span className="text-primary">ships.</span>
-          </h2>
-        </Reveal>
+        {/* ── Merged contact + footer: headline and one-click email actions ── */}
+        <div className="pb-16 md:pb-24">
+          <Reveal delay={0.08}>
+            <h2 className="text-left font-bold tracking-tight leading-[1.05]" style={{ fontSize: "clamp(1.9rem, 3.4vw, 3rem)" }}>
+              Let's build something<br />
+              <span className="text-primary">together.</span>
+            </h2>
+          </Reveal>
 
-        {/* ── Merged contact + footer: quick email actions left, description right ── */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 mt-12 md:mt-16 pb-16 md:pb-24 items-start">
-
-          {/* Left — one-click ways to start the conversation */}
           <Reveal delay={0.16}>
-            <div className="flex flex-col items-start gap-4">
+            <div className="flex flex-wrap items-center gap-3 mt-8">
               <a href={`mailto:${EMAIL}`} className="cosmic-button inline-flex items-center gap-2.5">
                 <Mail size={16} /> {EMAIL}
               </a>
@@ -83,28 +80,8 @@ export const ContactSection = () => {
                 {copied ? <Check size={14} className="text-primary" /> : <Copy size={14} />}
                 {copied ? "copied" : "copy email"}
               </button>
-              <p className="font-mono text-xs text-muted-foreground/70 mt-2">
-                Paris (CET) · usually replies within a day
-              </p>
             </div>
           </Reveal>
-
-          {/* Right — what to reach out about */}
-          <Reveal delay={0.22}>
-            <div className="max-w-xl">
-              <p className="text-muted-foreground leading-relaxed">
-                I'm an AI engineer at Ontraak in Paris, designing agentic systems and running
-                self-hosted LLM infrastructure in production. If you're building agents, working
-                with local models, or shipping AI products that need to survive real traffic,
-                I'd genuinely enjoy comparing notes.
-              </p>
-              <p className="text-muted-foreground leading-relaxed mt-4">
-                Founders, recruiters, and fellow engineers all welcome — a short email is the
-                fastest way to reach me.
-              </p>
-            </div>
-          </Reveal>
-
         </div>
 
         {/* Bottom bar — socials left, copyright right */}

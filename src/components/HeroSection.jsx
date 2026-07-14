@@ -223,7 +223,8 @@ export const HeroSection = () => {
   const sphereDriftY = useTransform(springY, (v) => v * 16)
 
   const onPointerMove = (e) => {
-    if (reduced) return
+    // Mouse/trackpad only — on touch, this fires during scroll and jolts the parallax
+    if (reduced || e.pointerType !== "mouse") return
     const { innerWidth, innerHeight } = window
     pointerX.set(e.clientX / innerWidth - 0.5)
     pointerY.set(e.clientY / innerHeight - 0.5)
@@ -241,7 +242,7 @@ export const HeroSection = () => {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-screen flex flex-col justify-center pt-14"
+      className="relative min-h-[100svh] flex flex-col justify-center pt-14"
       onPointerMove={onPointerMove}
     >
 
