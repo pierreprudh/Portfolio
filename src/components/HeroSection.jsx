@@ -1,6 +1,6 @@
 import { ArrowDown, ArrowUpRight } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
-import { motion as Motion, AnimatePresence, useScroll, useTransform, useReducedMotion } from "motion/react"
+import { motion as Motion, AnimatePresence, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring } from "motion/react"
 import { SiGithub, SiLinkedin, SiLeetcode } from "react-icons/si"
 
 const roles = ["AI Engineer", "Agentic AI Builder", "LLM Systems Engineer", "Full-stack AI Developer"]
@@ -9,12 +9,12 @@ const reducedMotion = () =>
   typeof window !== "undefined" &&
   window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
-const SplitWord = ({ word, baseDelay }) => (
+const SplitWord = ({ word, baseDelay, charClassName = "" }) => (
   <span className="inline-flex">
     {word.split("").map((char, i) => (
       <span key={i} className="inline-block overflow-hidden pb-[0.5em] mb-[-0.5em]">
         <span
-          className="inline-block"
+          className={`inline-block ${charClassName}`}
           style={{ animation: `slide-up 1s cubic-bezier(0.16, 1, 0.3, 1) ${baseDelay + i * 0.03}s both` }}
         >
           {char}
@@ -181,6 +181,24 @@ export const HeroSection = () => {
   const contentOpacity = useTransform(scrollYProgress, [0, 0.65], [1, 0])
   const hintOpacity = useTransform(scrollYProgress, [0, 0.12], [1, 0])
 
+  // Pointer parallax: backdrop drifts against the cursor, sphere drifts with it
+  const pointerX = useMotionValue(0)
+  const pointerY = useMotionValue(0)
+  const springX = useSpring(pointerX, { stiffness: 50, damping: 18, mass: 0.6 })
+  const springY = useSpring(pointerY, { stiffness: 50, damping: 18, mass: 0.6 })
+  const bgDriftX = useTransform(springX, (v) => v * -18)
+  const bgDriftY = useTransform(springY, (v) => v * -12)
+  const bgYCombined = useTransform([bgY, bgDriftY], ([scroll, drift]) => scroll + drift)
+  const sphereDriftX = useTransform(springX, (v) => v * 22)
+  const sphereDriftY = useTransform(springY, (v) => v * 16)
+
+  const onPointerMove = (e) => {
+    if (reduced) return
+    const { innerWidth, innerHeight } = window
+    pointerX.set(e.clientX / innerWidth - 0.5)
+    pointerY.set(e.clientY / innerHeight - 0.5)
+  }
+
   useEffect(() => {
     const check = () => setIsDark(document.documentElement.classList.contains("dark"))
     check()
@@ -196,22 +214,40 @@ export const HeroSection = () => {
   }, [])
 
   return (
-    <section ref={sectionRef} id="hero" className="relative min-h-screen flex flex-col justify-center pt-14">
+    <section
+      ref={sectionRef}
+      id="hero"
+      className="relative min-h-screen flex flex-col justify-center pt-14"
+      onPointerMove={onPointerMove}
+    >
 
-      {/* Scenic backdrop — blurred, theme-aware, dissolving into the page below */}
+      {/* Scenic backdrop — near-crisp, theme-aware, melting into the page below */}
       <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
-        <Motion.div className="absolute inset-0" style={reduced ? undefined : { y: bgY }}>
+        <Motion.div
+          className="absolute inset-0"
+          style={reduced ? undefined : { y: bgYCombined, x: bgDriftX }}
+        >
           <div
             className="absolute inset-0 scale-[1.15] bg-cover bg-center transition-opacity duration-700 opacity-100 dark:opacity-0"
-            style={{ backgroundImage: "url('/hero-day.jpg')", filter: "blur(2.5px)" }}
+            style={{ backgroundImage: "url('/hero-day.jpg')", filter: "blur(1px)" }}
           />
           <div
             className="absolute inset-0 scale-[1.15] bg-cover bg-center transition-opacity duration-700 opacity-0 dark:opacity-100"
-            style={{ backgroundImage: "url('/hero-night.jpg')", filter: "blur(2.5px)" }}
+            style={{ backgroundImage: "url('/hero-night.jpg')", filter: "blur(1px)" }}
           />
         </Motion.div>
         {/* Legibility scrim */}
-        <div className="absolute inset-0 bg-background/40 dark:bg-background/45" />
+        <div className="absolute inset-0 bg-background/35 dark:bg-background/40" />
+        {/* Progressive blur: crisp up top, frosted as it approaches the fold */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-[50%]"
+          style={{
+            backdropFilter: "blur(14px)",
+            WebkitBackdropFilter: "blur(14px)",
+            maskImage: "linear-gradient(to bottom, transparent, black 75%)",
+            WebkitMaskImage: "linear-gradient(to bottom, transparent, black 75%)",
+          }}
+        />
         {/* Morph into the next section's flat canvas */}
         <div className="absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-b from-transparent via-background/70 to-background" />
       </div>
@@ -225,21 +261,33 @@ export const HeroSection = () => {
           {/* ── Left: content ── */}
           <div className="flex flex-col items-start gap-7 text-left">
 
-            {/* Kicker — visible immediately */}
+            {/* Liquid-glass chip — visible immediately */}
             <div
-              className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground"
+              className="inline-flex items-center gap-2.5 rounded-full glass px-4 py-2 text-xs font-medium tracking-wide text-foreground/80"
               style={{ animation: "fade-in 0.8s ease-out 0.1s both" }}
             >
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-primary" />
+              </span>
               Paris · AI Engineer at Ontraak
             </div>
 
             {/* Name */}
             <h1 className="font-bold leading-[0.92] tracking-[-0.02em] select-none w-full">
               <span className="block" style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}>
-                <SplitWord word="Pierre" baseDelay={0.2} />
+                <SplitWord
+                  word="Pierre"
+                  baseDelay={0.2}
+                  charClassName="bg-gradient-to-b from-foreground to-foreground/65 bg-clip-text text-transparent"
+                />
               </span>
-              <span className="block text-primary" style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}>
-                <SplitWord word="Prudhomme" baseDelay={0.42} />
+              <span className="block" style={{ fontSize: "clamp(3rem, 8vw, 7rem)" }}>
+                <SplitWord
+                  word="Prudhomme"
+                  baseDelay={0.42}
+                  charClassName="bg-gradient-to-b from-primary to-primary/55 bg-clip-text text-transparent"
+                />
               </span>
             </h1>
 
@@ -302,8 +350,10 @@ export const HeroSection = () => {
 
           </div>
 
-          {/* ── Right: visual ── */}
-          <HeroVisual isDark={isDark} />
+          {/* ── Right: visual — drifts gently with the pointer ── */}
+          <Motion.div style={reduced ? undefined : { x: sphereDriftX, y: sphereDriftY }}>
+            <HeroVisual isDark={isDark} />
+          </Motion.div>
 
         </div>
       </Motion.div>

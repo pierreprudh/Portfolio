@@ -122,14 +122,17 @@ export const AboutSection = () => {
     <section id="about" className="pt-24 md:pt-32 border-t border-border/40 relative">
       <div className="container-wide">
         <SectionHeader index="01" label="About" title="Who I am" />
+      </div>
 
-        {reduced ? (
-          <div className="flex flex-col gap-4 py-16">
-            {cards.map(({ key, content }) => (
-              <div key={key} className="tile p-8 md:p-10">{content}</div>
-            ))}
-          </div>
-        ) : (
+      {reduced ? (
+        <div className="container-wide flex flex-col gap-4 py-16">
+          {cards.map(({ key, content }) => (
+            <div key={key} className="tile p-8 md:p-10">{content}</div>
+          ))}
+        </div>
+      ) : (
+        /* Full-bleed: the stack spans the viewport, only a slim gutter remains */
+        <div className="px-3 md:px-6 xl:px-10">
           <ScrollStack
             useWindowScroll
             itemDistance={120}
@@ -142,8 +145,8 @@ export const AboutSection = () => {
               <ScrollStackItem key={key}>{content}</ScrollStackItem>
             ))}
           </ScrollStack>
-        )}
-      </div>
+        </div>
+      )}
     </section>
   )
 }
