@@ -60,7 +60,7 @@ export const ContactSection = () => {
               <button
                 onClick={copyEmail}
                 aria-label="Copy email address"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border font-mono text-xs text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
+                className="inline-flex items-center gap-2 px-5 py-2.5 min-h-[44px] rounded-full border border-border font-mono text-xs text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
               >
                 {copied ? <Check size={14} className="text-primary" /> : <Copy size={14} />}
                 {copied ? "copied" : "copy email"}
@@ -79,7 +79,7 @@ export const ContactSection = () => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={label}
-                className="text-muted-foreground/60 hover:text-primary transition-colors"
+                className="p-3 -m-3 text-muted-foreground/60 hover:text-primary transition-colors"
               >
                 <Icon size={17} />
               </a>
@@ -92,7 +92,7 @@ export const ContactSection = () => {
             <a
               href="#hero"
               aria-label="Back to top"
-              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+              className="inline-flex items-center gap-1.5 p-3 -m-3 text-xs text-muted-foreground hover:text-primary transition-colors"
             >
               Top <ArrowUp size={12} />
             </a>

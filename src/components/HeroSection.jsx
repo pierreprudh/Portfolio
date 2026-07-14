@@ -328,7 +328,7 @@ export const HeroSection = () => {
                   { href: "https://ollama.com/pierreprudh", icon: <SiOllama size={17} />, label: "Ollama" },
                 ].map(({ href, icon, label }) => (
                   <a key={label} href={href} target="_blank" rel="noopener noreferrer"
-                    className="text-muted-foreground/60 hover:text-primary transition-colors duration-300"
+                    className="p-3 -m-3 text-muted-foreground/60 hover:text-primary transition-colors duration-300"
                     aria-label={label}
                   >
                     {icon}
