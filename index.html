@@ -5,7 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script>
       try {
-        if (localStorage.getItem("theme") === "dark") document.documentElement.classList.add("dark");
+        var dark = localStorage.getItem("theme") === "dark";
+        if (dark) document.documentElement.classList.add("dark");
+        // Preload only the active theme's hero backdrop — it's the LCP element
+        var preload = document.createElement("link");
+        preload.rel = "preload";
+        preload.as = "image";
+        preload.href = dark ? "/hero-night.webp" : "/hero-day.webp";
+        document.head.appendChild(preload);
       } catch (e) {}
     </script>
     <title>Pierre Prudhomme | AI Engineer & Data Projects</title>

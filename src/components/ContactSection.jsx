@@ -1,4 +1,4 @@
-import { ArrowUp, ArrowUpRight, Check, Copy, Mail } from "lucide-react"
+import { ArrowUp, Check, Copy, Mail } from "lucide-react"
 import { SiGithub, SiLinkedin, SiOllama } from "react-icons/si"
 import { useEffect, useState } from "react"
 import { Reveal } from "./Reveal"
@@ -11,53 +11,6 @@ const SOCIALS = [
   { href: "https://www.linkedin.com/in/pierre-prudhomme-14b145222/", icon: SiLinkedin, label: "LinkedIn" },
   { href: "https://ollama.com/pierreprudh", icon: SiOllama, label: "Ollama" },
 ]
-
-/* Static phyllotaxis mark — a miniature of the hero sphere */
-const MiniSphere = () => {
-  const N = 44
-  const dots = Array.from({ length: N }, (_, i) => {
-    const r = 14.5 * Math.sqrt((i + 0.5) / N)
-    const a = i * 2.399963
-    return {
-      x: 18 + r * Math.cos(a),
-      y: 18 + r * Math.sin(a),
-      s: 0.7 + (r / 14.5) * 1.15,
-      o: 0.3 + (r / 14.5) * 0.6,
-    }
-  })
-  return (
-    <svg width="36" height="36" viewBox="0 0 36 36" aria-hidden="true" className="text-foreground">
-      {dots.map((d, i) => (
-        <circle key={i} cx={d.x} cy={d.y} r={d.s} fill="currentColor" opacity={d.o} />
-      ))}
-    </svg>
-  )
-}
-
-const FooterCol = ({ title, links }) => (
-  <div className="flex flex-col gap-4">
-    <h3 className="font-mono text-xs uppercase tracking-[0.25em] text-muted-foreground/70">{title}</h3>
-    <ul className="flex flex-col gap-2.5">
-      {links.map(({ label, href, external }) => (
-        <li key={label}>
-          <a
-            href={href}
-            {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-            className="group inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors"
-          >
-            {label}
-            {external && (
-              <ArrowUpRight
-                size={12}
-                className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-300"
-              />
-            )}
-          </a>
-        </li>
-      ))}
-    </ul>
-  </div>
-)
 
 export const ContactSection = () => {
   const [copied, setCopied] = useState(false)
@@ -84,8 +37,18 @@ export const ContactSection = () => {
   }
 
   return (
-    <section id="contact" className="pt-16 md:pt-24 relative">
-      <div className="container-wide">
+    <section id="contact" className="-mt-8 md:-mt-12 pt-8 md:pt-12 relative overflow-hidden">
+
+      {/* Flowing threads drifting behind the whole section */}
+      <div className="absolute inset-0 pointer-events-none opacity-40 dark:opacity-50" aria-hidden="true">
+        <Threads
+          color={isDark ? [0.42, 0.74, 0.78] : [0.18, 0.44, 0.46]}
+          amplitude={0.9}
+          distance={0}
+        />
+      </div>
+
+      <div className="container-wide relative z-10">
 
         <Reveal>
           <div className="flex items-baseline gap-4 mb-10 md:mb-14">
@@ -103,112 +66,78 @@ export const ContactSection = () => {
           </h2>
         </Reveal>
 
-        <Reveal delay={0.16}>
-          <p className="text-left text-muted-foreground max-w-xl leading-relaxed mt-8">
-            Agents, local LLMs, or AI products that need to hold up in production — I'm always up for talking shop.
-          </p>
-        </Reveal>
+        {/* ── Merged contact + footer: quick email actions left, description right ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 mt-12 md:mt-16 pb-16 md:pb-24 items-start">
 
-        <Reveal delay={0.22}>
-          <div className="flex flex-wrap items-center gap-4 mt-10">
-            <a href={`mailto:${EMAIL}`} className="cosmic-button inline-flex items-center gap-2.5">
-              <Mail size={16} /> {EMAIL}
-            </a>
-            <button
-              onClick={copyEmail}
-              aria-label="Copy email address"
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border font-mono text-xs text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
-            >
-              {copied ? <Check size={14} className="text-primary" /> : <Copy size={14} />}
-              {copied ? "copied" : "copy"}
-            </button>
-          </div>
-        </Reveal>
-
-      </div>
-
-      {/* ── Footer — animated threads drift quietly behind ── */}
-      <div className="relative mt-20 md:mt-28 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none opacity-35 dark:opacity-45" aria-hidden="true">
-          <Threads
-            color={isDark ? [0.42, 0.74, 0.78] : [0.18, 0.44, 0.46]}
-            amplitude={0.9}
-            distance={0}
-          />
-        </div>
-
-        <footer className="container-wide relative z-10">
-
-          <Reveal>
-            <div className="grid grid-cols-2 gap-x-8 gap-y-12 md:grid-cols-[1.6fr_1fr_1fr] pb-14">
-
-              {/* Brand */}
-              <div className="col-span-2 md:col-span-1 flex flex-col items-start gap-5">
-                <MiniSphere />
-                <p className="text-xl md:text-2xl font-semibold tracking-tight leading-snug">
-                  AI systems that hold up<br />in production.
-                </p>
-                <p className="font-mono text-[11px] text-muted-foreground/70">
-                  Designed &amp; built by Pierre — React · Tailwind · Vite
-                </p>
-              </div>
-
-              <FooterCol
-                title="Explore"
-                links={[
-                  { label: "About", href: "#about" },
-                  { label: "Experience", href: "#experience" },
-                  { label: "Capabilities", href: "#skills" },
-                  { label: "Projects", href: "#projects" },
-                ]}
-              />
-
-              <FooterCol
-                title="Connect"
-                links={[
-                  { label: "GitHub", href: "https://github.com/pierreprudh", external: true },
-                  { label: "LinkedIn", href: "https://www.linkedin.com/in/pierre-prudhomme-14b145222/", external: true },
-                  { label: "Ollama", href: "https://ollama.com/pierreprudh", external: true },
-                  { label: EMAIL, href: `mailto:${EMAIL}` },
-                ]}
-              />
-
+          {/* Left — one-click ways to start the conversation */}
+          <Reveal delay={0.16}>
+            <div className="flex flex-col items-start gap-4">
+              <a href={`mailto:${EMAIL}`} className="cosmic-button inline-flex items-center gap-2.5">
+                <Mail size={16} /> {EMAIL}
+              </a>
+              <button
+                onClick={copyEmail}
+                aria-label="Copy email address"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-border font-mono text-xs text-muted-foreground hover:text-primary hover:border-primary/40 transition-colors"
+              >
+                {copied ? <Check size={14} className="text-primary" /> : <Copy size={14} />}
+                {copied ? "copied" : "copy email"}
+              </button>
+              <p className="font-mono text-xs text-muted-foreground/70 mt-2">
+                Paris (CET) · usually replies within a day
+              </p>
             </div>
           </Reveal>
 
-          {/* Bottom bar */}
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 py-6">
-            <div className="flex items-center gap-5">
-              {SOCIALS.map(({ href, icon: Icon, label }) => (
-                <a
-                  key={label}
-                  href={href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={label}
-                  className="text-muted-foreground/60 hover:text-primary transition-colors"
-                >
-                  <Icon size={17} />
-                </a>
-              ))}
-            </div>
-            <div className="flex items-center gap-6">
-              <p className="text-xs text-muted-foreground/70">
-                © {new Date().getFullYear()} Pierre Prudhomme · All rights reserved.
+          {/* Right — what to reach out about */}
+          <Reveal delay={0.22}>
+            <div className="max-w-xl">
+              <p className="text-muted-foreground leading-relaxed">
+                I'm an AI engineer at Ontraak in Paris, designing agentic systems and running
+                self-hosted LLM infrastructure in production. If you're building agents, working
+                with local models, or shipping AI products that need to survive real traffic,
+                I'd genuinely enjoy comparing notes.
               </p>
-              <a
-                href="#hero"
-                aria-label="Back to top"
-                className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
-              >
-                Top <ArrowUp size={12} />
-              </a>
+              <p className="text-muted-foreground leading-relaxed mt-4">
+                Founders, recruiters, and fellow engineers all welcome — a short email is the
+                fastest way to reach me.
+              </p>
             </div>
+          </Reveal>
+
+        </div>
+
+        {/* Bottom bar — socials left, copyright right */}
+        <div className="border-t border-border/40 flex flex-col sm:flex-row items-center justify-between gap-4 py-6">
+          <div className="flex items-center gap-5">
+            {SOCIALS.map(({ href, icon: Icon, label }) => (
+              <a
+                key={label}
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={label}
+                className="text-muted-foreground/60 hover:text-primary transition-colors"
+              >
+                <Icon size={17} />
+              </a>
+            ))}
           </div>
+          <div className="flex items-center gap-6">
+            <p className="text-xs text-muted-foreground/70">
+              © Pierre Prudhomme {new Date().getFullYear()} · All rights reserved.
+            </p>
+            <a
+              href="#hero"
+              aria-label="Back to top"
+              className="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors"
+            >
+              Top <ArrowUp size={12} />
+            </a>
+          </div>
+        </div>
 
-        </footer>
       </div>
-
     </section>
   )
 }

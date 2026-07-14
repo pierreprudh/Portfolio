@@ -1,7 +1,25 @@
-import { motion as Motion, useReducedMotion } from "motion/react"
+import { motion as Motion, useReducedMotion, useScroll, useTransform } from "motion/react"
+import { useRef } from "react"
+
+// Scroll-linked drift — same physics grammar as the hero parallax, so cards
+// across the page feel governed by one motion system. speed sets amplitude
+// and direction (positive drifts up as you scroll past).
+export const Parallax = ({ children, speed = 0.1, className = "" }) => {
+  const ref = useRef(null)
+  const reduced = useReducedMotion()
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] })
+  const y = useTransform(scrollYProgress, [0, 1], [speed * 120, speed * -120])
+
+  return (
+    <Motion.div ref={ref} className={className} style={reduced ? undefined : { y }}>
+      {children}
+    </Motion.div>
+  )
+}
 
 // Single scroll-reveal primitive for the whole site — Apple-style blur-up:
 // one easing, one distance, settles crisp.
+
 export const Reveal = ({ children, direction = "up", delay = 0, className = "" }) => {
   const reduced = useReducedMotion()
 

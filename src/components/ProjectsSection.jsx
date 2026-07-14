@@ -83,7 +83,7 @@ const MonoTags = ({ children }) => (
 
 export const ProjectsSection = () => {
   return (
-    <section id="projects" className="py-12 md:py-16 relative">
+    <section id="projects" className="-mt-8 md:-mt-12 pt-0 pb-12 md:pb-16 relative">
       <div className="container-wide">
 
         <SectionHeader

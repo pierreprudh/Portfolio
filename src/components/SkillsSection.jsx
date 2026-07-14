@@ -8,7 +8,7 @@ import {
   SiPython, SiPytorch, SiTensorflow, SiPandas, SiApachespark, SiApachekafka,
   SiScikitlearn, SiOpencv,
 } from "react-icons/si"
-import { Reveal } from "./Reveal"
+import { Reveal, Parallax } from "./Reveal"
 import { SectionHeader } from "./SectionHeader"
 
 // Linear-style statement cards: huge claim top-left, vast negative space,
@@ -297,7 +297,7 @@ const CapabilityCard = ({ group }) => {
 
 export const SkillsSection = () => {
   return (
-    <section id="skills" className="py-12 md:py-16 relative">
+    <section id="skills" className="-mt-8 md:-mt-12 pt-0 pb-12 md:pb-16 relative">
       <div className="container-wide">
 
         <SectionHeader
@@ -310,7 +310,10 @@ export const SkillsSection = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-4">
           {groups.map((group, i) => (
             <Reveal key={group.title} className={group.span} delay={0.05 + i * 0.06}>
-              <CapabilityCard group={group} />
+              {/* Alternating drift rates — columns move at different speeds like the hero layers */}
+              <Parallax speed={i % 2 === 0 ? 0.06 : 0.14} className="h-full">
+                <CapabilityCard group={group} />
+              </Parallax>
             </Reveal>
           ))}
         </div>
