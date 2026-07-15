@@ -193,8 +193,11 @@ const ParisPhoto = () => (
       sizes="(max-width: 1023px) 100vw, 1400px"
       alt=""
       loading="lazy"
-      className="h-full w-full object-cover object-[68%_40%]"
+      className="h-full w-full object-cover object-[68%_40%] dark:brightness-90"
     />
+    {/* Text-side scrim for narrow screens: the mask alone leaves the prose
+        sitting on the photo's brightest area once lines span the card */}
+    <div className="absolute inset-0 md:hidden bg-gradient-to-r from-background/85 via-background/35 to-transparent" />
   </div>
 )
 
@@ -267,12 +270,12 @@ const cards = [
           <p className="text-2xl md:text-[2.1rem] leading-snug font-semibold tracking-tight text-foreground">
             I'm Pierre, an AI engineer in Paris.
           </p>
-          <p className="text-muted-foreground leading-relaxed">
+          <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed">
             I work on agents, local inference, and everything it takes to run them: serving,
             security, deploys. I came to AI through data science and I like understanding every
             layer of what I ship.
           </p>
-          <p className="text-muted-foreground leading-relaxed">
+          <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed">
             ENSIIE class of 2025, after two years of preparatory class. Along the way: computer
             vision and document extraction agents in Prague, data science at the French Ministry
             of Education, and today the AI stack at Ontraak. Outside work I run, lift, and play
@@ -309,17 +312,17 @@ const cards = [
                 </div>
               </div>
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 xl:gap-10">
-              <p className="text-muted-foreground leading-relaxed max-w-2xl">
+              <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed max-w-2xl">
                 I built and run the company's AI assistant fully on premise: local models on Apple
                 Silicon through Ollama and MLX, a React and Express stack in Docker, PostgreSQL,
                 private search, and n8n automations behind a reverse proxy.
               </p>
-              <p className="text-muted-foreground leading-relaxed max-w-2xl">
+              <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed max-w-2xl">
                 I also handle what keeps it fast and trustworthy: KV-cache tuning, models resident
                 in memory, JWT auth with revocation, rate limiting, sandboxed code execution, daily
                 backups with tested restores, and the CI/CD that ships it all.
               </p>
-              <p className="text-muted-foreground leading-relaxed max-w-2xl xl:col-span-2">
+              <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed max-w-2xl xl:col-span-2">
                 Beyond the stack, I keep the team up to speed on AI: continuous watch on the
                 ecosystem, internal training sessions, and presentations on what's worth adopting.
               </p>
@@ -351,7 +354,7 @@ const cards = [
           strokeWidth={1.75}
           className="absolute top-7 right-7 text-muted-foreground/60 group-hover:text-primary transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
         />
-        <div className="md:w-[46%] shrink-0 flex flex-col gap-6 h-full">
+        <div className="md:w-[46%] shrink-0 flex flex-col gap-6 md:h-full">
           <Label>Resume</Label>
           <div className="flex-1 flex flex-col justify-center gap-3">
             <div className="text-2xl md:text-3xl font-semibold tracking-tight text-card-foreground group-hover:text-primary transition-colors inline-flex items-center gap-3">
@@ -366,7 +369,7 @@ const cards = [
             </div>
           </div>
         </div>
-        <div className="flex flex-1 items-center justify-center h-full pt-4 md:pt-0">
+        <div className="flex flex-1 min-h-0 items-center justify-center md:h-full pt-4 md:pt-0">
           <PaperMock />
         </div>
       </a>
@@ -375,12 +378,18 @@ const cards = [
 ]
 
 export const AboutSection = () => {
-  // Phones get the plain stacked tiles: pinned cards taller than the viewport
-  // can never reveal their bottom, so the scroll-stack is desktop/tablet only.
+  // Static tiles only where the stack cannot work: reduced motion, or screens
+  // too short to ever show a full card below the pin position.
   const [staticCards] = useState(
     () =>
       prefersReducedMotion() ||
-      (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches)
+      (typeof window !== "undefined" &&
+        window.matchMedia("(max-width: 767px) and (max-height: 700px)").matches)
+  )
+  // Phones keep the scroll-stack, but pinned higher and packed tighter so the
+  // tallest card still fits fully below the pin.
+  const [isMobile] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches
   )
 
   return (
@@ -403,10 +412,10 @@ export const AboutSection = () => {
           <ScrollStack
             useWindowScroll
             itemDistance={120}
-            itemStackDistance={24}
-            stackPosition="22%"
-            scaleEndPosition="12%"
-            baseScale={0.88}
+            itemStackDistance={isMobile ? 12 : 24}
+            stackPosition={isMobile ? "9%" : "22%"}
+            scaleEndPosition={isMobile ? "4%" : "12%"}
+            baseScale={isMobile ? 0.94 : 0.88}
           >
             {cards.map(({ key, content }) => (
               <ScrollStackItem key={key}>{content}</ScrollStackItem>
