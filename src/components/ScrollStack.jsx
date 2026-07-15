@@ -68,15 +68,24 @@ const ScrollStack = ({
     const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
     const pinEnd = pinEndRef.current;
 
+    // Per-card stacking progress, also used as the "covered" signal: card i is
+    // covered exactly as card i+1 settles onto the deck. Content can read
+    // var(--covered) to mute elements that would bleed through the glass above.
+    const stackProgresses = cardsRef.current.map((card, i) => {
+      const cardTop = cardOffsetsRef.current[i] ?? 0;
+      const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
+      const triggerEnd = cardTop - scaleEndPositionPx;
+      return calculateProgress(scrollTop, triggerStart, triggerEnd);
+    });
+
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
 
       const cardTop = cardOffsetsRef.current[i] ?? 0;
       const triggerStart = cardTop - stackPositionPx - itemStackDistance * i;
-      const triggerEnd = cardTop - scaleEndPositionPx;
       const pinStart = triggerStart;
 
-      const scaleProgress = calculateProgress(scrollTop, triggerStart, triggerEnd);
+      const scaleProgress = stackProgresses[i];
       const targetScale = baseScale + i * itemScale;
       const scale = 1 - scaleProgress * (1 - targetScale);
       const rotation = rotationAmount ? i * rotationAmount * scaleProgress : 0;
@@ -106,7 +115,8 @@ const ScrollStack = ({
         translateY: Math.round(translateY * 100) / 100,
         scale: Math.round(scale * 1000) / 1000,
         rotation: Math.round(rotation * 100) / 100,
-        blur: Math.round(blur * 100) / 100
+        blur: Math.round(blur * 100) / 100,
+        covered: Math.round((stackProgresses[i + 1] ?? 0) * 100) / 100
       };
 
       const lastTransform = lastTransformsRef.current.get(i);
@@ -115,12 +125,14 @@ const ScrollStack = ({
         Math.abs(lastTransform.translateY - newTransform.translateY) > 0.05 ||
         Math.abs(lastTransform.scale - newTransform.scale) > 0.0005 ||
         Math.abs(lastTransform.rotation - newTransform.rotation) > 0.05 ||
-        Math.abs(lastTransform.blur - newTransform.blur) > 0.05;
+        Math.abs(lastTransform.blur - newTransform.blur) > 0.05 ||
+        Math.abs((lastTransform.covered ?? 0) - newTransform.covered) > 0.01;
 
       if (hasChanged) {
         card.style.transform =
           `translate3d(0, ${newTransform.translateY}px, 0) scale(${newTransform.scale}) rotate(${newTransform.rotation}deg)`;
         card.style.filter = newTransform.blur > 0 ? `blur(${newTransform.blur}px)` : '';
+        card.style.setProperty('--covered', newTransform.covered);
         lastTransformsRef.current.set(i, newTransform);
       }
 
@@ -167,10 +179,12 @@ const ScrollStack = ({
     // Equalize card heights to the tallest: mixed heights (common on phones,
     // where the bio card wraps long) let a tall early card peek out beneath
     // the shorter cards stacked on top of it after release.
-    cardsRef.current.forEach(card => { card.style.minHeight = ''; });
+    // Explicit height (not min-height) so children's h-full/flex layouts can
+    // distribute the extra space instead of leaving a void below short content.
+    cardsRef.current.forEach(card => { card.style.height = ''; });
     const naturalHeights = cardsRef.current.map(c => c.getBoundingClientRect().height);
     const maxCardHeight = Math.max(...naturalHeights);
-    cardsRef.current.forEach(card => { card.style.minHeight = `${maxCardHeight}px`; });
+    cardsRef.current.forEach(card => { card.style.height = `${maxCardHeight}px`; });
 
     const pageOffset = (el) =>
       useWindowScroll

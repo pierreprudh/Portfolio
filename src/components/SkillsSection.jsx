@@ -2,7 +2,7 @@ import { useState } from "react"
 import { ArrowDownLeft, ArrowUpRight, Bot, Cpu, Layers, LineChart } from "lucide-react"
 import { motion as Motion, useReducedMotion } from "motion/react"
 import {
-  SiOpenai, SiClaude, SiLangchain, SiN8N,
+  SiOpenai, SiAnthropic, SiLangchain, SiN8N,
   SiOllama, SiHuggingface, SiApple,
   SiTypescript, SiReact, SiExpress, SiPostgresql, SiRust, SiDocker, SiFastapi,
   SiPython, SiPytorch, SiTensorflow, SiPandas, SiApachespark, SiApachekafka,
@@ -45,19 +45,20 @@ const groups = [
   {
     icon: Bot,
     title: "Agentic Systems",
-    concepts: "MCP · RAG · AutoGen · ChromaDB",
+    concepts: "Tool calling · MCP · RAG · Evals",
     logos: [
       { Logo: SiOpenai, label: "OpenAI" },
-      { Logo: SiClaude, label: "Claude" },
+      { Logo: SiAnthropic, label: "Anthropic" },
       { Logo: SiLangchain, label: "LangChain / LangGraph" },
       { Logo: SiN8N, label: "n8n" },
     ],
     stackGroups: [
-      { label: "Orchestration", items: ["LangChain", "LangGraph", "AutoGen", "n8n", "Multi-agent systems"] },
-      { label: "Models", items: ["OpenAI", "Claude", "Mistral"] },
-      { label: "Retrieval & protocols", items: ["MCP", "RAG", "ChromaDB"] },
+      { label: "Orchestration", items: ["LangChain", "LangGraph", "AutoGen", "n8n", "Multi-agent systems", "Custom agent runtime"] },
+      { label: "Model APIs & routing", items: ["OpenAI", "Anthropic", "Mistral", "OpenRouter"] },
+      { label: "Retrieval, memory & protocols", items: ["MCP", "RAG", "ChromaDB", "Agent memory"] },
+      { label: "Reliability", items: ["Structured outputs", "Approval gates", "Prompt optimization", "A/B evaluation"] },
     ],
-    statement: "Agents that plan, call tools, and finish the job — from orchestration graphs to a runtime built from scratch.",
+    statement: "Agents that plan, call tools, and finish the job. From orchestration graphs to a runtime built from scratch.",
     span: "lg:col-span-8",
     variant: "gradient-cool",
     watermarkSrc: "/logos/langchain.png",
@@ -66,7 +67,7 @@ const groups = [
   {
     icon: Cpu,
     title: "LLM Infrastructure",
-    concepts: "MLX · LoRA · KV-cache tuning",
+    concepts: "Metal · Quantization · KV-cache · LoRA",
     logos: [
       { Logo: SiOllama, label: "Ollama" },
       { Logo: SiHuggingface, label: "Hugging Face" },
@@ -74,10 +75,11 @@ const groups = [
     ],
     stackGroups: [
       { label: "Serving", items: ["Ollama", "llama.cpp", "MLX"] },
-      { label: "Tuning", items: ["LoRA fine-tuning", "KV-cache tuning"] },
-      { label: "Platform", items: ["Hugging Face", "Apple Silicon", "Self-hosted inference"] },
+      { label: "Optimization", items: ["Metal acceleration", "Quantization", "KV-cache reuse", "Model residency"] },
+      { label: "Tuning & models", items: ["LoRA fine-tuning", "Hugging Face"] },
+      { label: "Platform", items: ["Apple Silicon", "Self-hosted inference"] },
     ],
-    statement: "Local models, tuned and served on my own hardware — private by default.",
+    statement: "Local models, tuned and served on my own hardware. Private by default.",
     span: "lg:col-span-4",
     variant: "vivid",
     watermarkSrc: "/logos/llama-cpp.png",
@@ -85,7 +87,7 @@ const groups = [
   {
     icon: Layers,
     title: "Full-stack Engineering",
-    concepts: "CI/CD · Tailscale · Cloudflare",
+    concepts: "Security · Sandboxing · Private networking",
     logos: [
       { Logo: SiTypescript, label: "TypeScript" },
       { Logo: SiReact, label: "React" },
@@ -99,8 +101,9 @@ const groups = [
       { label: "Frontend", items: ["React", "Tailwind CSS", "Vite"] },
       { label: "Backend", items: ["TypeScript", "Express", "FastAPI", "Rust", "PostgreSQL"] },
       { label: "Infra & deploy", items: ["Docker", "CI/CD", "Caddy", "Cloudflare", "Tailscale"] },
+      { label: "Security & operations", items: ["JWT revocation", "Rate limiting", "Sandboxed execution", "Backup & restore"] },
     ],
-    statement: "Typed front to back, containerized, deployed — products, not prototypes.",
+    statement: "Typed front to back, containerized, deployed. Products, not prototypes.",
     span: "lg:col-span-4",
     variant: "inverted",
     Watermark: SiReact,
@@ -108,7 +111,7 @@ const groups = [
   {
     icon: LineChart,
     title: "Data & Machine Learning",
-    concepts: "Computer vision · Predictive modeling",
+    concepts: "Computer vision · OCR · Predictive modeling · Tree ensembles",
     logos: [
       { Logo: SiPython, label: "Python" },
       { Logo: SiPytorch, label: "PyTorch" },
@@ -120,11 +123,11 @@ const groups = [
       { Logo: SiApachekafka, label: "Apache Kafka" },
     ],
     stackGroups: [
-      { label: "Modeling", items: ["PyTorch", "TensorFlow", "Keras", "scikit-learn"] },
+      { label: "Modeling", items: ["PyTorch", "TensorFlow", "Keras", "scikit-learn", "XGBoost", "Random Forest"] },
       { label: "Vision", items: ["OpenCV", "OCR"] },
       { label: "Data & pipelines", items: ["Python", "Pandas", "NumPy", "SQL", "Apache Spark", "Kafka", "Hadoop"] },
     ],
-    statement: "From classical predictive modeling to deep learning for vision — grounded in the data first.",
+    statement: "From classical predictive modeling to deep learning for vision. Grounded in the data first.",
     span: "lg:col-span-8",
     variant: "gradient-warm",
     Watermark: SiPython,
