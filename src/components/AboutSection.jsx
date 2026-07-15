@@ -366,7 +366,7 @@ const cards = [
             </div>
           </div>
         </div>
-        <div className="hidden md:flex flex-1 items-center justify-center h-full">
+        <div className="flex flex-1 items-center justify-center h-full pt-4 md:pt-0">
           <PaperMock />
         </div>
       </a>
@@ -375,7 +375,13 @@ const cards = [
 ]
 
 export const AboutSection = () => {
-  const [reduced] = useState(prefersReducedMotion)
+  // Phones get the plain stacked tiles: pinned cards taller than the viewport
+  // can never reveal their bottom, so the scroll-stack is desktop/tablet only.
+  const [staticCards] = useState(
+    () =>
+      prefersReducedMotion() ||
+      (typeof window !== "undefined" && window.matchMedia("(max-width: 767px)").matches)
+  )
 
   return (
     <section id="about" className="pt-6 md:pt-8 relative z-10">
@@ -383,12 +389,12 @@ export const AboutSection = () => {
         <SectionHeader index="01" label="About" title="Who I am" />
       </div>
 
-      {reduced ? (
-        <div className="container-wide flex flex-col gap-4 py-16">
+      {staticCards ? (
+        <div className="container-wide flex flex-col gap-4 py-10 md:py-16">
           {cards.map(({ key, content }) => (
             /* padding mirrors .scroll-stack-card so full-bleed content
-               (ParisPhoto's negative insets) lands exactly on the card edge */
-            <div key={key} className="tile relative overflow-hidden rounded-[32px] p-10 md:px-16 md:py-14">{content}</div>
+               (ParisPhoto's inset-0 layers) lands exactly on the card edge */
+            <div key={key} className="tile relative overflow-hidden rounded-[32px] p-8 sm:p-10 md:px-16 md:py-14">{content}</div>
           ))}
         </div>
       ) : (
