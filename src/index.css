@@ -449,3 +449,9 @@
 }
 .capabilities-band::before { bottom: 100%; --y: 0%; }
 .capabilities-band::after { top: 100%; --y: 100%; }
+
+/* Article reader: briefly highlight the reference a citation jumps to */
+.ref-item.ref-flash {
+  background: hsl(var(--primary) / 0.12);
+  transition-duration: 150ms;
+}

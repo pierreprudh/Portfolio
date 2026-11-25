@@ -4,6 +4,8 @@ import { ArrowUpRight, Download, X } from "lucide-react"
 import { SiLinkedin } from "react-icons/si"
 import { AnimatePresence, motion as Motion, useReducedMotion, useScroll, useMotionValueEvent } from "motion/react"
 import { SectionHeader } from "./SectionHeader"
+import { ArticleReader } from "./ArticleReader"
+import { articleContent } from "../data/articles"
 
 // Model and lab marks (LobeHub icons, MIT). Mono marks use currentColor.
 import anthropic from "../assets/models/anthropic.svg?raw"
@@ -16,7 +18,8 @@ import typesafe from "../assets/models/typesafeai.svg?raw"
 
 const LINKEDIN_ACTIVITY = "https://www.linkedin.com/in/pierre-prudhomme-14b145222/recent-activity/all/"
 
-// Everything opens in the viewer: articles show their PDF, posts their text.
+// Everything opens in the viewer: articles render as a reading page from
+// src/data/articles.js (PDF kept as a download), posts show their text.
 const items = [
   {
     id: "anthropic-monopoly",
@@ -399,7 +402,11 @@ const Viewer = ({ item, onClose }) => {
             </div>
 
             {/* Body */}
-            {isPdf ? (
+            {articleContent[item.id] ? (
+              <div className="flex-1 overflow-y-auto overscroll-contain scroll-thin">
+                <ArticleReader item={item} content={articleContent[item.id]} marks={item.marks} />
+              </div>
+            ) : isPdf ? (
               <iframe
                 src={`${item.href}#view=FitH&navpanes=0`}
                 title={item.title}
