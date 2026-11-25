@@ -5,6 +5,7 @@ import { AboutSection } from "../components/AboutSection";
 import { ExperienceSection } from "../components/ExperienceSection";
 import { SkillsSection } from "../components/SkillsSection";
 import { ProjectsSection } from "../components/ProjectsSection";
+import { ArticlesSection } from "../components/ArticlesSection";
 import { ContactSection } from "../components/ContactSection";
 
 export const Home = () => {
@@ -29,8 +30,13 @@ export const Home = () => {
           <HeroSection />
           <AboutSection />
           <ExperienceSection />
-          <SkillsSection />
+          {/* The one tinted band: its cut-out corners read as the page
+              rolling down onto it and rising back over it */}
+          <div className="capabilities-band">
+            <SkillsSection />
+          </div>
           <ProjectsSection />
+          <ArticlesSection />
           <ContactSection />
         </main>
       </div>

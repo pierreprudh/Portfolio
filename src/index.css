@@ -95,6 +95,9 @@
 
     --border: 214 32% 91%;
     --ring: 186 45% 32%;
+
+    /* Capabilities band tint */
+    --band: 214 32% 93%;
   }
 
   .dark {
@@ -118,6 +121,8 @@
 
     --border: 217 24% 25%;
     --ring: 186 45% 38%;
+
+    --band: 222 27% 12.5%;
   }
 
   * {
@@ -412,3 +417,35 @@
   from { width: 0%; }
   to   { width: 100%; }
 }
+
+/* ── Capabilities band ──
+   A tinted strip whose four corners are scooped out: the transparent page
+   above appears to roll down onto it, and the page below to rise over it.
+   The page itself stays transparent, so the ambient glows show everywhere
+   else exactly as before. */
+.capabilities-band {
+  --band-r: 28px;
+  position: relative;
+  background: hsl(var(--band) / 0.88);
+  /* starts inside Experience's bottom padding, so it adds no height there */
+  margin-top: calc(var(--band-r) * -1);
+  transition: background-color 0.3s ease;
+}
+@media (width >= 768px) {
+  .capabilities-band { --band-r: 48px; }
+}
+.capabilities-band::before,
+.capabilities-band::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--band-r);
+  pointer-events: none;
+  --c: hsl(var(--band) / 0.88);
+  background:
+    radial-gradient(circle at 100% var(--y), transparent calc(var(--band-r) - 0.5px), var(--c) var(--band-r)) left / var(--band-r) 100% no-repeat,
+    radial-gradient(circle at 0 var(--y), transparent calc(var(--band-r) - 0.5px), var(--c) var(--band-r)) right / var(--band-r) 100% no-repeat;
+}
+.capabilities-band::before { bottom: 100%; --y: 0%; }
+.capabilities-band::after { top: 100%; --y: 100%; }

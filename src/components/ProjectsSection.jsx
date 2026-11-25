@@ -4,44 +4,6 @@ import { useEffect, useRef } from "react"
 import { Reveal } from "./Reveal"
 import { SectionHeader } from "./SectionHeader"
 
-const archive = [
-  {
-    id: "doc-extraction",
-    title: "Agentic document extraction",
-    description: "Self-improving AutoGen agents over energy-market documents",
-    tags: "python · autogen · ocr",
-    githubUrl: "https://github.com/pierreprudh/Document-Information-Extraction",
-  },
-  {
-    id: "mask-detection",
-    title: "Masked Face Detection",
-    description: "Real-time mask classification, MobileNet / EfficientNet",
-    tags: "deep learning · cv",
-    githubUrl: "https://github.com/WacimN/SF-mask-detection",
-  },
-  {
-    id: "anfr",
-    title: "French Mobile Network Analysis",
-    description: "Big-data pipeline over ANFR geospatial data",
-    tags: "hadoop · spark · kafka",
-    githubUrl: "https://github.com/pierreprudh/Antens_Map",
-  },
-  {
-    id: "animal-faces",
-    title: "Animal Face Recognition",
-    description: "CNN classification of animal faces",
-    tags: "keras · cv",
-    githubUrl: "https://github.com/pierreprudh/Animal_face_recognition",
-  },
-  {
-    id: "file-analysis",
-    title: "File Analysis Tool",
-    description: "CSV/XLSX processing with JSON + PDF report generation",
-    tags: "python · pandas",
-    githubUrl: "https://github.com/pierreprudh/File-Analysis",
-  },
-]
-
 // Plays only while on screen so the file never loads for visitors who don't scroll to it
 const ProjectVideo = ({ src, poster, title }) => {
   const ref = useRef(null)
@@ -83,14 +45,12 @@ const MonoTags = ({ children }) => (
 
 export const ProjectsSection = () => {
   return (
-    <section id="projects" className="-mt-8 md:-mt-12 pt-0 pb-12 md:pb-16 relative">
+    <section id="projects" className="pt-6 md:pt-8 pb-12 md:pb-16 relative">
       <div className="container-wide">
 
         <SectionHeader
-          index="04"
-          label="Projects"
           title="Projects"
-          lead="Three systems I'm proud of — and the earlier experiments that led here."
+          lead="Three systems I'm proud of."
         />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-4">
@@ -194,38 +154,6 @@ export const ProjectsSection = () => {
               </div>
             </a>
           </Reveal>
-        </div>
-
-        {/* Archive index */}
-        <Reveal delay={0.05}>
-          <div className="flex items-baseline gap-4 mt-16 mb-2">
-            <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">archive</span>
-            <div className="h-px flex-1 self-center bg-border/60" />
-          </div>
-        </Reveal>
-
-        <div>
-          {archive.map((project, i) => (
-            <Reveal key={project.id} delay={0.03 + i * 0.03}>
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group grid grid-cols-[1fr_auto] md:grid-cols-[minmax(0,2fr)_minmax(0,2.4fr)_minmax(0,1.4fr)_auto] items-baseline gap-4 md:gap-8 py-4 border-b border-border/40 text-left transition-colors hover:bg-card/40 md:px-4 md:-mx-4 rounded-md"
-              >
-                <span className="font-medium text-foreground/90 group-hover:text-primary transition-colors leading-snug">
-                  {project.title}
-                </span>
-                <span className="hidden md:block text-sm text-muted-foreground truncate">{project.description}</span>
-                <span className="hidden md:flex flex-wrap gap-x-3 font-mono text-[11px] text-muted-foreground/70">
-                  {project.tags.split("·").map((tag) => (
-                    <span key={tag.trim()}>{tag.trim()}</span>
-                  ))}
-                </span>
-                <ArrowUpRight size={15} className="text-muted-foreground/40 group-hover:text-primary transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5 self-center" />
-              </a>
-            </Reveal>
-          ))}
         </div>
 
       </div>

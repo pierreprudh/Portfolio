@@ -1,6 +1,6 @@
-import { useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { ArrowDownLeft, ArrowUpRight, Bot, Cpu, Layers, LineChart } from "lucide-react"
-import { motion as Motion, useReducedMotion } from "motion/react"
+import { motion as Motion, useMotionValue, useMotionValueEvent, useReducedMotion, useScroll } from "motion/react"
 import {
   SiOpenai, SiAnthropic, SiLangchain, SiN8N,
   SiOllama, SiHuggingface, SiApple,
@@ -299,18 +299,61 @@ const CapabilityCard = ({ group }) => {
 }
 
 export const SkillsSection = () => {
+  const sectionRef = useRef(null)
+  const headerRef = useRef(null)
+  const reduced = useReducedMotion()
+  const [desktop, setDesktop] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(min-width: 1024px)").matches
+  )
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 1024px)")
+    const onMq = () => setDesktop(mq.matches)
+    mq.addEventListener("change", onMq)
+    return () => mq.removeEventListener("change", onMq)
+  }, [])
+  const animate = desktop && !reduced
+
+  // Title slides from level with the top of the cards (0) to the vertical
+  // middle of the viewport (1). 0 as the section enters the lower viewport,
+  // 1 a bit before it leaves, so the centered title never covers the next slab.
+  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start 0.8", "end 0.85"] })
+  const y = useMotionValue(0)
+  // Read from layout each frame: the sticky column lets go once the card grid ends.
+  const updateY = useCallback(() => {
+    const el = headerRef.current
+    if (!el || !animate) return y.set(0)
+    const p = scrollYProgress.get()
+    const r = el.getBoundingClientRect()
+    const pad = 16 // lg:pt-4
+    const naturalTop = r.top - y.get() + pad
+    const contentH = r.height - pad
+    y.set(p * (window.innerHeight / 2 - contentH / 2 - naturalTop))
+  }, [animate, scrollYProgress, y])
+  useMotionValueEvent(scrollYProgress, "change", updateY)
+  useEffect(() => {
+    updateY()
+    window.addEventListener("resize", updateY)
+    return () => window.removeEventListener("resize", updateY)
+  }, [updateY])
+
   return (
-    <section id="skills" className="-mt-8 md:-mt-12 pt-0 pb-12 md:pb-16 relative">
-      <div className="container-wide">
+    <section ref={sectionRef} id="skills" className="pt-8 md:pt-10 pb-12 md:pb-16 relative">
+      {/* Cards on the left, title + lead on the right. Below lg the title stacks back on top. */}
+      <div className="container-wide grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_13rem] xl:grid-cols-[minmax(0,1fr)_14rem] gap-6 lg:gap-8 xl:gap-10">
 
-        <SectionHeader
-          index="03"
-          label="Capabilities"
-          title="What I work with"
-          lead="Four areas, each backed by things that run in production — click a card for the full list."
-        />
+        <Motion.div
+          ref={headerRef}
+          className="lg:order-2 lg:sticky lg:top-32 self-start lg:pt-4"
+          style={{ y }}
+        >
+          <SectionHeader
+            title="What I work with"
+            size="lg"
+            lead="Four areas, each backed by things that run in production — click a card for the full list."
+          />
+        </Motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 mt-4">
+        <div className="lg:order-1 grid grid-cols-1 lg:grid-cols-12 gap-4">
           {groups.map((group, i) => (
             <Reveal key={group.title} className={group.span} delay={0.05 + i * 0.06}>
               {/* Alternating drift rates — columns move at different speeds like the hero layers */}

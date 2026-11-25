@@ -1,6 +1,6 @@
 import { ArrowUpRight, MapPin } from "lucide-react"
 import {
-  SiApple, SiDocker, SiExpress, SiLangchain, SiN8N, SiOllama,
+  SiApple, SiDocker, SiExpress, SiFastapi, SiLangchain, SiN8N,
   SiPostgresql, SiPython, SiReact, SiTypescript,
 } from "react-icons/si"
 import { Reveal } from "./Reveal"
@@ -8,39 +8,45 @@ import { SectionHeader } from "./SectionHeader"
 
 const experiences = [
   {
-    role: "AI Engineer",
+    role: "Applied AI Engineer",
     company: "Ontraak",
     url: "https://ontraak.com",
     location: "Paris, France",
-    period: "2026 —",
+    period: "Feb 2026 —",
     current: true,
     summary:
-      "I built the company's AI assistant from the ground up and I keep it running in production, entirely on our own hardware.",
+      "I design, ship and run the company's AI systems, from an on-premise agent platform to client assistants, keeping sensitive data on our own models.",
+    kpis: [
+      { value: "830+", label: "nurseries served by the RAG assistant" },
+      { value: "5", label: "countries, each isolated" },
+    ],
     highlights: [
-      "Multi-agent stack for customer service, from agent design to production",
-      "Local inference on Apple Silicon with Ollama and MLX, tuned for resident models and KV cache reuse",
-      "Typed React and Express services in Docker, with PostgreSQL, private search and n8n automations behind Caddy and a Cloudflare tunnel",
-      "Security end to end: JWT auth with revocation, rate limiting, sandboxed code execution, admin gated behind Tailscale with zero public ports",
-      "CI/CD pipeline, daily backups and restore runbooks that are actually tested",
-      "AI watch for the team: internal training sessions and presentations on what is worth adopting",
+      "On-premise agentic platform: tool-using agents with sandboxed Python, private search and n8n, on local LLMs served with MLX on Apple Silicon",
+      "React and TypeScript front, Express API and PostgreSQL, secured end to end with a Cloudflare tunnel, JWT revocation, rate limiting, backups and CI/CD",
+      "RAG assistant for nursery managers: FastAPI services, SharePoint ingestion, hybrid retrieval (pgvector, BM25, RRF) with per-country and per-nursery isolation, query rewriting and cited answers",
+      "LLM gateway that keeps sensitive data on self-hosted models",
+      "Process-aware after-sales agent on LangGraph with BPMN-driven routing and retrieval over past execution traces, benchmarked against a baseline with an LLM judge",
+      "Lead the company's AI adoption plan, including AI training for non-technical staff",
     ],
     tags: [
+      { label: "python", Logo: SiPython },
+      { label: "fastapi", Logo: SiFastapi },
+      { label: "langgraph", Logo: SiLangchain },
+      { label: "pgvector", Logo: SiPostgresql },
       { label: "typescript", Logo: SiTypescript },
       { label: "react", Logo: SiReact },
       { label: "express", Logo: SiExpress },
-      { label: "postgresql", Logo: SiPostgresql },
-      { label: "ollama", Logo: SiOllama },
       { label: "mlx", Logo: SiApple },
+      { label: "n8n", Logo: SiN8N },
       { label: "docker", Logo: SiDocker },
-      { label: "ci/cd" },
     ],
   },
   {
-    role: "AI Engineer Intern",
+    role: "AI Engineer",
     company: "Limpide",
     url: "https://limpide.net",
-    location: "Prague, Czechia",
-    period: "2025",
+    location: "Prague, Czech Republic",
+    period: "May — Nov 2025",
     summary: "Six months building document intelligence for the energy market.",
     kpis: [
       { value: "95%", label: "extraction accuracy" },
@@ -50,7 +56,7 @@ const experiences = [
     highlights: [
       "Computer vision pipeline extracting structured information from energy market documents, built on fine-tuned models and fed directly into the company's CRM",
       "Self-improving pipeline with continuous prompt optimization, running mostly on self-hosted n8n and orchestrating AutoGen agents",
-      "Multi-agent architecture combining MCP and RAG, deployed on Azure",
+      "Collaborative agents and a multi-agent architecture combining MCP and RAG, deployed on Azure",
     ],
     tags: [
       { label: "python", Logo: SiPython },
@@ -67,7 +73,7 @@ const experiences = [
     role: "Data Scientist Intern",
     company: "Ministère de l'Éducation Nationale",
     location: "Paris, France",
-    period: "2023",
+    period: "May — Aug 2023",
     summary: "A summer of data science inside the French Ministry of Education.",
     highlights: [
       "Predictive model for staff management, trained on student grades and academic trajectories",
@@ -83,11 +89,11 @@ const experiences = [
     role: "Data Protection Officer Intern",
     company: "Confiance Digitale",
     location: "Massy, France",
-    period: "2022",
+    period: "May — Aug 2022",
     summary: "First internship, on the infrastructure and security side.",
     highlights: [
-      "Set up and administered virtual machines through Active Directory, with patch management across the fleet",
-      "Managed Microsoft domains and deployed anti-spam protection on them",
+      "Set up and administered virtual machines through Active Directory",
+      "Managed Microsoft domains and deployed patch management and anti-spam solutions",
     ],
     tags: [
       { label: "active directory" },
@@ -102,12 +108,12 @@ export const ExperienceSection = () => {
     <section id="experience" className="py-12 md:py-16 relative">
       <div className="container-wide">
 
-        <SectionHeader index="02" label="Experience" title="Experience" />
+        <SectionHeader title="Experience" />
 
         <div className="mt-4 border-t border-border/50">
           {experiences.map((exp, i) => (
             <Reveal key={exp.company + exp.period} delay={0.05 + i * 0.05}>
-              <article className="group grid grid-cols-1 lg:grid-cols-[8rem_1fr_auto] gap-4 lg:gap-8 py-8 md:py-10 border-b border-border/50 text-left transition-colors duration-300 hover:bg-card/40 md:px-4 md:-mx-4 rounded-lg">
+              <article className="group grid grid-cols-1 lg:grid-cols-[9rem_minmax(0,1fr)_auto] gap-4 lg:gap-8 py-8 md:py-10 border-b border-border/50 text-left transition-colors duration-300 hover:bg-card/40 md:px-4 md:-mx-4 rounded-lg">
 
                 {/* Period, with the location alongside it below lg */}
                 <div className="flex items-baseline justify-between lg:justify-start lg:pt-1 font-mono text-sm text-muted-foreground">
@@ -122,7 +128,7 @@ export const ExperienceSection = () => {
                 </div>
 
                 {/* Role + detail */}
-                <div className="max-w-3xl">
+                <div className="min-w-0">
                   <h3 className="text-xl md:text-2xl font-semibold tracking-tight text-foreground">
                     {exp.role}
                     {exp.url ? (
@@ -143,7 +149,7 @@ export const ExperienceSection = () => {
                       <span className={`ml-3.5 ${exp.current ? "text-primary" : "text-foreground/80"}`}>{exp.company}</span>
                     )}
                   </h3>
-                  <p className="text-sm md:text-[15px] text-muted-foreground leading-relaxed mt-2">
+                  <p className="max-w-3xl text-sm md:text-[15px] text-muted-foreground leading-relaxed mt-2">
                     {exp.summary}
                   </p>
 
@@ -158,7 +164,8 @@ export const ExperienceSection = () => {
                     </div>
                   )}
 
-                  <ul className="mt-4 space-y-2.5">
+                  {/* Two columns on wide screens so the row fills the width without overlong lines */}
+                  <ul className="mt-4 grid grid-cols-1 xl:grid-cols-2 gap-x-12 gap-y-2.5">
                     {exp.highlights.map((h) => (
                       <li key={h} className="flex items-start gap-3 text-sm md:text-[15px] text-muted-foreground leading-relaxed">
                         <span className="mt-[11px] h-px w-3.5 shrink-0 bg-primary/50" />

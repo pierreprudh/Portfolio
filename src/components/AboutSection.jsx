@@ -14,7 +14,7 @@ const journey = [
   { year: "2021", title: "ENSIIE", sub: "engineering school, after two years of preparatory class" },
   { year: "2023", title: "Ministère de l'Éducation Nationale", sub: "data scientist intern" },
   { year: "2025", title: "Limpide Prague", sub: "AI engineer intern, agents and computer vision" },
-  { year: "2026", title: "Ontraak Paris", sub: "AI engineer, self-hosted AI stack", now: true },
+  { year: "2026", title: "Ontraak Paris", sub: "applied AI engineer, agents and RAG in production", now: true },
 ]
 
 const SEGMENT_COLORS = [
@@ -268,7 +268,7 @@ const cards = [
         <div className="relative z-10 flex flex-col justify-center gap-6 h-full max-w-[80%] sm:max-w-[68%] lg:max-w-[54%]">
           <Label>Profile</Label>
           <p className="text-2xl md:text-[2.1rem] leading-snug font-semibold tracking-tight text-foreground">
-            I'm Pierre, an AI engineer in Paris.
+            I'm Pierre, an applied AI engineer in Paris.
           </p>
           <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed">
             I work on agents, local inference, and everything it takes to run them: serving,
@@ -305,7 +305,7 @@ const cards = [
             </div>
             <div className="flex-1 flex flex-col justify-center gap-7">
               <div>
-                <div className="text-2xl md:text-3xl font-semibold text-card-foreground tracking-tight">AI Engineer - Ontraak</div>
+                <div className="text-2xl md:text-3xl font-semibold text-card-foreground tracking-tight">Applied AI Engineer - Ontraak</div>
                 <div className="flex items-baseline justify-between w-[92%] font-mono text-sm text-muted-foreground mt-2">
                   <span>02/2026 - now</span>
                   <span>Paris</span>
@@ -313,18 +313,18 @@ const cards = [
               </div>
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 xl:gap-10">
               <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed max-w-2xl">
-                I built and run the company's AI assistant fully on premise: local models on Apple
-                Silicon through Ollama and MLX, a React and Express stack in Docker, PostgreSQL,
-                private search, and n8n automations behind a reverse proxy.
+                I built and run the company's agentic AI platform fully on premise: tool-using
+                agents on local models served with MLX on Apple Silicon, a React and Express stack,
+                PostgreSQL, private search, and n8n automations.
               </p>
               <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed max-w-2xl">
-                I also handle what keeps it fast and trustworthy: KV-cache tuning, models resident
-                in memory, JWT auth with revocation, rate limiting, sandboxed code execution, daily
-                backups with tested restores, and the CI/CD that ships it all.
+                For clients, I own the RAG assistant used by managers across 830+ nurseries in five
+                countries: hybrid retrieval with strict per-country isolation, cited answers, and a
+                gateway that keeps sensitive data on our own models.
               </p>
               <p className="text-[15px] md:text-base text-muted-foreground leading-relaxed max-w-2xl xl:col-span-2">
-                Beyond the stack, I keep the team up to speed on AI: continuous watch on the
-                ecosystem, internal training sessions, and presentations on what's worth adopting.
+                Beyond the stack, I lead the company's AI adoption plan: training for non-technical
+                colleagues, and a watch on what's worth adopting that I also publish as articles.
               </p>
             </div>
           </div>
@@ -395,7 +395,7 @@ export const AboutSection = () => {
   return (
     <section id="about" className="pt-6 md:pt-8 relative z-10">
       <div className="container-wide">
-        <SectionHeader index="01" label="About" title="Who I am" />
+        <SectionHeader title="Who I am" hideTitle />
       </div>
 
       {staticCards ? (

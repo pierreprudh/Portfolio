@@ -1,5 +1,5 @@
 import { ArrowUp, ArrowUpRight } from "lucide-react"
-import { SiGithub, SiLinkedin, SiOllama } from "react-icons/si"
+import { SiGithub, SiHuggingface, SiLinkedin, SiOllama, SiX } from "react-icons/si"
 import { Reveal } from "./Reveal"
 import BackgroundPaths from "./BackgroundPaths"
 
@@ -9,6 +9,8 @@ const SOCIALS = [
   { href: "https://github.com/pierreprudh", icon: SiGithub, label: "GitHub" },
   { href: "https://www.linkedin.com/in/pierre-prudhomme-14b145222/", icon: SiLinkedin, label: "LinkedIn" },
   { href: "https://ollama.com/pierreprudh", icon: SiOllama, label: "Ollama" },
+  { href: "https://huggingface.co/pierreprudh", icon: SiHuggingface, label: "Hugging Face" },
+  { href: "https://x.com/pierreprudh", icon: SiX, label: "X" },
 ]
 
 export const ContactSection = () => {
@@ -21,14 +23,6 @@ export const ContactSection = () => {
       </div>
 
       <div className="container-wide relative z-10">
-
-        <Reveal>
-          <div className="flex items-baseline gap-4 mb-10 md:mb-14">
-            <span className="font-mono text-sm text-primary">05</span>
-            <span className="font-mono text-xs uppercase tracking-[0.3em] text-muted-foreground">contact</span>
-            <div className="h-px flex-1 self-center bg-border/60" />
-          </div>
-        </Reveal>
 
         {/* ── Merged contact + footer: headline and one-click email actions ── */}
         <div className="pb-16 md:pb-24">

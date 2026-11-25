@@ -1,7 +1,7 @@
 import { ArrowUpRight } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
 import { motion as Motion, useScroll, useTransform, useReducedMotion, useMotionValue, useSpring } from "motion/react"
-import { SiGithub, SiLinkedin, SiOllama } from "react-icons/si"
+import { SiGithub, SiHuggingface, SiLinkedin, SiOllama, SiX } from "react-icons/si"
 
 const reducedMotion = () =>
   typeof window !== "undefined" &&
@@ -332,6 +332,8 @@ export const HeroSection = () => {
                   { href: "https://github.com/pierreprudh", icon: <SiGithub size={17} />, label: "GitHub" },
                   { href: "https://www.linkedin.com/in/pierre-prudhomme-14b145222/", icon: <SiLinkedin size={17} />, label: "LinkedIn" },
                   { href: "https://ollama.com/pierreprudh", icon: <SiOllama size={17} />, label: "Ollama" },
+                  { href: "https://huggingface.co/pierreprudh", icon: <SiHuggingface size={17} />, label: "Hugging Face" },
+                  { href: "https://x.com/pierreprudh", icon: <SiX size={15} />, label: "X" },
                 ].map(({ href, icon, label }) => (
                   <a key={label} href={href} target="_blank" rel="noopener noreferrer"
                     className="p-3 -m-3 text-muted-foreground/60 hover:text-primary transition-colors duration-300"
