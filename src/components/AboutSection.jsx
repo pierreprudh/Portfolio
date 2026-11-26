@@ -378,14 +378,9 @@ const cards = [
 ]
 
 export const AboutSection = () => {
-  // Static tiles only where the stack cannot work: reduced motion, or screens
-  // too short to ever show a full card below the pin position.
-  const [staticCards] = useState(
-    () =>
-      prefersReducedMotion() ||
-      (typeof window !== "undefined" &&
-        window.matchMedia("(max-width: 767px) and (max-height: 700px)").matches)
-  )
+  // Static tiles only under reduced motion. On short phones the stack raises
+  // its pin so tall cards still end on screen (see ScrollStack fitMargin).
+  const [staticCards] = useState(prefersReducedMotion)
   // Phones keep the scroll-stack, but pinned higher and packed tighter so the
   // tallest card still fits fully below the pin.
   const [isMobile] = useState(

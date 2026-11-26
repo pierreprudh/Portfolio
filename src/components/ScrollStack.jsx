@@ -22,6 +22,8 @@ const ScrollStack = ({
   holdOffset = '20%',
   // Document-space gap between the settled deck and whatever follows
   releaseGap = 64,
+  // Space kept below the deck when it has to be raised to fit the viewport
+  fitMargin = 16,
   onStackComplete
 }) => {
   const scrollerRef = useRef(null);
@@ -34,6 +36,7 @@ const ScrollStack = ({
   // feeds the applied translateY back into the math and causes visible wobble.
   const cardOffsetsRef = useRef([]);
   const pinEndRef = useRef(0);
+  const deckHeightRef = useRef(0);
   const lastTransformsRef = useRef(new Map());
   const isUpdatingRef = useRef(false);
 
@@ -50,6 +53,16 @@ const ScrollStack = ({
     return parseFloat(value);
   }, []);
 
+  // Where the deck pins. When the settled deck would run past the bottom of
+  // the viewport (tall cards on short phones), pin it higher so the bottom of
+  // each card stays on screen; its top then slides under the navbar instead.
+  const getStackPositionPx = useCallback((containerHeight) => {
+    const preferred = parsePercentage(stackPosition, containerHeight);
+    const deckHeight = deckHeightRef.current;
+    if (!deckHeight) return preferred;
+    return Math.min(preferred, containerHeight - deckHeight - fitMargin);
+  }, [stackPosition, parsePercentage, fitMargin]);
+
   const getScrollData = useCallback(() => {
     if (useWindowScroll) {
       return { scrollTop: window.scrollY, containerHeight: window.innerHeight };
@@ -64,8 +77,10 @@ const ScrollStack = ({
     isUpdatingRef.current = true;
 
     const { scrollTop, containerHeight } = getScrollData();
-    const stackPositionPx = parsePercentage(stackPosition, containerHeight);
-    const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight);
+    const stackPositionPx = getStackPositionPx(containerHeight);
+    // Keep the scale window the same length when the pin is raised
+    const scaleEndPositionPx = parsePercentage(scaleEndPosition, containerHeight)
+      - (parsePercentage(stackPosition, containerHeight) - stackPositionPx);
     const pinEnd = pinEndRef.current;
 
     // Per-card stacking progress, also used as the "covered" signal: card i is
@@ -159,7 +174,8 @@ const ScrollStack = ({
     onStackComplete,
     calculateProgress,
     parsePercentage,
-    getScrollData
+    getScrollData,
+    getStackPositionPx
   ]);
 
   // Measure untransformed layout positions. Strip transforms, read, then
@@ -195,12 +211,14 @@ const ScrollStack = ({
     cardOffsetsRef.current = offsets;
 
     const { containerHeight } = getScrollData();
-    const stackPositionPx = parsePercentage(stackPosition, containerHeight);
-    const holdPx = parsePercentage(holdOffset, containerHeight);
     const n = offsets.length;
 
     // Height of the fully stacked deck (equal-height cards offset by itemStackDistance)
     const deckHeight = (n - 1) * itemStackDistance + maxCardHeight;
+    deckHeightRef.current = deckHeight;
+
+    const stackPositionPx = getStackPositionPx(containerHeight);
+    const holdPx = parsePercentage(holdOffset, containerHeight);
 
     // Release shortly after the last card lands
     const lastPinStart = offsets[n - 1] - stackPositionPx - itemStackDistance * (n - 1);
@@ -229,7 +247,7 @@ const ScrollStack = ({
     updateCardTransforms,
     getScrollData,
     parsePercentage,
-    stackPosition,
+    getStackPositionPx,
     holdOffset,
     itemStackDistance,
     releaseGap
