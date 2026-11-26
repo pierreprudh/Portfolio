@@ -455,3 +455,8 @@
   background: hsl(var(--primary) / 0.12);
   transition-duration: 150ms;
 }
+
+/* Klide integrations band: two identical rows, shifted by one row's width */
+@keyframes klide-marquee {
+  to { transform: translateX(-50%); }
+}
