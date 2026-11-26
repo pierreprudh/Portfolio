@@ -1,40 +1,9 @@
 import { SiGithub } from "react-icons/si"
 import { ArrowUpRight } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { AnimatePresence, motion as Motion, useReducedMotion } from "motion/react"
 import { Reveal } from "./Reveal"
 import { SectionHeader } from "./SectionHeader"
-
-// Plays only while on screen so the file never loads for visitors who don't scroll to it
-const ProjectVideo = ({ src, poster, title }) => {
-  const ref = useRef(null)
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) el.play().catch(() => {})
-        else el.pause()
-      },
-      { threshold: 0.25 }
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-  return (
-    <video
-      ref={ref}
-      src={src}
-      poster={poster}
-      aria-label={title}
-      muted
-      loop
-      playsInline
-      preload="none"
-      className="w-full h-full object-cover"
-    />
-  )
-}
 
 const MonoTags = ({ children }) => (
   <div className="font-mono text-[11px] text-muted-foreground/70 flex flex-wrap gap-x-3 gap-y-1">
@@ -172,8 +141,13 @@ const KlideTile = () => {
     >
       {/* Inset banner with the product, the app icon overlapping its lower edge */}
       <div className="relative p-2 md:p-2.5">
-        <div className="relative h-56 md:h-96 overflow-hidden rounded-2xl border border-border/60 bg-black">
-          <ProjectVideo src="projects/klide-demo.mp4" poster="projects/Project - KLIDE.jpg" title="Klide demo" />
+        <div className="relative h-56 sm:h-72 md:h-[26rem] lg:h-[30rem] overflow-hidden rounded-2xl border border-border/60 bg-black">
+          <img
+            src="projects/klide/focus.jpg"
+            alt="Klide Focus view: the sidebar with conversations grouped by agent, the Git island, recent tasks to continue, and the composer on OpenRouter"
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-cover object-[center_42%] transition-transform duration-[1200ms] ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.015]"
+          />
         </div>
         <img
           src="projects/klide/app-icon.svg"
